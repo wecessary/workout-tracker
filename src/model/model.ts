@@ -7,6 +7,11 @@ export type HandleChangeName = (
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => void;
 
+export type HandleAddWorkout = (
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => void;
+
 export interface WorkoutDataObject {
   index: number;
   name: string;

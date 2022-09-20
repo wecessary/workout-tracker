@@ -1,34 +1,18 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { handleChangeName } from "./handlers/handlers";
+import {
+  handleAddSet,
+  handleAddWorkout,
+  handleChangeName,
+} from "./handlers/handlers";
 import { initialWorkoutData, initialSets } from "./initialData/initalData";
-import { HandleChangeName } from "./model/model";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
 
-const App = ({ handleChangeName }: { handleChangeName: HandleChangeName }) => {
+const App = () => {
   const [workoutData, setWorkoutData] = useState(initialWorkoutData);
   const [sets, setSets] = useState(initialSets);
-
-  const handleAddSet = () => {
-    const nextSet = sets.length + 1;
-    setSets([...sets, `set ${nextSet}`]);
-  };
-
-  const handleAddWorkut = () => {
-    setWorkoutData([
-      ...workoutData,
-      {
-        index: workoutData.length,
-        name: "Your Workout",
-        sets: [
-          { reps: 10, weight: 15 },
-          { reps: 10, weight: 15 },
-        ],
-      },
-    ]);
-  };
 
   console.log(workoutData.map((obj) => obj));
   return (
@@ -46,16 +30,18 @@ const App = ({ handleChangeName }: { handleChangeName: HandleChangeName }) => {
             />
           );
         })}
-        <button onClick={handleAddWorkut}>+</button>
+        <button onClick={() => handleAddWorkout(workoutData, setWorkoutData)}>
+          +
+        </button>
       </div>
       <div>
         {sets.map((set, i) => {
           return <p key={i}>{set}</p>;
         })}
-        <button onClick={handleAddSet}>Add Set</button>
+        <button onClick={() => handleAddSet(sets, setSets)}>Add Set</button>
       </div>
     </>
   );
 };
 
-root.render(<App handleChangeName={handleChangeName} />);
+root.render(<App />);
