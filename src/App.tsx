@@ -18,13 +18,13 @@ const App = () => {
     e: ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    const newState = workoutData.map((obj) => {
+    const newWorkoutData = workoutData.map((obj) => {
       if (obj.index === index) {
         return { ...obj, name: e.target.value };
       }
       return obj;
     });
-    setWorkoutData(newState);
+    setWorkoutData(newWorkoutData);
   };
   const handleAdd = () => {
     setWorkoutData([
@@ -43,12 +43,12 @@ const App = () => {
     <div>
       <h1> Workout Tracker</h1>
       <div className="flex flex-col w-36">
-        {workoutData.map((workout, i) => {
+        {workoutData.map((obj, i) => {
           return (
             <input
               key={i}
-              value={workout.name}
-              onChange={(e) => handleChangeName(e, workout.index)}
+              value={obj.name}
+              onChange={(e) => handleChangeName(e, obj.index)}
             />
           );
         })}
