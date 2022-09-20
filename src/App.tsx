@@ -1,34 +1,22 @@
 import { ChangeEvent, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { handleChangeName } from "./handlers/handlers";
+import { initialWorkoutData, initialSets } from "./initialData/initalData";
+import { HandleChangeName } from "./model/model";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
-const initialData = [
-  {
-    index: 0,
-    name: "Bicep Curls",
-    sets: [
-      { reps: 10, weight: 15 },
-      { reps: 10, weight: 15 },
-    ],
-  },
-];
 
-const App = () => {
-  const [workoutData, setWorkoutData] = useState(initialData);
-  const handleChangeName = (
-    e: ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const newWorkoutData = workoutData.map((obj) => {
-      if (obj.index === index) {
-        return { ...obj, name: e.target.value };
-      }
-      return obj;
-    });
-    setWorkoutData(newWorkoutData);
+const App = ({ handleChangeName }: { handleChangeName: HandleChangeName }) => {
+  const [workoutData, setWorkoutData] = useState(initialWorkoutData);
+  const [sets, setSets] = useState(initialSets);
+
+  const handleAddSet = () => {
+    const nextSet = sets.length + 1;
+    setSets([...sets, `set ${nextSet}`]);
   };
-  const handleAdd = () => {
+
+  const handleAddWorkut = () => {
     setWorkoutData([
       ...workoutData,
       {
@@ -52,19 +40,22 @@ const App = () => {
             <input
               key={i}
               value={obj.name}
-              onChange={(e) => handleChangeName(e, obj.index)}
+              onChange={(e) =>
+                handleChangeName(e, obj.index, workoutData, setWorkoutData)
+              }
             />
           );
         })}
-        <button onClick={handleAdd}>+</button>
+        <button onClick={handleAddWorkut}>+</button>
       </div>
       <div>
-        {workoutData.map((obj) => {
-          return <p>{obj.set1}</p>;
+        {sets.map((set, i) => {
+          return <p key={i}>{set}</p>;
         })}
+        <button onClick={handleAddSet}>Add Set</button>
       </div>
     </>
   );
 };
 
-root.render(<App />);
+root.render(<App handleChangeName={handleChangeName} />);
