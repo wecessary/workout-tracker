@@ -7,8 +7,10 @@ const initialData = [
   {
     index: 0,
     name: "Bicep Curls",
-    set1: { reps: 10, weight: 15 },
-    set2: { reps: 10, weight: 15 },
+    sets: [
+      { reps: 10, weight: 15 },
+      { reps: 10, weight: 15 },
+    ],
   },
 ];
 
@@ -32,15 +34,17 @@ const App = () => {
       {
         index: workoutData.length,
         name: "Your Workout",
-        set1: { reps: 10, weight: 15 },
-        set2: { reps: 10, weight: 15 },
+        sets: [
+          { reps: 10, weight: 15 },
+          { reps: 10, weight: 15 },
+        ],
       },
     ]);
   };
 
   console.log(workoutData.map((obj) => obj));
   return (
-    <div>
+    <>
       <h1> Workout Tracker</h1>
       <div className="flex flex-col w-36">
         {workoutData.map((obj, i) => {
@@ -54,7 +58,12 @@ const App = () => {
         })}
         <button onClick={handleAdd}>+</button>
       </div>
-    </div>
+      <div>
+        {workoutData.map((obj) => {
+          return <p>{obj.set1}</p>;
+        })}
+      </div>
+    </>
   );
 };
 
