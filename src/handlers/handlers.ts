@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 import { WorkoutDataObject } from "../model/model";
 
 export const handleChangeName = (
@@ -35,8 +35,41 @@ export const handleAddWorkout = (
 
 export const handleAddSet = (
   sets: string[],
-  setSets: (value: SetStateAction<string[]>) => void
+  setSets: (value: SetStateAction<string[]>) => void,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
   const nextSet = sets.length + 1;
   setSets([...sets, `set ${nextSet}`]);
+
+  const newWorkoutData = workoutData.map((obj) => {
+    return { ...obj, sets: [...obj.sets, { reps: 10, weight: 15 }] };
+  });
+
+  setWorkoutData(newWorkoutData);
+};
+
+export const handleChangeReps = (
+  e: ChangeEvent<HTMLInputElement>,
+  setIndex: number,
+  wokroutDataObjectIndex: number,
+  workoutDataObject: WorkoutDataObject,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => {
+  const newSets = workoutDataObject.sets.map((setObj) => {
+    //setObj as in the object representing the set e.g. {reps: 5, weight: 10}
+    if (setIndex === workoutDataObject.sets.indexOf(setObj)) {
+      return { ...setObj, reps: e.target.valueAsNumber };
+    }
+    return setObj;
+  });
+
+  const newWorkoutData = workoutData.map((obj) => {
+    if (wokroutDataObjectIndex === obj.index) {
+      return { ...obj, sets: newSets };
+    }
+    return obj;
+  });
+  setWorkoutData(newWorkoutData);
 };

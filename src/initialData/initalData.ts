@@ -9,4 +9,4 @@ export const initialWorkoutData = [
   },
 ];
 
-export const initialSets = ["set 1", "set 2", "set 3"];
+export const initialSets = ["set 1", "set 2"];
