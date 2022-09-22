@@ -6,6 +6,7 @@ export const initialWorkoutData = [
       { reps: 10, weight: 15 },
       { reps: 10, weight: 15 },
     ],
+    easy: true,
   },
 ];
 

@@ -4,6 +4,7 @@ import {
   handleAddWorkout,
   handleAddSet,
   handleChangeReps,
+  handleChangeEasy,
 } from "../handlers/handlers";
 import { initialWorkoutData, initialSets } from "../data/initalData";
 
@@ -35,6 +36,7 @@ const TrackerPage = () => {
                   Add Set
                 </button>
               </th>
+              <th className="w-5">Ease?</th>
             </tr>
           </thead>
           <tbody>
@@ -42,19 +44,21 @@ const TrackerPage = () => {
               return (
                 <tr key={i}>
                   <td>
-                    <input
-                      className="border rounded-lg w-full"
-                      key={i}
-                      value={obj.name}
-                      onChange={(e) =>
-                        handleChangeName(
-                          e,
-                          obj.index,
-                          workoutData,
-                          setWorkoutData
-                        )
-                      }
-                    />
+                    <span>
+                      <input
+                        className="border rounded-lg w-full"
+                        key={i}
+                        value={obj.name}
+                        onChange={(e) =>
+                          handleChangeName(
+                            e,
+                            obj.index,
+                            workoutData,
+                            setWorkoutData
+                          )
+                        }
+                      />
+                    </span>
                   </td>
                   {obj.sets.map((set, i) => {
                     return (
@@ -77,6 +81,16 @@ const TrackerPage = () => {
                       </td>
                     );
                   })}
+                  <td></td>
+                  <td>
+                    <button
+                      onClick={() =>
+                        handleChangeEasy(obj.index, workoutData, setWorkoutData)
+                      }
+                    >
+                      {obj.easy ? "😊" : "😔"}
+                    </button>
+                  </td>
                 </tr>
               );
             })}
