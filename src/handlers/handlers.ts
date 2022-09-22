@@ -20,15 +20,19 @@ export const handleAddWorkout = (
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
+  const numberOfSets = workoutData[0].sets.length;
+  const initialSets = [];
+  const initialSetObject = { reps: 10, weight: 15 };
+  for (let i = 0; i < numberOfSets; i++){
+    initialSets.push(initialSetObject)
+  }
+
   setWorkoutData([
     ...workoutData,
     {
       index: workoutData.length,
       name: "Your Workout",
-      sets: [
-        { reps: 10, weight: 15 },
-        { reps: 10, weight: 15 },
-      ],
+      sets:initialSets,
       easy: true,
     },
   ]);
