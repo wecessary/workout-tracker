@@ -5,7 +5,7 @@ import {
   handleAddSet,
   handleChangeReps,
 } from "../handlers/handlers";
-import { initialWorkoutData, initialSets } from "../initialData/initalData";
+import { initialWorkoutData, initialSets } from "../data/initalData";
 
 const TrackerPage = () => {
   const [workoutData, setWorkoutData] = useState(initialWorkoutData);
