@@ -20,6 +20,7 @@ export interface WorkoutDataObject {
 }
 
 export interface Set {
+  index: number;
   reps: number;
   weight: number;
 }

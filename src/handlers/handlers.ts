@@ -22,9 +22,8 @@ export const handleAddWorkout = (
 ) => {
   const numberOfSets = workoutData[0].sets.length;
   const initialSets = [];
-  const initialSetObject = { reps: 10, weight: 15 };
-  for (let i = 0; i < numberOfSets; i++){
-    initialSets.push(initialSetObject)
+  for (let i = 0; i < numberOfSets; i++) {
+    initialSets.push({ index: i, reps: 10, weight: 15 });
   }
 
   setWorkoutData([
@@ -32,7 +31,7 @@ export const handleAddWorkout = (
     {
       index: workoutData.length,
       name: "Your Workout",
-      sets:initialSets,
+      sets: initialSets,
       easy: true,
     },
   ]);
@@ -48,7 +47,10 @@ export const handleAddSet = (
   setSets([...sets, `set ${nextSet}`]);
 
   const newWorkoutData = workoutData.map((obj) => {
-    return { ...obj, sets: [...obj.sets, { reps: 10, weight: 15 }] };
+    return {
+      ...obj,
+      sets: [...obj.sets, { index: obj.sets.length, reps: 10, weight: 15 }],
+    };
   });
 
   setWorkoutData(newWorkoutData);
@@ -64,8 +66,33 @@ export const handleChangeReps = (
 ) => {
   const newSets = workoutDataObject.sets.map((setObj) => {
     //setObj as in the object representing the set e.g. {reps: 5, weight: 10}
-    if (setIndex === workoutDataObject.sets.indexOf(setObj)) {
+    if (setIndex === setObj.index) {
       return { ...setObj, reps: e.target.valueAsNumber };
+    }
+    return setObj;
+  });
+
+  const newWorkoutData = workoutData.map((obj) => {
+    if (wokroutDataObjectIndex === obj.index) {
+      return { ...obj, sets: newSets };
+    }
+    return obj;
+  });
+  setWorkoutData(newWorkoutData);
+};
+
+export const handleChangeWeight = (
+  e: ChangeEvent<HTMLInputElement>,
+  setIndex: number,
+  wokroutDataObjectIndex: number,
+  workoutDataObject: WorkoutDataObject,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => {
+  const newSets = workoutDataObject.sets.map((setObj) => {
+    //setObj as in the object representing the set e.g. {reps: 5, weight: 10}
+    if (setIndex === workoutDataObject.sets.indexOf(setObj)) {
+      return { ...setObj, weight: e.target.valueAsNumber };
     }
     return setObj;
   });
