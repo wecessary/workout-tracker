@@ -5,6 +5,7 @@ import {
   handleAddSet,
   handleChangeReps,
   handleChangeEasy,
+  handleChangeWeight,
 } from "../handlers/handlers";
 import { initialWorkoutData, initialSets } from "../data/initalData";
 
@@ -16,27 +17,27 @@ const TrackerPage = () => {
     <>
       <div className="flex flex-col justify-center items-center h-full p-4">
         <h1> 💪💪💪Workout Tracker💪💪💪</h1>
-        <table className="table-fixed text-xs w-72 sm:w-[600px]">
+        <table className="table-auto text-xs">
           <thead>
-            <tr>
-              <th className="w-5">Type of Exercise</th>
+            <tr className="text-right">
+              <th>Type of Exercise</th>
               {sets.map((set, i) => {
                 return (
-                  <th className="w-5" key={i}>
+                  <th key={i}>
                     {set}
                   </th>
                 );
               })}
-              <th className="w-5">
+              <th>
                 <button
                   onClick={() =>
                     handleAddSet(sets, setSets, workoutData, setWorkoutData)
                   }
                 >
-                  Add Set
+                  +
                 </button>
               </th>
-              <th className="w-5">Ease?</th>
+              <th>Ease?</th>
             </tr>
           </thead>
           <tbody>
@@ -44,28 +45,26 @@ const TrackerPage = () => {
               return (
                 <tr key={i}>
                   <td>
-                    <span>
-                      <input
-                        className="border rounded-lg w-full"
-                        key={i}
-                        value={obj.name}
-                        onChange={(e) =>
-                          handleChangeName(
-                            e,
-                            obj.index,
-                            workoutData,
-                            setWorkoutData
-                          )
-                        }
-                      />
-                    </span>
+                    <input
+                      className="border rounded-lg w-full"
+                      key={i}
+                      value={obj.name}
+                      onChange={(e) =>
+                        handleChangeName(
+                          e,
+                          obj.index,
+                          workoutData,
+                          setWorkoutData
+                        )
+                      }
+                    />
                   </td>
                   {obj.sets.map((set, i) => {
                     return (
-                      <td key={i}>
+                      <td key={i} className="text-right">
                         <input
                           type="number"
-                          key={i}
+                          key={`reps${i}`}
                           value={set.reps}
                           onChange={(e) =>
                             handleChangeReps(
@@ -78,11 +77,28 @@ const TrackerPage = () => {
                             )
                           }
                         />
+                        /
+                        <input
+                          type="number"
+                          key={`weight${i}`}
+                          value={set.weight}
+                          onChange={(e) => {
+                            handleChangeWeight(
+                              e,
+                              i,
+                              obj.index,
+                              obj,
+                              workoutData,
+                              setWorkoutData
+                            );
+                          }}
+                        />
+                        kg
                       </td>
                     );
                   })}
-                  <td></td>
-                  <td>
+                  <td className="text-right"></td>
+                  <td className="text-right">
                     <button
                       onClick={() =>
                         handleChangeEasy(obj.index, workoutData, setWorkoutData)
