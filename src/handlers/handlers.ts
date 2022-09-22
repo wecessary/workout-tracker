@@ -3,12 +3,12 @@ import { WorkoutDataObject } from "../model/model";
 
 export const handleChangeName = (
   e: ChangeEvent<HTMLInputElement>,
-  index: number,
+  workoutDataObjectIndex: number,
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
-  const newWorkoutData = workoutData.map((obj: WorkoutDataObject) => {
-    if (obj.index === index) {
+  const newWorkoutData = workoutData.map((obj) => {
+    if (obj.index === workoutDataObjectIndex) {
       return { ...obj, name: e.target.value };
     }
     return obj;
@@ -29,6 +29,7 @@ export const handleAddWorkout = (
         { reps: 10, weight: 15 },
         { reps: 10, weight: 15 },
       ],
+      easy: true,
     },
   ]);
 };
@@ -68,6 +69,20 @@ export const handleChangeReps = (
   const newWorkoutData = workoutData.map((obj) => {
     if (wokroutDataObjectIndex === obj.index) {
       return { ...obj, sets: newSets };
+    }
+    return obj;
+  });
+  setWorkoutData(newWorkoutData);
+};
+
+export const handleChangeEasy = (
+  workoutDataObjectIndex: number,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => {
+  const newWorkoutData = workoutData.map((obj) => {
+    if (obj.index === workoutDataObjectIndex) {
+      return { ...obj, easy: !obj.easy };
     }
     return obj;
   });
