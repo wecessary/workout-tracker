@@ -2,8 +2,8 @@
   "name": "workout-tracker",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
+    "build": "parcel build src/index.html",
     "dev": "parcel src/index.html",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx}\" --quiet"
@@ -24,6 +24,7 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "firebase-tools": "^11.10.0",
     "parcel": "^2.7.0",
     "postcss": "^8.4.16",
     "prettier": "2.7.1",
