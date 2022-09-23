@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   handleChangeName,
   handleAddWorkout,
@@ -7,26 +7,40 @@ import {
   handleChangeEasy,
   handleChangeWeight,
 } from "../handlers/handlers";
-import { initialWorkoutData, initialSets } from "../data/initalData";
+import {
+  initialSets,
+  initialUserData,
+} from "../data/initalData";
+import { currentDateAsNumber, currentTime } from "../utilities/date";
+import useWorkoutData from "../hooks/useWorkoutData";
 
 const TrackerPage = () => {
-  const [workoutData, setWorkoutData] = useState(initialWorkoutData);
+  const [userData, setUserData] = useState(initialUserData);
+  const {workoutData, setWorkoutData} = useWorkoutData(userData, setUserData);
   const [sets, setSets] = useState(initialSets);
-  console.log(workoutData);
+
+  //useEffect for updating workOutData
+  useEffect(() => {
+    const newUserData = userData.map((obj) => {
+      if (obj.date === currentDateAsNumber) {
+        return { ...obj, workoutData: workoutData };
+      }
+      return obj;
+    });
+    setUserData(newUserData);
+  }, [workoutData]);
+  console.log(userData);
   return (
     <>
       <div className="flex flex-col justify-center items-center h-full p-4">
         <h1> 💪💪💪Workout Tracker💪💪💪</h1>
+        <h1>{currentTime.toDateString()}</h1>
         <table className="table-auto text-xs">
           <thead>
             <tr className="text-right">
               <th>Type of Exercise</th>
               {sets.map((set, i) => {
-                return (
-                  <th key={i}>
-                    {set}
-                  </th>
-                );
+                return <th key={i}>{set}</th>;
               })}
               <th>
                 <button
