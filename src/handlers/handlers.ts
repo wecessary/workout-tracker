@@ -20,11 +20,11 @@ export const handleAddWorkout = (
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
-  const numberOfSets = workoutData[0].sets.length;
-  const initialSets = [];
-  for (let i = 0; i < numberOfSets; i++) {
-    initialSets.push({ index: i, reps: 10, weight: 15 });
-  }
+
+  const initialSets = [
+    { index: 0, reps: 10, weight: 15 },
+    { index: 1, reps: 10, weight: 15 },
+  ];
 
   setWorkoutData([
     ...workoutData,
@@ -38,19 +38,18 @@ export const handleAddWorkout = (
 };
 
 export const handleAddSet = (
-  sets: string[],
-  setSets: (value: SetStateAction<string[]>) => void,
+  workoutDataObjectIndex: number,
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
-  const nextSet = sets.length + 1;
-  setSets([...sets, `set ${nextSet}`]);
-
   const newWorkoutData = workoutData.map((obj) => {
-    return {
-      ...obj,
-      sets: [...obj.sets, { index: obj.sets.length, reps: 10, weight: 15 }],
-    };
+    if (obj.index === workoutDataObjectIndex) {
+      return {
+        ...obj,
+        sets: [...obj.sets, { index: obj.sets.length, reps: 10, weight: 15 }],
+      };
+    }
+    return obj;
   });
 
   setWorkoutData(newWorkoutData);
