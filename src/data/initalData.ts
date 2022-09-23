@@ -10,4 +10,11 @@ export const initialWorkoutData = [
   },
 ];
 
+export const initialUserData = [
+  {
+    date: "2022-09-23",
+    workoutData: initialWorkoutData,
+  },
+];
+
 export const initialSets = ["set 1", "set 2"];

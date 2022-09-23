@@ -24,3 +24,9 @@ export interface Set {
   reps: number;
   weight: number;
 }
+
+export interface UserDataObject {
+  date: string;
+  workoutData: WorkoutDataObject[];
+}
+export type SetUserData = (value: SetStateAction<UserDataObject[]>) => void;
