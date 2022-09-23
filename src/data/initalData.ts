@@ -12,8 +12,8 @@ export const initialWorkoutData = [
 
 export const initialUserData = [
   {
-    date: 2292022,
-    workoutData: initialWorkoutData
+    date: "2022-09-23",
+    workoutData: initialWorkoutData,
   },
 ];
 

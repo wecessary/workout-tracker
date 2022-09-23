@@ -7,22 +7,24 @@ import {
   handleChangeEasy,
   handleChangeWeight,
 } from "../handlers/handlers";
-import {
-  initialSets,
-  initialUserData,
-} from "../data/initalData";
-import { currentDateAsNumber, currentTime } from "../utilities/date";
+import { initialSets, initialUserData } from "../data/initalData";
+import { currentDateAsString } from "../utilities/date";
 import useWorkoutData from "../hooks/useWorkoutData";
 
 const TrackerPage = () => {
+  const [selectedDate, setSelectedDate] = useState(currentDateAsString);
   const [userData, setUserData] = useState(initialUserData);
-  const {workoutData, setWorkoutData} = useWorkoutData(userData, setUserData);
+  const { workoutData, setWorkoutData } = useWorkoutData(
+    userData,
+    setUserData,
+    selectedDate
+  );
   const [sets, setSets] = useState(initialSets);
 
   //useEffect for updating workOutData
   useEffect(() => {
     const newUserData = userData.map((obj) => {
-      if (obj.date === currentDateAsNumber) {
+      if (obj.date === selectedDate) {
         return { ...obj, workoutData: workoutData };
       }
       return obj;
@@ -34,7 +36,13 @@ const TrackerPage = () => {
     <>
       <div className="flex flex-col justify-center items-center h-full p-4">
         <h1> 💪💪💪Workout Tracker💪💪💪</h1>
-        <h1>{currentTime.toDateString()}</h1>
+        <h1>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+        </h1>
         <table className="table-auto text-xs">
           <thead>
             <tr className="text-right">

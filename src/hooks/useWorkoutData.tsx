@@ -1,35 +1,36 @@
 import { useEffect, useState } from "react";
 import { initialWorkoutData } from "../data/initalData";
 import { SetUserData, UserDataObject } from "../model/model";
-import { currentDateAsNumber } from "../utilities/date";
 
-  // //this does two things:
-  // //1. checks whether a workOut Object already exists for today's date. If not, one will create and added the userData
-  // //2. set today's workoutData to workoutData via setWorkoutData
+// //this does two things:
+// //1. checks whether a workOut Object already exists for today's date. If not, one will create and added the userData
+// //2. set today's workoutData to workoutData via setWorkoutData
 
-const useWorkoutData = (userData: UserDataObject[], setUserData:SetUserData) => {
+const useWorkoutData = (
+  userData: UserDataObject[],
+  setUserData: SetUserData,
+  selectedDate: string
+) => {
   const [workoutData, setWorkoutData] = useState(initialWorkoutData);
 
   useEffect(() => {
     const newUserData = userData;
-    const index = newUserData.findIndex(
-      (obj) => obj.date === currentDateAsNumber
-    );
+    const index = newUserData.findIndex((obj) => obj.date === selectedDate);
     if (index === -1) {
       newUserData.push({
-        date: currentDateAsNumber,
+        date: selectedDate,
         workoutData: initialWorkoutData,
       });
     }
     setUserData(newUserData);
 
-    const indexOfTodayWorkout = userData.findIndex(
-      (obj) => obj.date === currentDateAsNumber
+    const indexOfSelectedWorkout = userData.findIndex(
+      (obj) => obj.date === selectedDate
     );
-    const todayWorkout = userData[indexOfTodayWorkout].workoutData;
+    const todayWorkout = userData[indexOfSelectedWorkout].workoutData;
     setWorkoutData(todayWorkout);
-  }, []);
-  return {workoutData, setWorkoutData};
+  }, [selectedDate]);
+  return { workoutData, setWorkoutData };
 };
 
 export default useWorkoutData;

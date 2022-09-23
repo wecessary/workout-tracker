@@ -26,7 +26,7 @@ export interface Set {
 }
 
 export interface UserDataObject {
-  date: number;
+  date: string;
   workoutData: WorkoutDataObject[];
-};
-export type SetUserData = (value: SetStateAction<UserDataObject[]>) => void
+}
+export type SetUserData = (value: SetStateAction<UserDataObject[]>) => void;

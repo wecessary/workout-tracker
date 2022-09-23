@@ -1,4 +1,5 @@
 export const currentTime = new Date();
-export const currentDateAsNumber = +`${currentTime.getDate()}${
+export const currentDateAsString = `${currentTime.getFullYear()}-0${
   currentTime.getMonth() + 1
-}${currentTime.getFullYear()}`;
+}-${currentTime.getDate()}`;
+
