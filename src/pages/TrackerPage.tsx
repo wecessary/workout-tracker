@@ -6,6 +6,7 @@ import {
   handleChangeReps,
   handleChangeEasy,
   handleChangeWeight,
+  handleChangeDone,
 } from "../handlers/handlers";
 import { initialSets, initialUserData } from "../data/initalData";
 import { currentDateAsString } from "../utilities/date";
@@ -19,7 +20,7 @@ const TrackerPage = () => {
     setUserData,
     selectedDate
   );
-  
+
   //useEffect for updating workOutData
   useEffect(() => {
     const newUserData = userData.map((obj) => {
@@ -57,7 +58,7 @@ const TrackerPage = () => {
                     handleChangeName(e, obj.index, workoutData, setWorkoutData)
                   }
                 />
-                <div className="font-normal text-gray-700 grid grid-cols-6 text-sm">
+                <div className="font-normal text-gray-700 grid grid-cols-7 text-sm">
                   <div className="col-span-1">
                     {obj.sets.map((_, i) => {
                       return <p key={i}>{`set ${i + 1}`}</p>;
@@ -107,7 +108,6 @@ const TrackerPage = () => {
                               handleChangeWeight(
                                 e,
                                 i,
-                                obj.index,
                                 obj,
                                 workoutData,
                                 setWorkoutData
@@ -120,13 +120,44 @@ const TrackerPage = () => {
                     })}
                   </div>
                   <div className="col-span-1">
-                    <button
-                      onClick={() =>
-                        handleChangeEasy(obj.index, workoutData, setWorkoutData)
-                      }
-                    >
-                      {obj.easy ? "😊" : "😔"}
-                    </button>
+                    {obj.sets.map((set, i) => {
+                      return (
+                        <div key={i}>
+                          <button
+                            onClick={() => {
+                              handleChangeEasy(
+                                i,
+                                obj,
+                                workoutData,
+                                setWorkoutData
+                              );
+                            }}
+                          >
+                            {set.easy ? "😊" : "😔"}
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="col-span-1">
+                    {obj.sets.map((set, i) => {
+                      return (
+                        <div key={i}>
+                          <button
+                            onClick={() => {
+                              handleChangeDone(
+                                i,
+                                obj,
+                                workoutData,
+                                setWorkoutData
+                              );
+                            }}
+                          >
+                            {set.done ? "✅" : "❌"}
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

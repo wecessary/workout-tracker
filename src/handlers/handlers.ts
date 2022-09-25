@@ -20,10 +20,9 @@ export const handleAddWorkout = (
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
-
   const initialSets = [
-    { index: 0, reps: 10, weight: 15 },
-    { index: 1, reps: 10, weight: 15 },
+    { index: 0, reps: 10, weight: 15, easy: true, done: false },
+    { index: 1, reps: 10, weight: 15, easy: true, done: false },
   ];
 
   setWorkoutData([
@@ -32,7 +31,6 @@ export const handleAddWorkout = (
       index: workoutData.length,
       name: "Your Workout",
       sets: initialSets,
-      easy: true,
     },
   ]);
 };
@@ -46,7 +44,16 @@ export const handleAddSet = (
     if (obj.index === workoutDataObjectIndex) {
       return {
         ...obj,
-        sets: [...obj.sets, { index: obj.sets.length, reps: 10, weight: 15 }],
+        sets: [
+          ...obj.sets,
+          {
+            index: obj.sets.length,
+            reps: 10,
+            weight: 15,
+            easy: true,
+            done: false,
+          },
+        ],
       };
     }
     return obj;
@@ -83,21 +90,20 @@ export const handleChangeReps = (
 export const handleChangeWeight = (
   e: ChangeEvent<HTMLInputElement>,
   setIndex: number,
-  wokroutDataObjectIndex: number,
   workoutDataObject: WorkoutDataObject,
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
   const newSets = workoutDataObject.sets.map((setObj) => {
     //setObj as in the object representing the set e.g. {reps: 5, weight: 10}
-    if (setIndex === workoutDataObject.sets.indexOf(setObj)) {
+    if (setObj.index === setIndex) {
       return { ...setObj, weight: e.target.valueAsNumber };
     }
     return setObj;
   });
 
   const newWorkoutData = workoutData.map((obj) => {
-    if (wokroutDataObjectIndex === obj.index) {
+    if (workoutDataObject.index === obj.index) {
       return { ...obj, sets: newSets };
     }
     return obj;
@@ -106,15 +112,47 @@ export const handleChangeWeight = (
 };
 
 export const handleChangeEasy = (
-  workoutDataObjectIndex: number,
+  setIndex: number,
+  workoutDataObject: WorkoutDataObject,
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
+  const newSets = workoutDataObject.sets.map((setObj) => {
+    if (setObj.index === setIndex) {
+      return { ...setObj, easy: !setObj.easy };
+    }
+    return setObj;
+  });
+
   const newWorkoutData = workoutData.map((obj) => {
-    if (obj.index === workoutDataObjectIndex) {
-      return { ...obj, easy: !obj.easy };
+    if (workoutDataObject.index === obj.index) {
+      return { ...obj, sets: newSets };
     }
     return obj;
   });
+
+  setWorkoutData(newWorkoutData);
+};
+
+export const handleChangeDone = (
+  setIndex: number,
+  workoutDataObject: WorkoutDataObject,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => {
+  const newSets = workoutDataObject.sets.map((setObj) => {
+    if (setObj.index === setIndex) {
+      return { ...setObj, done: !setObj.done };
+    }
+    return setObj;
+  });
+
+  const newWorkoutData = workoutData.map((obj) => {
+    if (workoutDataObject.index === obj.index) {
+      return { ...obj, sets: newSets };
+    }
+    return obj;
+  });
+
   setWorkoutData(newWorkoutData);
 };

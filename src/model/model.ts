@@ -16,13 +16,14 @@ export interface WorkoutDataObject {
   index: number;
   name: string;
   sets: Set[];
-  easy: boolean;
 }
 
 export interface Set {
   index: number;
   reps: number;
   weight: number;
+  easy: boolean;
+  done: boolean;
 }
 
 export interface UserDataObject {
