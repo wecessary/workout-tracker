@@ -2,7 +2,7 @@ import { ChangeEvent, SetStateAction } from "react";
 
 export type HandleChangeName = (
   e: ChangeEvent<HTMLInputElement>,
-  index: number,
+  workoutDataObjectIndex: number,
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => void;
@@ -12,11 +12,41 @@ export type HandleAddWorkout = (
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => void;
 
+export type HandleChangeReps = (
+  e: ChangeEvent<HTMLInputElement>,
+  setIndex: number,
+  workoutDataObject: WorkoutDataObject,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => void;
+
+export type HandleChangeEasy = (
+  setIndex: number,
+  workoutDataObject: WorkoutDataObject,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => void;
+
+export type HandleChangeDone = (
+  setIndex: number,
+  workoutDataObject: WorkoutDataObject,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => void;
+
+export type HandleChangeWeight = (
+  e: ChangeEvent<HTMLInputElement>,
+  setIndex: number,
+  workoutDataObject: WorkoutDataObject,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => void;
+
 export interface WorkoutDataObject {
   index: number;
   name: string;
   sets: Set[];
-  comment:string;
+  comment: string;
 }
 
 export interface Set {

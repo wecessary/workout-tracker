@@ -3,10 +3,10 @@ export const initialWorkoutData = [
     index: 0,
     name: "",
     sets: [
-      { index: 0, reps: NaN, weight: NaN, easy: true, done: false },
-      { index: 1, reps: NaN, weight: NaN, easy: true, done: false },
+      { index: 0, reps: 0, weight: 0, easy: true, done: false },
+      { index: 1, reps: 0, weight: 0, easy: true, done: false },
     ],
-    comment:""
+    comment: "",
   },
 ];
 
