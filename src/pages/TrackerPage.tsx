@@ -7,8 +7,9 @@ import {
   handleChangeEasy,
   handleChangeWeight,
   handleChangeDone,
+  handleChangeComment,
 } from "../handlers/handlers";
-import { initialSets, initialUserData } from "../data/initalData";
+import { initialUserData } from "../data/initalData";
 import { currentDateAsString } from "../utilities/date";
 import useWorkoutData from "../hooks/useWorkoutData";
 
@@ -54,6 +55,7 @@ const TrackerPage = () => {
                   className="group-hover:bg-gray-100 w-64 mb-1"
                   key={i}
                   value={obj.name}
+                  placeholder="Exercise name"
                   onChange={(e) =>
                     handleChangeName(e, obj.index, workoutData, setWorkoutData)
                   }
@@ -63,14 +65,6 @@ const TrackerPage = () => {
                     {obj.sets.map((_, i) => {
                       return <p key={i}>{`set ${i + 1}`}</p>;
                     })}
-                    <button
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                      onClick={() =>
-                        handleAddSet(obj.index, workoutData, setWorkoutData)
-                      }
-                    >
-                      +
-                    </button>
                   </div>
                   <div className="col-span-2">
                     {obj.sets.map((set, i) => {
@@ -78,6 +72,7 @@ const TrackerPage = () => {
                         <span key={`reps${i}`}>
                           <input
                             type="number"
+                            placeholder="10"
                             value={set.reps}
                             className="group-hover:bg-gray-100 w-12 text-right"
                             onChange={(e) =>
@@ -102,6 +97,7 @@ const TrackerPage = () => {
                         <span key={`weight${i}`}>
                           <input
                             type="number"
+                            placeholder="15"
                             value={set.weight}
                             className="group-hover:bg-gray-100 w-12 text-right"
                             onChange={(e) =>
@@ -160,6 +156,27 @@ const TrackerPage = () => {
                     })}
                   </div>
                 </div>
+                <button
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  onClick={() =>
+                    handleAddSet(obj.index, workoutData, setWorkoutData)
+                  }
+                >
+                  +
+                </button>
+                <textarea
+                  className="group-hover:bg-gray-100"
+                  value={obj.comment}
+                  onChange={(e) =>
+                    handleChangeComment(
+                      e,
+                      obj.index,
+                      workoutData,
+                      setWorkoutData
+                    )
+                  }
+                  placeholder="How was it?"
+                />
               </div>
             </div>
           );

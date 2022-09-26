@@ -1,11 +1,12 @@
 export const initialWorkoutData = [
   {
     index: 0,
-    name: "Bicep Curls",
+    name: "",
     sets: [
-      { index: 0, reps: 10, weight: 15, easy: true, done: false },
-      { index: 1, reps: 10, weight: 15, easy: true, done: false },
+      { index: 0, reps: NaN, weight: NaN, easy: true, done: false },
+      { index: 1, reps: NaN, weight: NaN, easy: true, done: false },
     ],
+    comment:""
   },
 ];
 

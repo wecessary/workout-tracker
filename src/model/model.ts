@@ -16,6 +16,7 @@ export interface WorkoutDataObject {
   index: number;
   name: string;
   sets: Set[];
+  comment:string;
 }
 
 export interface Set {
