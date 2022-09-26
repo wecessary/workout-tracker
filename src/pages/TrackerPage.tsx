@@ -12,6 +12,9 @@ import {
 import { initialUserData } from "../data/initalData";
 import { currentDateAsString } from "../utilities/date";
 import useWorkoutData from "../hooks/useWorkoutData";
+import ExerciseNameInput from "../components/ExerciseNameInput";
+import RepsWeightInput from "../components/RepsWeightsInput";
+import TrafficLight from "../components/TrafficLight";
 
 const TrackerPage = () => {
   const [selectedDate, setSelectedDate] = useState(currentDateAsString);
@@ -51,14 +54,13 @@ const TrackerPage = () => {
               className="group p-6 max-w-[310px] my-2 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100"
             >
               <div className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                <input
-                  className="group-hover:bg-gray-100 w-64 mb-1"
+                <ExerciseNameInput
                   key={i}
                   value={obj.name}
-                  placeholder="Exercise name"
-                  onChange={(e) =>
-                    handleChangeName(e, obj.index, workoutData, setWorkoutData)
-                  }
+                  onChange={handleChangeName}
+                  workoutDataObjectIndex={obj.index}
+                  workoutData={workoutData}
+                  setWorkoutData={setWorkoutData}
                 />
                 <div className="font-normal text-gray-700 grid grid-cols-7 text-sm">
                   <div className="col-span-1">
@@ -69,89 +71,64 @@ const TrackerPage = () => {
                   <div className="col-span-2">
                     {obj.sets.map((set, i) => {
                       return (
-                        <span key={`reps${i}`}>
-                          <input
-                            type="number"
-                            placeholder="10"
-                            value={set.reps}
-                            className="group-hover:bg-gray-100 w-12 text-right"
-                            onChange={(e) =>
-                              handleChangeReps(
-                                e,
-                                i,
-                                obj.index,
-                                obj,
-                                workoutData,
-                                setWorkoutData
-                              )
-                            }
-                          />
-                          reps
-                        </span>
+                        <RepsWeightInput
+                          key={`reps${i}`}
+                          repsOrWeight="reps"
+                          value={set.reps}
+                          onChange={handleChangeReps}
+                          setIndex={i}
+                          workoutDataObject={obj}
+                          workoutData={workoutData}
+                          setWorkoutData={setWorkoutData}
+                        />
                       );
                     })}
                   </div>
                   <div className="col-span-2">
                     {obj.sets.map((set, i) => {
                       return (
-                        <span key={`weight${i}`}>
-                          <input
-                            type="number"
-                            placeholder="15"
-                            value={set.weight}
-                            className="group-hover:bg-gray-100 w-12 text-right"
-                            onChange={(e) =>
-                              handleChangeWeight(
-                                e,
-                                i,
-                                obj,
-                                workoutData,
-                                setWorkoutData
-                              )
-                            }
-                          />
-                          kg
-                        </span>
+                        <RepsWeightInput
+                          key={`weight${i}`}
+                          repsOrWeight="kg"
+                          value={set.weight}
+                          onChange={handleChangeWeight}
+                          setIndex={i}
+                          workoutDataObject={obj}
+                          workoutData={workoutData}
+                          setWorkoutData={setWorkoutData}
+                        />
                       );
                     })}
                   </div>
                   <div className="col-span-1">
                     {obj.sets.map((set, i) => {
                       return (
-                        <div key={i}>
-                          <button
-                            onClick={() => {
-                              handleChangeEasy(
-                                i,
-                                obj,
-                                workoutData,
-                                setWorkoutData
-                              );
-                            }}
-                          >
-                            {set.easy ? "😊" : "😔"}
-                          </button>
-                        </div>
+                        <TrafficLight
+                          indicator={set.easy}
+                          onChange={handleChangeEasy}
+                          setIndex={i}
+                          workoutDataObject={obj}
+                          workoutData={workoutData}
+                          setWorkoutData={setWorkoutData}
+                          green="😊"
+                          red="😔"
+                        />
                       );
                     })}
                   </div>
                   <div className="col-span-1">
                     {obj.sets.map((set, i) => {
                       return (
-                        <div key={i}>
-                          <button
-                            onClick={() => {
-                              handleChangeDone(
-                                i,
-                                obj,
-                                workoutData,
-                                setWorkoutData
-                              );
-                            }}
-                          >
-                            {set.done ? "✅" : "❌"}
-                          </button>
-                        </div>
+                        <TrafficLight
+                          indicator={set.done}
+                          onChange={handleChangeDone}
+                          setIndex={i}
+                          workoutDataObject={obj}
+                          workoutData={workoutData}
+                          setWorkoutData={setWorkoutData}
+                          green="✅"
+                          red="❌"
+                        />
                       );
                     })}
                   </div>

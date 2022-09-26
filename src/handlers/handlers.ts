@@ -21,8 +21,8 @@ export const handleAddWorkout = (
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
   const initialSets = [
-    { index: 0, reps: NaN, weight: NaN, easy: true, done: false },
-    { index: 1, reps: NaN, weight: NaN, easy: true, done: false },
+    { index: 0, reps: 0, weight: 0, easy: true, done: false },
+    { index: 1, reps: 0, weight: 0, easy: true, done: false },
   ];
 
   setWorkoutData([
@@ -68,7 +68,6 @@ export const handleAddSet = (
 export const handleChangeReps = (
   e: ChangeEvent<HTMLInputElement>,
   setIndex: number,
-  wokroutDataObjectIndex: number,
   workoutDataObject: WorkoutDataObject,
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
@@ -82,7 +81,7 @@ export const handleChangeReps = (
   });
 
   const newWorkoutData = workoutData.map((obj) => {
-    if (wokroutDataObjectIndex === obj.index) {
+    if (workoutDataObject.index === obj.index) {
       return { ...obj, sets: newSets };
     }
     return obj;
