@@ -6,6 +6,7 @@ export const initialWorkoutData = [
       { index: 0, reps: 10, weight: 15, easy: true, done: false },
       { index: 1, reps: 10, weight: 15, easy: true, done: false },
     ],
+    comment:""
   },
 ];
 

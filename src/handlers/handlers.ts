@@ -31,6 +31,7 @@ export const handleAddWorkout = (
       index: workoutData.length,
       name: "Your Workout",
       sets: initialSets,
+      comment: "",
     },
   ]);
 };
@@ -154,5 +155,20 @@ export const handleChangeDone = (
     return obj;
   });
 
+  setWorkoutData(newWorkoutData);
+};
+
+export const handleChangeComment = (
+  e: ChangeEvent<HTMLTextAreaElement>,
+  workoutDataObjectIndex: number,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => {
+  const newWorkoutData = workoutData.map((obj) => {
+    if (obj.index === workoutDataObjectIndex) {
+      return { ...obj, comment: e.target.value };
+    }
+    return obj;
+  });
   setWorkoutData(newWorkoutData);
 };
