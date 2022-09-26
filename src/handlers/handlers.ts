@@ -1,5 +1,5 @@
 import { ChangeEvent, SetStateAction } from "react";
-import { WorkoutDataObject } from "../model/model";
+import { Set, WorkoutDataObject } from "../model/model";
 
 export const handleChangeName = (
   e: ChangeEvent<HTMLInputElement>,
@@ -21,15 +21,15 @@ export const handleAddWorkout = (
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
   const initialSets = [
-    { index: 0, reps: 10, weight: 15, easy: true, done: false },
-    { index: 1, reps: 10, weight: 15, easy: true, done: false },
+    { index: 0, reps: NaN, weight: NaN, easy: true, done: false },
+    { index: 1, reps: NaN, weight: NaN, easy: true, done: false },
   ];
 
   setWorkoutData([
     ...workoutData,
     {
       index: workoutData.length,
-      name: "Your Workout",
+      name: "",
       sets: initialSets,
       comment: "",
     },
@@ -42,6 +42,8 @@ export const handleAddSet = (
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
   const newWorkoutData = workoutData.map((obj) => {
+    const lastSet = obj.sets.at(-1) as Set;
+
     if (obj.index === workoutDataObjectIndex) {
       return {
         ...obj,
@@ -49,9 +51,9 @@ export const handleAddSet = (
           ...obj.sets,
           {
             index: obj.sets.length,
-            reps: 10,
-            weight: 15,
-            easy: true,
+            reps: lastSet.reps,
+            weight: lastSet.weight,
+            easy: lastSet.easy,
             done: false,
           },
         ],

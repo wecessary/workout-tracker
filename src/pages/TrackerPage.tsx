@@ -55,6 +55,7 @@ const TrackerPage = () => {
                   className="group-hover:bg-gray-100 w-64 mb-1"
                   key={i}
                   value={obj.name}
+                  placeholder="Exercise name"
                   onChange={(e) =>
                     handleChangeName(e, obj.index, workoutData, setWorkoutData)
                   }
@@ -71,6 +72,7 @@ const TrackerPage = () => {
                         <span key={`reps${i}`}>
                           <input
                             type="number"
+                            placeholder="10"
                             value={set.reps}
                             className="group-hover:bg-gray-100 w-12 text-right"
                             onChange={(e) =>
@@ -95,6 +97,7 @@ const TrackerPage = () => {
                         <span key={`weight${i}`}>
                           <input
                             type="number"
+                            placeholder="15"
                             value={set.weight}
                             className="group-hover:bg-gray-100 w-12 text-right"
                             onChange={(e) =>
@@ -162,6 +165,7 @@ const TrackerPage = () => {
                   +
                 </button>
                 <textarea
+                  className="group-hover:bg-gray-100"
                   value={obj.comment}
                   onChange={(e) =>
                     handleChangeComment(
