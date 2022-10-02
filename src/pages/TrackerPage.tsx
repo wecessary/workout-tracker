@@ -15,6 +15,8 @@ import useWorkoutData from "../hooks/useWorkoutData";
 import ExerciseNameInput from "../components/ExerciseNameInput";
 import RepsWeightInput from "../components/RepsWeightsInput";
 import TrafficLight from "../components/TrafficLight";
+import { logOut } from "../firebae/firebase";
+import { redirect, useNavigate } from "react-router-dom";
 
 const TrackerPage = () => {
   const [selectedDate, setSelectedDate] = useState(currentDateAsString);
@@ -163,6 +165,15 @@ const TrackerPage = () => {
           onClick={() => handleAddWorkout(workoutData, setWorkoutData)}
         >
           Add Exercise
+        </button>
+        <button
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          onClick={() => {
+            logOut();
+            redirect("/blah");
+          }}
+        >
+          Logout
         </button>
       </div>
     </>
