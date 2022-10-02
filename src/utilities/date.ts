@@ -1,5 +1,11 @@
 export const currentTime = new Date();
-export const currentDateAsString = `${currentTime.getFullYear()}-0${
-  currentTime.getMonth() + 1
-}-${currentTime.getDate()}`;
+const fullYear = currentTime.getFullYear();
+const month = currentTime.getMonth() + 1;
+const date = currentTime.getDate();
+function formatter(dateTime: number) {
+  return ("0" + dateTime).slice(-2);
+}
 
+export const currentDateAsString = `${fullYear}-${formatter(month)}-${formatter(
+  date
+)}`;
