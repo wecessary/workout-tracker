@@ -1,15 +1,16 @@
 import React, { FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { loginEmailPassword } from "../firebae/firebase";
+import { useNavigate } from "react-router-dom";
+import { registerEmailPassword } from "../firebae/firebase";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const navigate = useNavigate();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    await loginEmailPassword(email, password);
+    await registerEmailPassword(email, password, name);
     navigate("/tracker-page");
   }
 
@@ -19,7 +20,7 @@ const LoginPage = () => {
         onSubmit={handleSubmit}
         className="h-screen flex flex-col justify-center items-center gap-2"
       >
-        <h1>💪💪💪Workout Tracker💪💪💪</h1>
+        <h1>Register an account to record your 💪</h1>
         <input
           type="email"
           placeholder="Enter email"
@@ -36,21 +37,24 @@ const LoginPage = () => {
           className="border-2 rounded-md"
           required
         />
+        <span>What should we call you?</span>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter you name"
+          className="border-2 rounded-md"
+          required
+        />
         <button
           type="submit"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
-          Login
+          Register
         </button>
-        <Link to="/register">
-          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-            Register
-          </button>
-        </Link>
-        <span>version 1.0.0</span>
       </form>
     </>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

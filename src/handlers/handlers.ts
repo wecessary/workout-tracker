@@ -22,7 +22,6 @@ export const handleAddWorkout = (
 ) => {
   const initialSets = [
     { index: 0, reps: 0, weight: 0, easy: true, done: false },
-    { index: 1, reps: 0, weight: 0, easy: true, done: false },
   ];
 
   setWorkoutData([
@@ -30,6 +29,8 @@ export const handleAddWorkout = (
     {
       index: workoutData.length,
       name: "",
+      repsUnit: "reps",
+      intensityUnit: "kg",
       sets: initialSets,
       comment: "",
     },

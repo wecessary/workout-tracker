@@ -1,9 +1,10 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ProtectedContentLayout from "./components/ProtectedContentLayout";
 import AuthContextProvider from "./context/AuthContext";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import TrackerPage from "./pages/TrackerPage";
-import ProtectedRoutes from "./routeProtection/ProtectedRoutes";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
@@ -15,14 +16,10 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LoginPage />}></Route>
-            <Route
-              path="/tracker-page"
-              element={
-                <ProtectedRoutes>
-                  <TrackerPage />
-                </ProtectedRoutes>
-              }
-            ></Route>
+            <Route path="/register" element={<RegisterPage />}></Route>
+            <Route element={<ProtectedContentLayout />}>
+              <Route path="tracker-page" element={<TrackerPage />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>

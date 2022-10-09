@@ -45,6 +45,8 @@ export type HandleChangeWeight = (
 export interface WorkoutDataObject {
   index: number;
   name: string;
+  repsUnit: string;
+  intensityUnit:string;
   sets: Set[];
   comment: string;
 }
