@@ -1,5 +1,9 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ProtectedContentLayout from "./components/ProtectedContentLayout";
+import AuthContextProvider from "./context/AuthContext";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import TrackerPage from "./pages/TrackerPage";
 
 const container = document.getElementById("root");
@@ -8,11 +12,17 @@ const root = createRoot(container!);
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<TrackerPage />}></Route>
-        </Routes>
-      </BrowserRouter>
+      <AuthContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LoginPage />}></Route>
+            <Route path="/register" element={<RegisterPage />}></Route>
+            <Route element={<ProtectedContentLayout />}>
+              <Route path="tracker-page" element={<TrackerPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthContextProvider>
     </>
   );
 };
