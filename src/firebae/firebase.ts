@@ -7,6 +7,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { getDatabase, set, ref } from "firebase/database";
+import { SetStateAction } from "react";
 import { UserDataObject } from "../model/model";
 
 const firebaseConfig = {
@@ -62,9 +63,23 @@ export function logOut() {
 // Realtime Database
 const db = getDatabase(app);
 
-function writeUserData(uid: string, userData: UserDataObject[]) {
+function writeUserData(
+  uid: string,
+  userData: UserDataObject[],
+  setIsSavingUserData: (value: SetStateAction<boolean>) => void,
+  setSavedUserData: (value: SetStateAction<boolean>) => void
+) {
   if (uid !== "invalidUid") {
-    set(ref(db, uid), userData);
+    setIsSavingUserData(true);
+    set(ref(db, uid), userData)
+      .then(() => {
+        setIsSavingUserData(false);
+        setSavedUserData(true);
+      })
+      .catch(() => {
+        setIsSavingUserData(false);
+        setSavedUserData(false);
+      });
   }
 }
 

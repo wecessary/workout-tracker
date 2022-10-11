@@ -17,6 +17,9 @@ import TrafficLight from "../components/TrafficLight";
 import { logOut, writeUserData } from "../firebae/firebase";
 import { AuthContext } from "../context/AuthContext";
 import { UserDataContext } from "../context/DataContext";
+import Button from "../components/Button";
+import StatusIndicator from "../components/StatusIndicator";
+import NotificationChip from "../components/NotificationChip";
 
 const TrackerPage = () => {
   const { user } = useContext(AuthContext);
@@ -29,6 +32,8 @@ const TrackerPage = () => {
     setUserData,
     selectedDate
   );
+  const [isSavingUserData, setIsSavingUserData] = useState(false);
+  const [hasSavedUserData, setHasSavedUserData] = useState(false);
 
   //useEffect for updating workOutData
   useEffect(() => {
@@ -162,30 +167,49 @@ const TrackerPage = () => {
       })}
 
       <div className="flex">
-        <button
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        <Button
           onClick={() => handleAddWorkout(workoutData, setWorkoutData)}
+          variant="primary"
         >
           Add Exercise
-        </button>
+        </Button>
 
-        <button
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          onClick={() => {
-            writeUserData(uid, userData);
-          }}
+        <Button
+          onClick={() =>
+            writeUserData(
+              uid,
+              userData,
+              setIsSavingUserData,
+              setHasSavedUserData
+            )
+          }
+          variant="primary"
         >
           Save
-        </button>
+        </Button>
       </div>
-      <button
-        className=" mt-10 text-white bg-slate-400 hover:bg-slate-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        onClick={() => {
-          logOut();
-        }}
-      >
+
+      <Button onClick={() => logOut()} variant="secondary">
         Logout
-      </button>
+      </Button>
+
+      {(isSavingUserData || hasSavedUserData) && (
+        <NotificationChip
+          clearStatus={() => {
+            setIsSavingUserData(false);
+            setHasSavedUserData(false);
+          }}
+        >
+          <StatusIndicator
+            statusMessages={{
+              loading: "Saving your data...",
+              complete: "Your data has been saved",
+            }}
+            loadingStatus={isSavingUserData}
+            completeStatus={hasSavedUserData}
+          />
+        </NotificationChip>
+      )}
     </>
   );
 };
