@@ -174,3 +174,27 @@ export const handleChangeComment = (
   });
   setWorkoutData(newWorkoutData);
 };
+
+export const handleShowOptions = (
+  i: number,
+  showOptions: boolean[],
+  setShowOptions: (value: SetStateAction<boolean[]>) => void
+) => {
+  const newShowOptions = showOptions.map((val, index) => {
+    if (i == index) {
+      return !val;
+    }
+    return val;
+  });
+  setShowOptions(newShowOptions);
+};
+
+export const handleDeleteExercise = (
+  workoutDataObjectIndex: number,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => {
+  setWorkoutData(
+    workoutData.filter((obj) => obj.index !== workoutDataObjectIndex)
+  );
+};
