@@ -20,6 +20,7 @@ import { UserDataContext } from "../context/DataContext";
 import Button from "../components/Button";
 import StatusIndicator from "../components/StatusIndicator";
 import NotificationChip from "../components/NotificationChip";
+import Card from "../components/Card";
 
 const TrackerPage = () => {
   const { user } = useContext(AuthContext);
@@ -59,11 +60,8 @@ const TrackerPage = () => {
       </h1>
       {workoutData.map((obj, i) => {
         return (
-          <div
-            key={i}
-            className="group p-6 max-w-[310px] my-2 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100"
-          >
-            <div className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          <Card key={i}>
+            <>
               <ExerciseNameInput
                 key={i}
                 value={obj.name}
@@ -72,15 +70,11 @@ const TrackerPage = () => {
                 workoutData={workoutData}
                 setWorkoutData={setWorkoutData}
               />
-              <div className="font-normal text-gray-700 grid grid-cols-7 text-sm">
-                <div className="col-span-1">
-                  {obj.sets.map((_, i) => {
-                    return <p key={i}>{`set ${i + 1}`}</p>;
-                  })}
-                </div>
-                <div className="col-span-2">
-                  {obj.sets.map((set, i) => {
-                    return (
+              {obj.sets.map((set, i) => {
+                return (
+                  <div className="font-normal text-gray-700 text-sm flex justify-between">
+                    <p key={i}>{`set ${i + 1}`}</p>
+                    <div>
                       <RepsWeightInput
                         key={`reps${i}`}
                         repsOrWeight="reps"
@@ -91,12 +85,8 @@ const TrackerPage = () => {
                         workoutData={workoutData}
                         setWorkoutData={setWorkoutData}
                       />
-                    );
-                  })}
-                </div>
-                <div className="col-span-2">
-                  {obj.sets.map((set, i) => {
-                    return (
+                    </div>
+                    <div>
                       <RepsWeightInput
                         key={`weight${i}`}
                         repsOrWeight="kg"
@@ -107,12 +97,8 @@ const TrackerPage = () => {
                         workoutData={workoutData}
                         setWorkoutData={setWorkoutData}
                       />
-                    );
-                  })}
-                </div>
-                <div className="col-span-1">
-                  {obj.sets.map((set, i) => {
-                    return (
+                    </div>
+                    <div>
                       <TrafficLight
                         key={`easy${i}`}
                         indicator={set.easy}
@@ -124,12 +110,8 @@ const TrackerPage = () => {
                         green="😊"
                         red="😔"
                       />
-                    );
-                  })}
-                </div>
-                <div className="col-span-1">
-                  {obj.sets.map((set, i) => {
-                    return (
+                    </div>
+                    <div>
                       <TrafficLight
                         key={`done${i}`}
                         indicator={set.done}
@@ -141,28 +123,29 @@ const TrackerPage = () => {
                         green="✅"
                         red="❌"
                       />
-                    );
-                  })}
-                </div>
-              </div>
-              <button
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    </div>
+                  </div>
+                );
+              })}
+              <Button
+                variant="primary"
                 onClick={() =>
                   handleAddSet(obj.index, workoutData, setWorkoutData)
                 }
               >
                 +
-              </button>
+              </Button>
+
               <textarea
-                className="group-hover:bg-gray-100"
+                className="group-hover:bg-gray-100 text-base w-full text-slate-500"
                 value={obj.comment}
                 onChange={(e) =>
                   handleChangeComment(e, obj.index, workoutData, setWorkoutData)
                 }
                 placeholder="How was it?"
               />
-            </div>
-          </div>
+            </>
+          </Card>
         );
       })}
 

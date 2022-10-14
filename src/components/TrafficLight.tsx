@@ -27,7 +27,6 @@ const TrafficLight = ({
   red,
 }: TrafficLightProps) => {
   return (
-    <div>
       <button
         onClick={() => {
           onChange(setIndex, workoutDataObject, workoutData, setWorkoutData);
@@ -35,7 +34,6 @@ const TrafficLight = ({
       >
         {indicator ? green : red}
       </button>
-    </div>
   );
 };
 
