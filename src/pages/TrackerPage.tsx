@@ -173,7 +173,6 @@ const TrackerPage = () => {
         >
           Add Exercise
         </Button>
-
         <Button
           onClick={() =>
             writeUserData(
@@ -188,22 +187,18 @@ const TrackerPage = () => {
           Save
         </Button>
       </div>
-
-      <Button onClick={() => logOut()} variant="secondary">
-        Logout
-      </Button>
-
       {(isSavingUserData || hasSavedUserData) && (
         <NotificationChip
-          clearStatus={() => {
+          statuses={[isSavingUserData, hasSavedUserData]}
+          resetStatus={() => {
             setIsSavingUserData(false);
             setHasSavedUserData(false);
           }}
         >
           <StatusIndicator
             statusMessages={{
-              loading: "Saving your data...",
-              complete: "Your data has been saved",
+              loading: "Saving data...",
+              complete: "Data has been saved",
             }}
             loadingStatus={isSavingUserData}
             completeStatus={hasSavedUserData}
