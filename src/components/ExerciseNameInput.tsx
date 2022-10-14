@@ -18,7 +18,7 @@ const ExerciseNameInput = ({
 }: ExerciseNameProps) => {
   return (
     <input
-      className="group-hover:bg-gray-100 w-64 mb-3 font-bold text-2xl tracking-tight text-gray-900 dark:text-white"
+      className="group-hover:bg-gray-100 w-1/2 mb-3 font-bold text-lg tracking-tight text-gray-900 dark:text-white"
       value={value}
       placeholder="Exercise name"
       onChange={(e) =>

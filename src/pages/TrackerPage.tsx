@@ -8,6 +8,8 @@ import {
   handleChangeWeight,
   handleChangeDone,
   handleChangeComment,
+  handleShowOptions,
+  handleDeleteExercise,
 } from "../handlers/handlers";
 import { currentDateAsString } from "../utilities/date";
 import useWorkoutData from "../hooks/useWorkoutData";
@@ -35,6 +37,7 @@ const TrackerPage = () => {
   );
   const [isSavingUserData, setIsSavingUserData] = useState(false);
   const [hasSavedUserData, setHasSavedUserData] = useState(false);
+  const [showOptions, setShowOptions] = useState([false]);
 
   //useEffect for updating workOutData
   useEffect(() => {
@@ -45,10 +48,11 @@ const TrackerPage = () => {
       return obj;
     });
     setUserData(newUserData);
+    setShowOptions(Array(workoutData.length).fill(false, 0)); //tidy this up later
     // writeUserData(user?.uid);
   }, [workoutData]);
   // console.log(userData);
-  console.log(userData);
+
   return (
     <>
       <h1>
@@ -62,17 +66,47 @@ const TrackerPage = () => {
         return (
           <Card key={i}>
             <>
-              <ExerciseNameInput
-                key={i}
-                value={obj.name}
-                onChange={handleChangeName}
-                workoutDataObjectIndex={obj.index}
-                workoutData={workoutData}
-                setWorkoutData={setWorkoutData}
-              />
+              <div className="flex justify-between">
+                <ExerciseNameInput
+                  key={i}
+                  value={obj.name}
+                  onChange={handleChangeName}
+                  workoutDataObjectIndex={obj.index}
+                  workoutData={workoutData}
+                  setWorkoutData={setWorkoutData}
+                />
+                <div className="relative">
+                  <button
+                    onClick={() =>
+                      handleShowOptions(i, showOptions, setShowOptions)
+                    }
+                  >
+                    ...
+                  </button>
+                  {showOptions[i] && (
+                    <div className="absolute top-2 right-4">
+                      <button
+                        onClick={() =>
+                          handleDeleteExercise(
+                            obj.index,
+                            workoutData,
+                            setWorkoutData
+                          )
+                        }
+                        className="shadow-md rounded-md bg-white p-4 hover:bg-slate-100 focus:ring-4 focus:ring-blue-300"
+                      >
+                        Delete exercise
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
               {obj.sets.map((set, i) => {
                 return (
-                  <div className="font-normal text-gray-700 text-sm flex justify-between">
+                  <div
+                    key={i}
+                    className="font-normal text-gray-700 text-sm flex justify-between"
+                  >
                     <p key={i}>{`set ${i + 1}`}</p>
                     <div>
                       <RepsWeightInput
