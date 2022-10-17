@@ -42,6 +42,13 @@ export type HandleChangeWeight = (
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => void;
 
+export type HandleChangeComment = (
+  e: ChangeEvent<HTMLTextAreaElement>,
+  workoutDataObjectIndex: number,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => void;
+
 export interface WorkoutDataObject {
   index: number;
   name: string;

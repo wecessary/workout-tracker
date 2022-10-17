@@ -16,13 +16,14 @@ import useWorkoutData from "../hooks/useWorkoutData";
 import ExerciseNameInput from "../components/ExerciseNameInput";
 import RepsWeightInput from "../components/RepsWeightsInput";
 import TrafficLight from "../components/TrafficLight";
-import { logOut, writeUserData } from "../firebae/firebase";
+import { writeUserData } from "../firebae/firebase";
 import { AuthContext } from "../context/AuthContext";
 import { UserDataContext } from "../context/DataContext";
 import Button from "../components/Button";
 import StatusIndicator from "../components/StatusIndicator";
 import NotificationChip from "../components/NotificationChip";
 import Card from "../components/Card";
+import CardRow from "../components/CardRow";
 
 const TrackerPage = () => {
   const { user } = useContext(AuthContext);
@@ -55,18 +56,16 @@ const TrackerPage = () => {
 
   return (
     <>
-      <h1>
-        <input
-          type="date"
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-        />
-      </h1>
+      <input
+        type="date"
+        value={selectedDate}
+        onChange={(e) => setSelectedDate(e.target.value)}
+      />
       {workoutData.map((obj, i) => {
         return (
           <Card key={i}>
             <>
-              <div className="flex justify-between">
+              <CardRow>
                 <ExerciseNameInput
                   key={i}
                   value={obj.name}
@@ -76,16 +75,17 @@ const TrackerPage = () => {
                   setWorkoutData={setWorkoutData}
                 />
                 <div className="relative">
-                  <button
+                  <Button
                     onClick={() =>
                       handleShowOptions(i, showOptions, setShowOptions)
                     }
                   >
                     ...
-                  </button>
+                  </Button>
                   {showOptions[i] && (
                     <div className="absolute top-2 right-4">
-                      <button
+                      <Button
+                        variant="transparent"
                         onClick={() =>
                           handleDeleteExercise(
                             obj.index,
@@ -93,72 +93,60 @@ const TrackerPage = () => {
                             setWorkoutData
                           )
                         }
-                        className="shadow-md rounded-md bg-white p-4 hover:bg-slate-100 focus:ring-4 focus:ring-blue-300"
                       >
                         Delete exercise
-                      </button>
+                      </Button>
                     </div>
                   )}
                 </div>
-              </div>
+              </CardRow>
               {obj.sets.map((set, i) => {
                 return (
-                  <div
-                    key={i}
-                    className="font-normal text-gray-700 text-sm flex justify-between"
-                  >
+                  <CardRow key={i} rowStyling="text-gray-700 text-sm ">
                     <p key={i}>{`set ${i + 1}`}</p>
-                    <div>
-                      <RepsWeightInput
-                        key={`reps${i}`}
-                        repsOrWeight="reps"
-                        value={set.reps}
-                        onChange={handleChangeReps}
-                        setIndex={i}
-                        workoutDataObject={obj}
-                        workoutData={workoutData}
-                        setWorkoutData={setWorkoutData}
-                      />
-                    </div>
-                    <div>
-                      <RepsWeightInput
-                        key={`weight${i}`}
-                        repsOrWeight="kg"
-                        value={set.weight}
-                        onChange={handleChangeWeight}
-                        setIndex={i}
-                        workoutDataObject={obj}
-                        workoutData={workoutData}
-                        setWorkoutData={setWorkoutData}
-                      />
-                    </div>
-                    <div>
-                      <TrafficLight
-                        key={`easy${i}`}
-                        indicator={set.easy}
-                        onChange={handleChangeEasy}
-                        setIndex={i}
-                        workoutDataObject={obj}
-                        workoutData={workoutData}
-                        setWorkoutData={setWorkoutData}
-                        green="😊"
-                        red="😔"
-                      />
-                    </div>
-                    <div>
-                      <TrafficLight
-                        key={`done${i}`}
-                        indicator={set.done}
-                        onChange={handleChangeDone}
-                        setIndex={i}
-                        workoutDataObject={obj}
-                        workoutData={workoutData}
-                        setWorkoutData={setWorkoutData}
-                        green="✅"
-                        red="❌"
-                      />
-                    </div>
-                  </div>
+                    <RepsWeightInput
+                      key={`reps${i}`}
+                      repsOrWeight="reps"
+                      value={set.reps}
+                      onChange={handleChangeReps}
+                      setIndex={i}
+                      workoutDataObject={obj}
+                      workoutData={workoutData}
+                      setWorkoutData={setWorkoutData}
+                    />
+                    <RepsWeightInput
+                      key={`weight${i}`}
+                      repsOrWeight="kg"
+                      value={set.weight}
+                      onChange={handleChangeWeight}
+                      setIndex={i}
+                      workoutDataObject={obj}
+                      workoutData={workoutData}
+                      setWorkoutData={setWorkoutData}
+                    />
+                    <TrafficLight
+                      key={`easy${i}`}
+                      indicator={set.easy}
+                      onChange={handleChangeEasy}
+                      setIndex={i}
+                      workoutDataObject={obj}
+                      workoutData={workoutData}
+                      setWorkoutData={setWorkoutData}
+                      green="😊"
+                      red="😔"
+                    />
+                    <TrafficLight
+                      key={`done${i}`}
+                      indicator={set.done}
+                      onChange={handleChangeDone}
+                      setIndex={i}
+                      workoutDataObject={obj}
+                      workoutData={workoutData}
+                      setWorkoutData={setWorkoutData}
+                      green="✅"
+                      red="❌"
+                    />
+                  </CardRow>
                 );
               })}
               <Button
