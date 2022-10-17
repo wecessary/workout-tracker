@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef, ReactNode } from "react";
 
 interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
-  variant: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "transparent";
 }
 
 const Button = ({ children, onClick, variant }: ButtonProps) => {
@@ -10,9 +10,12 @@ const Button = ({ children, onClick, variant }: ButtonProps) => {
   const secondary =
     "text-white bg-slate-400 hover:bg-slate-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800";
 
-  const buttonTypes = { primary, secondary };
+  const transparent =
+    "shadow-md rounded-md bg-white p-4 hover:bg-slate-100 focus:ring-4 focus:ring-blue-300";
+
+  const buttonTypes = { primary, secondary, transparent };
   return (
-    <button onClick={onClick} className={buttonTypes[variant]}>
+    <button onClick={onClick} className={variant && buttonTypes[variant]}>
       {children}
     </button>
   );
