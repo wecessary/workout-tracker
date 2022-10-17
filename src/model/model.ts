@@ -1,7 +1,7 @@
 import { ChangeEvent, SetStateAction } from "react";
 
 export type HandleChangeName = (
-  e: ChangeEvent<HTMLInputElement>,
+  e: ChangeEvent<HTMLTextAreaElement>,
   workoutDataObjectIndex: number,
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
@@ -46,7 +46,7 @@ export interface WorkoutDataObject {
   index: number;
   name: string;
   repsUnit: string;
-  intensityUnit:string;
+  intensityUnit: string;
   sets: Set[];
   comment: string;
 }
