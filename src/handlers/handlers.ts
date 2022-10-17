@@ -2,7 +2,7 @@ import { ChangeEvent, SetStateAction } from "react";
 import { Set, WorkoutDataObject } from "../model/model";
 
 export const handleChangeName = (
-  e: ChangeEvent<HTMLInputElement>,
+  e: ChangeEvent<HTMLTextAreaElement>,
   workoutDataObjectIndex: number,
   workoutData: WorkoutDataObject[],
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void

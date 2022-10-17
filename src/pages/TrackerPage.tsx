@@ -173,9 +173,16 @@ const TrackerPage = () => {
               <textarea
                 className="group-hover:bg-gray-100 text-base w-full text-slate-500"
                 value={obj.comment}
-                onChange={(e) =>
-                  handleChangeComment(e, obj.index, workoutData, setWorkoutData)
-                }
+                onChange={(e) => {
+                  handleChangeComment(
+                    e,
+                    obj.index,
+                    workoutData,
+                    setWorkoutData
+                  );
+                  e.target.style.height = "inherit";
+                  e.target.style.height = `${e.target.scrollHeight}px`;
+                }}
                 placeholder="How was it?"
               />
             </>

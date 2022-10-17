@@ -17,13 +17,15 @@ const ExerciseNameInput = ({
   setWorkoutData,
 }: ExerciseNameProps) => {
   return (
-    <input
-      className="group-hover:bg-gray-100 w-1/2 mb-3 font-bold text-lg tracking-tight text-gray-900 dark:text-white"
+    <textarea
+      className="group-hover:bg-gray-100 w-full mb-3 font-bold text-lg tracking-tight text-gray-900 dark:text-white"
       value={value}
       placeholder="Exercise name"
-      onChange={(e) =>
-        onChange(e, workoutDataObjectIndex, workoutData, setWorkoutData)
-      }
+      onChange={(e) => {
+        onChange(e, workoutDataObjectIndex, workoutData, setWorkoutData);
+        e.target.style.height = "inherit";
+        e.target.style.height = `${e.target.scrollHeight}px`;
+      }}
     />
   );
 };
