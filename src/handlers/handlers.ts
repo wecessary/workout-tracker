@@ -43,7 +43,7 @@ export const handleAddSet = (
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
   const newWorkoutData = workoutData.map((obj) => {
-    const lastSet = obj.sets.at(-1) as Set;
+    const lastSet = obj.sets.at(-1) || ({} as Set);
 
     if (obj.index === workoutDataObjectIndex) {
       return {
@@ -51,10 +51,10 @@ export const handleAddSet = (
         sets: [
           ...obj.sets,
           {
-            index: obj.sets.length,
-            reps: lastSet.reps,
-            weight: lastSet.weight,
-            easy: lastSet.easy,
+            index: lastSet.index + 1 || 0,
+            reps: lastSet.reps || 0,
+            weight: lastSet.weight || 0,
+            easy: lastSet.easy || true,
             done: false,
           },
         ],

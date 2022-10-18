@@ -24,6 +24,8 @@ import StatusIndicator from "../components/StatusIndicator";
 import NotificationChip from "../components/NotificationChip";
 import Card from "../components/Card";
 import CardRow from "../components/CardRow";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Set } from "../model/model";
 
 const TrackerPage = () => {
   const { user } = useContext(AuthContext);
@@ -54,169 +56,231 @@ const TrackerPage = () => {
   }, [workoutData]);
   // console.log(userData);
 
+  function reorderSetIndex(sets: Set[]) {
+    return sets.map((set, i) => ({ ...set, index: i }));
+  }
+
+  function handleOnDragEnd(result: any) {
+    if (!result.destination) {
+      return;
+    }
+
+    if (result.destination.droppableId === "bin") {
+      console.log(result);
+      const exerciseIndex = +result.source.droppableId.at(-1);
+      console.log(exerciseIndex);
+      const newWorkoutData = workoutData.map((obj) => {
+        if (obj.index === exerciseIndex) {
+          return {
+            ...obj,
+            sets: reorderSetIndex(
+              obj.sets.filter((set) => set.index !== result.source.index)
+            ),
+          };
+        }
+        return obj;
+      });
+
+      setWorkoutData(newWorkoutData);
+    }
+  }
+  console.log(workoutData);
   return (
     <>
-      <input
-        type="date"
-        value={selectedDate}
-        onChange={(e) => setSelectedDate(e.target.value)}
-      />
-      {workoutData.map((obj, i) => {
-        return (
-          <Card key={i}>
-            <>
-              <CardRow>
-                <ExerciseNameInput
-                  key={i}
-                  value={obj.name}
-                  onChange={handleChangeName}
-                  workoutDataObjectIndex={obj.index}
-                  workoutData={workoutData}
-                  setWorkoutData={setWorkoutData}
-                />
-                <div className="relative">
-                  <Button
-                    onClick={() =>
-                      handleShowOptions(i, showOptions, setShowOptions)
-                    }
-                  >
-                    ...
-                  </Button>
-                  {showOptions[i] && (
-                    <div className="absolute top-2 right-4">
-                      <Button
-                        variant="transparent"
-                        onClick={() =>
-                          handleDeleteExercise(
-                            obj.index,
-                            workoutData,
-                            setWorkoutData
-                          )
-                        }
-                      >
-                        Delete exercise
-                      </Button>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <input
+          type="date"
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
+        />
+        {workoutData.map((obj, exIndex) => {
+          return (
+            <Card key={exIndex}>
+              <>
+                <CardRow>
+                  <ExerciseNameInput
+                    key={exIndex}
+                    value={obj.name}
+                    onChange={handleChangeName}
+                    workoutDataObjectIndex={obj.index}
+                    workoutData={workoutData}
+                    setWorkoutData={setWorkoutData}
+                  />
+                  <div className="relative">
+                    <Button
+                      onClick={() =>
+                        handleShowOptions(exIndex, showOptions, setShowOptions)
+                      }
+                    >
+                      ...
+                    </Button>
+                    {showOptions[exIndex] && (
+                      <div className="absolute top-2 right-4">
+                        <Button
+                          variant="transparent"
+                          onClick={() =>
+                            handleDeleteExercise(
+                              obj.index,
+                              workoutData,
+                              setWorkoutData
+                            )
+                          }
+                        >
+                          Delete exercise
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </CardRow>
+                <Droppable droppableId={`exercise${exIndex}`}>
+                  {(provided) => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                      {obj.sets.map((set, i) => {
+                        return (
+                          <Draggable
+                            key={`exercise${exIndex}-${set.index}`}
+                            draggableId={`exercise${exIndex}-${set.index}`}
+                            index={i}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <CardRow
+                                  key={i}
+                                  rowStyling="text-gray-700 text-sm "
+                                >
+                                  <p key={i}>{`set ${set.index + 1}`}</p>
+                                  <RepsWeightInput
+                                    key={`reps${i}`}
+                                    repsOrWeight="reps"
+                                    value={set.reps}
+                                    onChange={handleChangeReps}
+                                    setIndex={i}
+                                    workoutDataObject={obj}
+                                    workoutData={workoutData}
+                                    setWorkoutData={setWorkoutData}
+                                  />
+                                  <RepsWeightInput
+                                    key={`weight${i}`}
+                                    repsOrWeight="kg"
+                                    value={set.weight}
+                                    onChange={handleChangeWeight}
+                                    setIndex={i}
+                                    workoutDataObject={obj}
+                                    workoutData={workoutData}
+                                    setWorkoutData={setWorkoutData}
+                                  />
+                                  <TrafficLight
+                                    key={`easy${i}`}
+                                    indicator={set.easy}
+                                    onChange={handleChangeEasy}
+                                    setIndex={i}
+                                    workoutDataObject={obj}
+                                    workoutData={workoutData}
+                                    setWorkoutData={setWorkoutData}
+                                    green="😊"
+                                    red="😔"
+                                  />
+                                  <TrafficLight
+                                    key={`done${i}`}
+                                    indicator={set.done}
+                                    onChange={handleChangeDone}
+                                    setIndex={i}
+                                    workoutDataObject={obj}
+                                    workoutData={workoutData}
+                                    setWorkoutData={setWorkoutData}
+                                    green="✅"
+                                    red="❌"
+                                  />
+                                </CardRow>
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })}
+                      {provided.placeholder}
                     </div>
                   )}
-                </div>
-              </CardRow>
-              {obj.sets.map((set, i) => {
-                return (
-                  <CardRow key={i} rowStyling="text-gray-700 text-sm ">
-                    <p key={i}>{`set ${i + 1}`}</p>
-                    <RepsWeightInput
-                      key={`reps${i}`}
-                      repsOrWeight="reps"
-                      value={set.reps}
-                      onChange={handleChangeReps}
-                      setIndex={i}
-                      workoutDataObject={obj}
-                      workoutData={workoutData}
-                      setWorkoutData={setWorkoutData}
-                    />
-                    <RepsWeightInput
-                      key={`weight${i}`}
-                      repsOrWeight="kg"
-                      value={set.weight}
-                      onChange={handleChangeWeight}
-                      setIndex={i}
-                      workoutDataObject={obj}
-                      workoutData={workoutData}
-                      setWorkoutData={setWorkoutData}
-                    />
-                    <TrafficLight
-                      key={`easy${i}`}
-                      indicator={set.easy}
-                      onChange={handleChangeEasy}
-                      setIndex={i}
-                      workoutDataObject={obj}
-                      workoutData={workoutData}
-                      setWorkoutData={setWorkoutData}
-                      green="😊"
-                      red="😔"
-                    />
-                    <TrafficLight
-                      key={`done${i}`}
-                      indicator={set.done}
-                      onChange={handleChangeDone}
-                      setIndex={i}
-                      workoutDataObject={obj}
-                      workoutData={workoutData}
-                      setWorkoutData={setWorkoutData}
-                      green="✅"
-                      red="❌"
-                    />
-                  </CardRow>
-                );
-              })}
-              <Button
-                variant="primary"
-                onClick={() =>
-                  handleAddSet(obj.index, workoutData, setWorkoutData)
-                }
-              >
-                +
-              </Button>
+                </Droppable>
+                <Button
+                  variant="primary"
+                  onClick={() =>
+                    handleAddSet(obj.index, workoutData, setWorkoutData)
+                  }
+                >
+                  +
+                </Button>
 
-              <textarea
-                className="group-hover:bg-gray-100 text-base w-full text-slate-500"
-                value={obj.comment}
-                onChange={(e) => {
-                  handleChangeComment(
-                    e,
-                    obj.index,
-                    workoutData,
-                    setWorkoutData
-                  );
-                  e.target.style.height = "inherit";
-                  e.target.style.height = `${e.target.scrollHeight}px`;
-                }}
-                placeholder="How was it?"
-              />
-            </>
-          </Card>
-        );
-      })}
+                <textarea
+                  className="group-hover:bg-gray-100 text-base w-full text-slate-500"
+                  value={obj.comment}
+                  onChange={(e) => {
+                    handleChangeComment(
+                      e,
+                      obj.index,
+                      workoutData,
+                      setWorkoutData
+                    );
+                    e.target.style.height = "inherit";
+                    e.target.style.height = `${e.target.scrollHeight}px`;
+                  }}
+                  placeholder="How was it?"
+                />
+              </>
+              <Droppable droppableId="bin">
+                {(provided) => (
+                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                    Bin {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </Card>
+          );
+        })}
 
-      <div className="flex">
-        <Button
-          onClick={() => handleAddWorkout(workoutData, setWorkoutData)}
-          variant="primary"
-        >
-          Add Exercise
-        </Button>
-        <Button
-          onClick={() =>
-            writeUserData(
-              uid,
-              userData,
-              setIsSavingUserData,
-              setHasSavedUserData
-            )
-          }
-          variant="primary"
-        >
-          Save
-        </Button>
-      </div>
-      {(isSavingUserData || hasSavedUserData) && (
-        <NotificationChip
-          statuses={[isSavingUserData, hasSavedUserData]}
-          resetStatus={() => {
-            setIsSavingUserData(false);
-            setHasSavedUserData(false);
-          }}
-        >
-          <StatusIndicator
-            statusMessages={{
-              loading: "Saving data...",
-              complete: "Data has been saved",
+        <div className="flex">
+          <Button
+            onClick={() => handleAddWorkout(workoutData, setWorkoutData)}
+            variant="primary"
+          >
+            Add Exercise
+          </Button>
+          <Button
+            onClick={() =>
+              writeUserData(
+                uid,
+                userData,
+                setIsSavingUserData,
+                setHasSavedUserData
+              )
+            }
+            variant="primary"
+          >
+            Save
+          </Button>
+        </div>
+        {(isSavingUserData || hasSavedUserData) && (
+          <NotificationChip
+            statuses={[isSavingUserData, hasSavedUserData]}
+            resetStatus={() => {
+              setIsSavingUserData(false);
+              setHasSavedUserData(false);
             }}
-            loadingStatus={isSavingUserData}
-            completeStatus={hasSavedUserData}
-          />
-        </NotificationChip>
-      )}
+          >
+            <StatusIndicator
+              statusMessages={{
+                loading: "Saving data...",
+                complete: "Data has been saved",
+              }}
+              loadingStatus={isSavingUserData}
+              completeStatus={hasSavedUserData}
+            />
+          </NotificationChip>
+        )}
+      </DragDropContext>
     </>
   );
 };
