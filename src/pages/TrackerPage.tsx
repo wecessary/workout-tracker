@@ -23,9 +23,13 @@ import Button from "../components/Button";
 import StatusIndicator from "../components/StatusIndicator";
 import NotificationChip from "../components/NotificationChip";
 import Card from "../components/Card";
-import CardRow from "../components/CardRow";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import DraggableWrapper from "../components/DraggableWrapper";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Set } from "../model/model";
+import GripDots from "../components/GripDots";
+import Bin from "../components/Bin";
+import CardRow from "../components/CardRow";
+import DroppableWrapper from "../components/DroppableWrapper";
 
 const TrackerPage = () => {
   const { user } = useContext(AuthContext);
@@ -60,17 +64,17 @@ const TrackerPage = () => {
     return sets.map((set, i) => ({ ...set, index: i }));
   }
 
-  function handleOnDragEnd(result: any) {
+  function handleOnDragEnd(result: DropResult) {
     if (!result.destination) {
       return;
     }
 
     if (result.destination.droppableId === "bin") {
       console.log(result);
-      const exerciseIndex = +result.source.droppableId.at(-1);
+      const exerciseIndex = result.source.droppableId.at(-1) || NaN;
       console.log(exerciseIndex);
       const newWorkoutData = workoutData.map((obj) => {
-        if (obj.index === exerciseIndex) {
+        if (obj.index === +exerciseIndex) {
           return {
             ...obj,
             sets: reorderSetIndex(
@@ -132,79 +136,64 @@ const TrackerPage = () => {
                     )}
                   </div>
                 </CardRow>
-                <Droppable droppableId={`exercise${exIndex}`}>
-                  {(provided) => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                      {obj.sets.map((set, i) => {
-                        return (
-                          <Draggable
-                            key={`exercise${exIndex}-${set.index}`}
-                            draggableId={`exercise${exIndex}-${set.index}`}
-                            index={i}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <CardRow
-                                  key={i}
-                                  rowStyling="text-gray-700 text-sm "
-                                >
-                                  <p key={i}>{`set ${set.index + 1}`}</p>
-                                  <RepsWeightInput
-                                    key={`reps${i}`}
-                                    repsOrWeight="reps"
-                                    value={set.reps}
-                                    onChange={handleChangeReps}
-                                    setIndex={i}
-                                    workoutDataObject={obj}
-                                    workoutData={workoutData}
-                                    setWorkoutData={setWorkoutData}
-                                  />
-                                  <RepsWeightInput
-                                    key={`weight${i}`}
-                                    repsOrWeight="kg"
-                                    value={set.weight}
-                                    onChange={handleChangeWeight}
-                                    setIndex={i}
-                                    workoutDataObject={obj}
-                                    workoutData={workoutData}
-                                    setWorkoutData={setWorkoutData}
-                                  />
-                                  <TrafficLight
-                                    key={`easy${i}`}
-                                    indicator={set.easy}
-                                    onChange={handleChangeEasy}
-                                    setIndex={i}
-                                    workoutDataObject={obj}
-                                    workoutData={workoutData}
-                                    setWorkoutData={setWorkoutData}
-                                    green="😊"
-                                    red="😔"
-                                  />
-                                  <TrafficLight
-                                    key={`done${i}`}
-                                    indicator={set.done}
-                                    onChange={handleChangeDone}
-                                    setIndex={i}
-                                    workoutDataObject={obj}
-                                    workoutData={workoutData}
-                                    setWorkoutData={setWorkoutData}
-                                    green="✅"
-                                    red="❌"
-                                  />
-                                </CardRow>
-                              </div>
-                            )}
-                          </Draggable>
-                        );
-                      })}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
+                <DroppableWrapper droppableId={`exercise${exIndex}`}>
+                  {obj.sets.map((set, i) => {
+                    return (
+                      <DraggableWrapper
+                        key={`exercise${exIndex}-${set.index}`}
+                        draggableId={`exercise${exIndex}-${set.index}`}
+                        draggableIndex={i}
+                      >
+                        <CardRow rowStyling="text-gray-700 text-sm">
+                          <GripDots />
+                          <p key={i}>{`set ${set.index + 1}`}</p>
+                          <RepsWeightInput
+                            key={`reps${i}`}
+                            repsOrWeight="reps"
+                            value={set.reps}
+                            onChange={handleChangeReps}
+                            setIndex={i}
+                            workoutDataObject={obj}
+                            workoutData={workoutData}
+                            setWorkoutData={setWorkoutData}
+                          />
+                          <RepsWeightInput
+                            key={`weight${i}`}
+                            repsOrWeight="kg"
+                            value={set.weight}
+                            onChange={handleChangeWeight}
+                            setIndex={i}
+                            workoutDataObject={obj}
+                            workoutData={workoutData}
+                            setWorkoutData={setWorkoutData}
+                          />
+                          <TrafficLight
+                            key={`easy${i}`}
+                            indicator={set.easy}
+                            onChange={handleChangeEasy}
+                            setIndex={i}
+                            workoutDataObject={obj}
+                            workoutData={workoutData}
+                            setWorkoutData={setWorkoutData}
+                            green="😊"
+                            red="😔"
+                          />
+                          <TrafficLight
+                            key={`done${i}`}
+                            indicator={set.done}
+                            onChange={handleChangeDone}
+                            setIndex={i}
+                            workoutDataObject={obj}
+                            workoutData={workoutData}
+                            setWorkoutData={setWorkoutData}
+                            green="✅"
+                            red="❌"
+                          />
+                        </CardRow>
+                      </DraggableWrapper>
+                    );
+                  })}
+                </DroppableWrapper>
                 <Button
                   variant="primary"
                   onClick={() =>
@@ -230,13 +219,9 @@ const TrackerPage = () => {
                   placeholder="How was it?"
                 />
               </>
-              <Droppable droppableId="bin">
-                {(provided) => (
-                  <div ref={provided.innerRef} {...provided.droppableProps}>
-                    Bin {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
+              <DroppableWrapper droppableId="bin">
+                <Bin />
+              </DroppableWrapper>
             </Card>
           );
         })}
