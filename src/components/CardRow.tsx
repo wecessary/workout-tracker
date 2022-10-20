@@ -7,9 +7,7 @@ const CardRow = ({
   children: ReactNode;
   rowStyling?: string;
 }) => {
-  return (
-    <div className={` ${rowStyling} flex justify-between`}>{children}</div>
-  );
+  return <div className={`${rowStyling} flex justify-between`}>{children}</div>;
 };
 
 export default CardRow;

@@ -1,4 +1,5 @@
 import { ChangeEvent, SetStateAction } from "react";
+import { DropResult } from "react-beautiful-dnd";
 import { Set, WorkoutDataObject } from "../model/model";
 
 export const handleChangeName = (
@@ -43,7 +44,7 @@ export const handleAddSet = (
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
   const newWorkoutData = workoutData.map((obj) => {
-    const lastSet = obj.sets.at(-1) as Set;
+    const lastSet = obj.sets.at(-1) || ({} as Set);
 
     if (obj.index === workoutDataObjectIndex) {
       return {
@@ -51,10 +52,10 @@ export const handleAddSet = (
         sets: [
           ...obj.sets,
           {
-            index: obj.sets.length,
-            reps: lastSet.reps,
-            weight: lastSet.weight,
-            easy: lastSet.easy,
+            index: lastSet.index + 1 || 0,
+            reps: lastSet.reps || 0,
+            weight: lastSet.weight || 0,
+            easy: lastSet.easy || true,
             done: false,
           },
         ],
@@ -189,6 +190,17 @@ export const handleShowOptions = (
   setShowOptions(newShowOptions);
 };
 
+const reorderWorkoutObjects = (workoutData: WorkoutDataObject[]) => {
+  return workoutData.map((workoutDataObject, i) => ({
+    ...workoutDataObject,
+    index: i,
+  }));
+};
+
+const reorderSetIndex = (sets: Set[]) => {
+  return sets.map((set, i) => ({ ...set, index: i }));
+};
+
 export const handleDeleteExercise = (
   workoutDataObjectIndex: number,
   workoutData: WorkoutDataObject[],
@@ -197,4 +209,42 @@ export const handleDeleteExercise = (
   setWorkoutData(
     workoutData.filter((obj) => obj.index !== workoutDataObjectIndex)
   );
+};
+
+export const handleDeleteSet = (
+  workoutDataObjectIndex: number,
+  IndexOfSetToDelete: number,
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+) => {
+  const newWorkoutData = workoutData.map((obj) => {
+    if (obj.index === +workoutDataObjectIndex) {
+      return {
+        ...obj,
+        sets: reorderSetIndex(
+          obj.sets.filter((set) => set.index !== IndexOfSetToDelete)
+        ),
+      };
+    }
+    return obj;
+  });
+
+  setWorkoutData(reorderWorkoutObjects(newWorkoutData));
+};
+
+export const handleOnDragEnd = (
+  workoutData: WorkoutDataObject[],
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void,
+  result: DropResult
+) => {
+  if (!result.destination) {
+    return;
+  }
+
+  if (result.destination.droppableId === "cards") {
+    const newWorkoutData = workoutData;
+    const [draggedCard] = newWorkoutData.splice(result.source.index, 1);
+    newWorkoutData.splice(result.destination.index, 0, draggedCard);
+    setWorkoutData(reorderWorkoutObjects(newWorkoutData));
+  }
 };
