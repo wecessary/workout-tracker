@@ -10,6 +10,8 @@ import {
   handleChangeComment,
   handleShowOptions,
   handleDeleteExercise,
+  handleOnDragEnd,
+  handleDeleteSet,
 } from "../handlers/handlers";
 import { currentDateAsString } from "../utilities/date";
 import useWorkoutData from "../hooks/useWorkoutData";
@@ -27,7 +29,7 @@ import DraggableWrapper from "../components/DraggableWrapper";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Set } from "../model/model";
 import GripDots from "../components/GripDots";
-import Bin from "../components/Bin";
+import { Bin, NoSymbol } from "../components/Icons";
 import CardRow from "../components/CardRow";
 import DroppableWrapper from "../components/DroppableWrapper";
 
@@ -60,92 +62,82 @@ const TrackerPage = () => {
   }, [workoutData]);
   // console.log(userData);
 
-  function reorderSetIndex(sets: Set[]) {
-    return sets.map((set, i) => ({ ...set, index: i }));
-  }
-
-  function handleOnDragEnd(result: DropResult) {
-    if (!result.destination) {
-      return;
-    }
-
-    if (result.destination.droppableId === "bin") {
-      console.log(result);
-      const exerciseIndex = result.source.droppableId.at(-1) || NaN;
-      console.log(exerciseIndex);
-      const newWorkoutData = workoutData.map((obj) => {
-        if (obj.index === +exerciseIndex) {
-          return {
-            ...obj,
-            sets: reorderSetIndex(
-              obj.sets.filter((set) => set.index !== result.source.index)
-            ),
-          };
-        }
-        return obj;
-      });
-
-      setWorkoutData(newWorkoutData);
-    }
-  }
   console.log(workoutData);
   return (
     <>
-      <DragDropContext onDragEnd={handleOnDragEnd}>
+      <DragDropContext
+        onDragEnd={(result) =>
+          handleOnDragEnd(workoutData, setWorkoutData, result)
+        }
+      >
         <input
           type="date"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
         />
-        {workoutData.map((obj, exIndex) => {
-          return (
-            <Card key={exIndex}>
-              <>
-                <CardRow>
-                  <ExerciseNameInput
-                    key={exIndex}
-                    value={obj.name}
-                    onChange={handleChangeName}
-                    workoutDataObjectIndex={obj.index}
-                    workoutData={workoutData}
-                    setWorkoutData={setWorkoutData}
-                  />
-                  <div className="relative">
-                    <Button
-                      onClick={() =>
-                        handleShowOptions(exIndex, showOptions, setShowOptions)
-                      }
-                    >
-                      ...
-                    </Button>
-                    {showOptions[exIndex] && (
-                      <div className="absolute top-2 right-4">
+        <DroppableWrapper droppableId="cards">
+          {workoutData.map((obj, exIndex) => {
+            return (
+              <DraggableWrapper
+                draggableId={`card${exIndex}`}
+                draggableIndex={exIndex}
+              >
+                <Card key={exIndex}>
+                  <>
+                    <CardRow>
+                      <ExerciseNameInput
+                        key={exIndex}
+                        value={obj.name}
+                        onChange={handleChangeName}
+                        workoutDataObjectIndex={obj.index}
+                        workoutData={workoutData}
+                        setWorkoutData={setWorkoutData}
+                      />
+                      <div className="relative">
                         <Button
-                          variant="transparent"
                           onClick={() =>
-                            handleDeleteExercise(
-                              obj.index,
-                              workoutData,
-                              setWorkoutData
+                            handleShowOptions(
+                              exIndex,
+                              showOptions,
+                              setShowOptions
                             )
                           }
                         >
-                          Delete exercise
+                          ...
                         </Button>
+                        {showOptions[exIndex] && (
+                          <div className="absolute top-2 right-4">
+                            <Button
+                              variant="transparent"
+                              onClick={() =>
+                                handleDeleteExercise(
+                                  obj.index,
+                                  workoutData,
+                                  setWorkoutData
+                                )
+                              }
+                            >
+                              Delete exercise
+                            </Button>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </CardRow>
-                <DroppableWrapper droppableId={`exercise${exIndex}`}>
-                  {obj.sets.map((set, i) => {
-                    return (
-                      <DraggableWrapper
-                        key={`exercise${exIndex}-${set.index}`}
-                        draggableId={`exercise${exIndex}-${set.index}`}
-                        draggableIndex={i}
-                      >
+                    </CardRow>
+                    {obj.sets.map((set, i) => {
+                      return (
                         <CardRow rowStyling="text-gray-700 text-sm">
-                          <GripDots />
+                          <Button
+                            onClick={() =>
+                              handleDeleteSet(
+                                exIndex,
+                                i,
+                                workoutData,
+                                setWorkoutData
+                              )
+                            }
+                          >
+                            <Bin />
+                          </Button>
                           <p key={i}>{`set ${set.index + 1}`}</p>
                           <RepsWeightInput
                             key={`reps${i}`}
@@ -190,41 +182,38 @@ const TrackerPage = () => {
                             red="❌"
                           />
                         </CardRow>
-                      </DraggableWrapper>
-                    );
-                  })}
-                </DroppableWrapper>
-                <Button
-                  variant="primary"
-                  onClick={() =>
-                    handleAddSet(obj.index, workoutData, setWorkoutData)
-                  }
-                >
-                  +
-                </Button>
+                      );
+                    })}
+                    <Button
+                      variant="primary"
+                      onClick={() =>
+                        handleAddSet(obj.index, workoutData, setWorkoutData)
+                      }
+                    >
+                      +
+                    </Button>
 
-                <textarea
-                  className="group-hover:bg-gray-100 text-base w-full text-slate-500"
-                  value={obj.comment}
-                  onChange={(e) => {
-                    handleChangeComment(
-                      e,
-                      obj.index,
-                      workoutData,
-                      setWorkoutData
-                    );
-                    e.target.style.height = "inherit";
-                    e.target.style.height = `${e.target.scrollHeight}px`;
-                  }}
-                  placeholder="How was it?"
-                />
-              </>
-              <DroppableWrapper droppableId="bin">
-                <Bin />
-              </DroppableWrapper>
-            </Card>
-          );
-        })}
+                    <textarea
+                      className="group-hover:bg-gray-100 text-base w-full text-slate-500"
+                      value={obj.comment}
+                      onChange={(e) => {
+                        handleChangeComment(
+                          e,
+                          obj.index,
+                          workoutData,
+                          setWorkoutData
+                        );
+                        e.target.style.height = "inherit";
+                        e.target.style.height = `${e.target.scrollHeight}px`;
+                      }}
+                      placeholder="How was it?"
+                    />
+                  </>
+                </Card>
+              </DraggableWrapper>
+            );
+          })}
+        </DroppableWrapper>
 
         <div className="flex">
           <Button
