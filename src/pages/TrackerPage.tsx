@@ -27,9 +27,7 @@ import NotificationChip from "../components/NotificationChip";
 import Card from "../components/Card";
 import DraggableWrapper from "../components/DraggableWrapper";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { Set } from "../model/model";
-import GripDots from "../components/GripDots";
-import { Bin, NoSymbol } from "../components/Icons";
+import { Bin, Minus, NoSymbol } from "../components/Icons";
 import CardRow from "../components/CardRow";
 import DroppableWrapper from "../components/DroppableWrapper";
 
@@ -47,6 +45,7 @@ const TrackerPage = () => {
   const [isSavingUserData, setIsSavingUserData] = useState(false);
   const [hasSavedUserData, setHasSavedUserData] = useState(false);
   const [showOptions, setShowOptions] = useState([false]);
+  const [editCard, setEditCard] = useState([false]);
 
   //useEffect for updating workOutData
   useEffect(() => {
@@ -58,6 +57,7 @@ const TrackerPage = () => {
     });
     setUserData(newUserData);
     setShowOptions(Array(workoutData.length).fill(false, 0)); //tidy this up later
+    setEditCard(Array(workoutData.length).fill(false, 0));
     // writeUserData(user?.uid);
   }, [workoutData]);
   // console.log(userData);
@@ -95,29 +95,31 @@ const TrackerPage = () => {
                       />
                       <div className="relative">
                         <Button
-                          onClick={() =>
+                          onClick={() => {
                             handleShowOptions(
                               exIndex,
                               showOptions,
                               setShowOptions
-                            )
-                          }
+                            );
+                          }}
                         >
                           ...
                         </Button>
                         {showOptions[exIndex] && (
-                          <div className="absolute top-2 right-4">
+                          <div
+                            className="absolute top-2 right-4"
+                          >
                             <Button
                               variant="transparent"
                               onClick={() =>
-                                handleDeleteExercise(
-                                  obj.index,
-                                  workoutData,
-                                  setWorkoutData
+                                handleShowOptions(
+                                  exIndex,
+                                  editCard,
+                                  setEditCard
                                 )
                               }
                             >
-                              Delete exercise
+                              Edit
                             </Button>
                           </div>
                         )}
@@ -126,18 +128,20 @@ const TrackerPage = () => {
                     {obj.sets.map((set, i) => {
                       return (
                         <CardRow rowStyling="text-gray-700 text-sm">
-                          <Button
-                            onClick={() =>
-                              handleDeleteSet(
-                                exIndex,
-                                i,
-                                workoutData,
-                                setWorkoutData
-                              )
-                            }
-                          >
-                            <Bin />
-                          </Button>
+                          {editCard[exIndex] && (
+                            <Button
+                              onClick={() =>
+                                handleDeleteSet(
+                                  exIndex,
+                                  i,
+                                  workoutData,
+                                  setWorkoutData
+                                )
+                              }
+                            >
+                              -
+                            </Button>
+                          )}
                           <p key={i}>{`set ${set.index + 1}`}</p>
                           <RepsWeightInput
                             key={`reps${i}`}
@@ -209,6 +213,19 @@ const TrackerPage = () => {
                       placeholder="How was it?"
                     />
                   </>
+                  {editCard[exIndex] && (
+                    <Button
+                      onClick={() =>
+                        handleDeleteExercise(
+                          obj.index,
+                          workoutData,
+                          setWorkoutData
+                        )
+                      }
+                    >
+                      <Bin />
+                    </Button>
+                  )}
                 </Card>
               </DraggableWrapper>
             );
