@@ -70,4 +70,11 @@ export interface UserDataObject {
   date: string;
   workoutData: WorkoutDataObject[];
 }
+
 export type SetUserData = (value: SetStateAction<UserDataObject[]>) => void;
+
+export interface ShowOptions {
+  exerciseIndex: number;
+  showPopup: boolean;
+  editCard: boolean;
+}

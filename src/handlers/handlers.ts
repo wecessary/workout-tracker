@@ -1,6 +1,6 @@
 import { ChangeEvent, SetStateAction } from "react";
 import { DropResult } from "react-beautiful-dnd";
-import { Set, WorkoutDataObject } from "../model/model";
+import { Set, ShowOptions, WorkoutDataObject } from "../model/model";
 
 export const handleChangeName = (
   e: ChangeEvent<HTMLTextAreaElement>,
@@ -176,18 +176,41 @@ export const handleChangeComment = (
   setWorkoutData(newWorkoutData);
 };
 
-export const handleShowOptions = (
-  i: number,
-  showOptions: boolean[],
-  setShowOptions: (value: SetStateAction<boolean[]>) => void
+const resetShowOptions = (
+  setShowOptions: (value: SetStateAction<ShowOptions>) => void
 ) => {
-  const newShowOptions = showOptions.map((val, index) => {
-    if (i == index) {
-      return !val;
-    }
-    return val;
+  setShowOptions({
+    exerciseIndex: NaN,
+    showPopup: false,
+    editCard: false,
   });
-  setShowOptions(newShowOptions);
+};
+
+export const handleShowPopup = (
+  exerciseIndex: number,
+  showOptions: ShowOptions,
+  setShowOptions: (value: SetStateAction<ShowOptions>) => void
+) => {
+  if (showOptions.exerciseIndex === exerciseIndex) {
+    resetShowOptions(setShowOptions);
+  } else {
+    setShowOptions({
+      exerciseIndex,
+      showPopup: true,
+      editCard: false,
+    });
+  }
+};
+
+export const handleEditCard = (
+  exerciseIndex: number,
+  showOptions: ShowOptions,
+  setShowOptions: (value: SetStateAction<ShowOptions>) => void
+) => {
+  if (showOptions.exerciseIndex !== exerciseIndex) {
+    return;
+  }
+  setShowOptions({ ...showOptions, editCard: !showOptions.editCard });
 };
 
 const reorderWorkoutObjects = (workoutData: WorkoutDataObject[]) => {
@@ -204,11 +227,15 @@ const reorderSetIndex = (sets: Set[]) => {
 export const handleDeleteExercise = (
   workoutDataObjectIndex: number,
   workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void,
+  setShowOptions: (value: SetStateAction<ShowOptions>) => void
 ) => {
   setWorkoutData(
-    workoutData.filter((obj) => obj.index !== workoutDataObjectIndex)
+    reorderWorkoutObjects(
+      workoutData.filter((obj) => obj.index !== workoutDataObjectIndex)
+    )
   );
+  resetShowOptions(setShowOptions);
 };
 
 export const handleDeleteSet = (
@@ -228,7 +255,6 @@ export const handleDeleteSet = (
     }
     return obj;
   });
-
   setWorkoutData(reorderWorkoutObjects(newWorkoutData));
 };
 
