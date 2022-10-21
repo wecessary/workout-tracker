@@ -255,7 +255,6 @@ export const handleDeleteSet = (
     }
     return obj;
   });
-
   setWorkoutData(reorderWorkoutObjects(newWorkoutData));
 };
 
