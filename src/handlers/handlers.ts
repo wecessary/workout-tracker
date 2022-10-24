@@ -176,7 +176,7 @@ export const handleChangeComment = (
   setWorkoutData(newWorkoutData);
 };
 
-const resetShowOptions = (
+export const resetShowOptions = (
   setShowOptions: (value: SetStateAction<ShowOptions>) => void
 ) => {
   setShowOptions({

@@ -32,10 +32,11 @@ import { Bin, Minus, NoSymbol } from "../components/Icons";
 import CardRow from "../components/CardRow";
 import DroppableWrapper from "../components/DroppableWrapper";
 import Controller from "../components/Controller";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 const TrackerPage = () => {
-  const { user } = useContext(AuthContext);
   const { datafromDB } = useContext(UserDataContext);
+  const { user } = useContext(AuthContext);
   const uid = user ? user.uid : "invalidUid";
   const [selectedDate, setSelectedDate] = useState(currentDateAsString);
   const [userData, setUserData] = useState(datafromDB ? datafromDB : []);
@@ -51,6 +52,9 @@ const TrackerPage = () => {
     showPopup: false,
     editCard: false,
   });
+  const ref = useOutsideClick(() =>
+    setShowOptions({ ...showOptions, showPopup: false })
+  );
 
   //useEffect for updating workOutData
   useEffect(() => {
@@ -93,7 +97,14 @@ const TrackerPage = () => {
                       workoutData={workoutData}
                       setWorkoutData={setWorkoutData}
                     />
-                    <div className="relative">
+                    <div
+                      className="relative"
+                      onClick={(e) => e.stopPropagation()}
+                      // without stopPropagation, I think when you click ...,
+                      // Edit is mounted, and adding the click event to the whole document,
+                      // so rightaway the ... has the useoutSideClick callback attached to it
+                      // which means clicking immediately also dismounts Edit
+                    >
                       <Button
                         onClick={() =>
                           handleShowPopup(exIndex, showOptions, setShowOptions)
@@ -107,18 +118,18 @@ const TrackerPage = () => {
                         attributeToShow={"showPopup"}
                       >
                         <div className="absolute top-2 right-4">
-                          <Button
-                            variant="transparent"
-                            onClick={() =>
+                          <button
+                            ref={ref}
+                            onClick={() => {
                               handleEditCard(
                                 exIndex,
                                 showOptions,
                                 setShowOptions
-                              )
-                            }
+                              );
+                            }}
                           >
                             Edit
-                          </Button>
+                          </button>
                         </div>
                       </Controller>
                     </div>
@@ -134,18 +145,19 @@ const TrackerPage = () => {
                           currentExIndex={exIndex}
                           showOptions={showOptions}
                         >
-                          <Button
-                            onClick={() =>
+                          <button
+                            onClick={(e) => {
                               handleDeleteSet(
                                 exIndex,
                                 i,
                                 workoutData,
                                 setWorkoutData
-                              )
-                            }
+                              );
+                              e.stopPropagation();
+                            }}
                           >
                             x
-                          </Button>
+                          </button>
                         </Controller>
                         <p key={i}>{`set ${set.index + 1}`}</p>
                         <RepsWeightInput
