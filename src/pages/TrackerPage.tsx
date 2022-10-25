@@ -29,7 +29,7 @@ import NotificationChip from "../components/NotificationChip";
 import Card from "../components/Card";
 import DraggableWrapper from "../components/DraggableWrapper";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { Bin, Minus, NoSymbol } from "../components/Icons";
+import { Bin, GripBar2 } from "../components/Icons";
 import CardRow from "../components/CardRow";
 import DroppableWrapper from "../components/DroppableWrapper";
 import Controller from "../components/Controller";
@@ -87,6 +87,9 @@ const TrackerPage = () => {
                 key={exIndex}
               >
                 <Card>
+                  <div className="flex justify-center mb-4">
+                    <GripBar2 />
+                  </div>
                   <CardRow>
                     <ExerciseNameInput
                       key={exIndex}
