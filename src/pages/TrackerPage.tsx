@@ -13,6 +13,7 @@ import {
   handleOnDragEnd,
   handleDeleteSet,
   handleEditCard,
+  resetShowOptions,
 } from "../handlers/handlers";
 import { currentDateAsString } from "../utilities/date";
 import useWorkoutData from "../hooks/useWorkoutData";
@@ -52,9 +53,7 @@ const TrackerPage = () => {
     showPopup: false,
     editCard: false,
   });
-  const ref = useOutsideClick(() =>
-    setShowOptions({ ...showOptions, showPopup: false })
-  );
+  const ref = useOutsideClick(() => resetShowOptions(setShowOptions));
 
   //useEffect for updating workOutData
   useEffect(() => {
@@ -118,8 +117,9 @@ const TrackerPage = () => {
                         attributeToShow={"showPopup"}
                       >
                         <div className="absolute top-2 right-4">
-                          <button
+                          <Button
                             ref={ref}
+                            variant="transparent"
                             onClick={() => {
                               handleEditCard(
                                 exIndex,
@@ -129,7 +129,7 @@ const TrackerPage = () => {
                             }}
                           >
                             Edit
-                          </button>
+                          </Button>
                         </div>
                       </Controller>
                     </div>
