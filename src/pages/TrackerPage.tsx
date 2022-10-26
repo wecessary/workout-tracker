@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
   handleChangeName,
   handleAddWorkout,
@@ -16,55 +16,44 @@ import {
   resetShowOptions,
 } from "../handlers/handlers";
 import { currentDateAsString } from "../utilities/date";
-import useWorkoutData from "../hooks/useWorkoutData";
 import ExerciseNameInput from "../components/ExerciseNameInput";
 import RepsWeightInput from "../components/RepsWeightsInput";
 import TrafficLight from "../components/TrafficLight";
-import { writeUserData } from "../firebae/firebase";
-import { AuthContext } from "../context/AuthContext";
-import { UserDataContext } from "../context/DataContext";
 import Button from "../components/Button";
 import StatusIndicator from "../components/StatusIndicator";
 import NotificationChip from "../components/NotificationChip";
 import Card from "../components/Card";
 import DraggableWrapper from "../components/DraggableWrapper";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DragDropContext } from "react-beautiful-dnd";
 import { Bin, GripBar2 } from "../components/Icons";
 import CardRow from "../components/CardRow";
 import DroppableWrapper from "../components/DroppableWrapper";
 import Controller from "../components/Controller";
 import useOutsideClick from "../hooks/useOutsideClick";
+import useWorkoutData from "../hooks/useWorkoutData";
+import { UserDataContext } from "../context/DataContext";
+import useAutoSave from "../hooks/useAutoSave";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
-  const { user } = useContext(AuthContext);
-  const uid = user ? user.uid : "invalidUid";
   const [selectedDate, setSelectedDate] = useState(currentDateAsString);
-  const [userData, setUserData] = useState(datafromDB ? datafromDB : []);
+  const [userData, setUserData] = useState(datafromDB || []);
   const { workoutData, setWorkoutData } = useWorkoutData(
     userData,
-    setUserData,
     selectedDate
   );
-  const [isSavingUserData, setIsSavingUserData] = useState(false);
-  const [hasSavedUserData, setHasSavedUserData] = useState(false);
   const [showOptions, setShowOptions] = useState({
     exerciseIndex: NaN,
     showPopup: false,
     editCard: false,
   });
+  const {
+    isSavingUserData,
+    hasSavedUserData,
+    setIsSavingUserData,
+    setHasSavedUserData,
+  } = useAutoSave(userData, selectedDate, setUserData, workoutData);
   const ref = useOutsideClick(() => resetShowOptions(setShowOptions));
-
-  //useEffect for updating workOutData
-  useEffect(() => {
-    const newUserData = userData.map((obj) => {
-      if (obj.date === selectedDate) {
-        return { ...obj, workoutData: workoutData };
-      }
-      return obj;
-    });
-    setUserData(newUserData);
-  }, [workoutData]);
 
   return (
     <>
@@ -137,77 +126,78 @@ const TrackerPage = () => {
                       </Controller>
                     </div>
                   </CardRow>
-                  {obj.sets.map((set, i) => {
-                    return (
-                      <CardRow
-                        key={`set${i}`}
-                        rowStyling="text-gray-700 text-sm"
-                      >
-                        <Controller
-                          attributeToShow="editCard"
-                          currentExIndex={exIndex}
-                          showOptions={showOptions}
+                  {obj.sets &&
+                    obj.sets.map((set, i) => {
+                      return (
+                        <CardRow
+                          key={`set${i}`}
+                          rowStyling="text-gray-700 text-sm"
                         >
-                          <button
-                            onClick={(e) => {
-                              handleDeleteSet(
-                                exIndex,
-                                i,
-                                workoutData,
-                                setWorkoutData
-                              );
-                              e.stopPropagation();
-                            }}
+                          <Controller
+                            attributeToShow="editCard"
+                            currentExIndex={exIndex}
+                            showOptions={showOptions}
                           >
-                            x
-                          </button>
-                        </Controller>
-                        <p key={i}>{`set ${set.index + 1}`}</p>
-                        <RepsWeightInput
-                          key={`reps${i}`}
-                          repsOrWeight="reps"
-                          value={set.reps}
-                          onChange={handleChangeReps}
-                          setIndex={i}
-                          workoutDataObject={obj}
-                          workoutData={workoutData}
-                          setWorkoutData={setWorkoutData}
-                        />
-                        <RepsWeightInput
-                          key={`weight${i}`}
-                          repsOrWeight="kg"
-                          value={set.weight}
-                          onChange={handleChangeWeight}
-                          setIndex={i}
-                          workoutDataObject={obj}
-                          workoutData={workoutData}
-                          setWorkoutData={setWorkoutData}
-                        />
-                        <TrafficLight
-                          key={`easy${i}`}
-                          indicator={set.easy}
-                          onChange={handleChangeEasy}
-                          setIndex={i}
-                          workoutDataObject={obj}
-                          workoutData={workoutData}
-                          setWorkoutData={setWorkoutData}
-                          green="😊"
-                          red="😔"
-                        />
-                        <TrafficLight
-                          key={`done${i}`}
-                          indicator={set.done}
-                          onChange={handleChangeDone}
-                          setIndex={i}
-                          workoutDataObject={obj}
-                          workoutData={workoutData}
-                          setWorkoutData={setWorkoutData}
-                          green="✅"
-                          red="❌"
-                        />
-                      </CardRow>
-                    );
-                  })}
+                            <button
+                              onClick={(e) => {
+                                handleDeleteSet(
+                                  exIndex,
+                                  i,
+                                  workoutData,
+                                  setWorkoutData
+                                );
+                                e.stopPropagation();
+                              }}
+                            >
+                              x
+                            </button>
+                          </Controller>
+                          <p key={i}>{`set ${set.index + 1}`}</p>
+                          <RepsWeightInput
+                            key={`reps${i}`}
+                            repsOrWeight="reps"
+                            value={set.reps}
+                            onChange={handleChangeReps}
+                            setIndex={i}
+                            workoutDataObject={obj}
+                            workoutData={workoutData}
+                            setWorkoutData={setWorkoutData}
+                          />
+                          <RepsWeightInput
+                            key={`weight${i}`}
+                            repsOrWeight="kg"
+                            value={set.weight}
+                            onChange={handleChangeWeight}
+                            setIndex={i}
+                            workoutDataObject={obj}
+                            workoutData={workoutData}
+                            setWorkoutData={setWorkoutData}
+                          />
+                          <TrafficLight
+                            key={`easy${i}`}
+                            indicator={set.easy}
+                            onChange={handleChangeEasy}
+                            setIndex={i}
+                            workoutDataObject={obj}
+                            workoutData={workoutData}
+                            setWorkoutData={setWorkoutData}
+                            green="😊"
+                            red="😔"
+                          />
+                          <TrafficLight
+                            key={`done${i}`}
+                            indicator={set.done}
+                            onChange={handleChangeDone}
+                            setIndex={i}
+                            workoutDataObject={obj}
+                            workoutData={workoutData}
+                            setWorkoutData={setWorkoutData}
+                            green="✅"
+                            red="❌"
+                          />
+                        </CardRow>
+                      );
+                    })}
                   <Button
                     variant="primary"
                     onClick={() =>
@@ -262,19 +252,6 @@ const TrackerPage = () => {
             variant="primary"
           >
             Add Exercise
-          </Button>
-          <Button
-            onClick={() =>
-              writeUserData(
-                uid,
-                userData,
-                setIsSavingUserData,
-                setHasSavedUserData
-              )
-            }
-            variant="primary"
-          >
-            Save
           </Button>
         </div>
         {(isSavingUserData || hasSavedUserData) && (
