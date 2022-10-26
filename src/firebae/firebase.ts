@@ -6,9 +6,9 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { getDatabase, set, ref } from "firebase/database";
+import { getDatabase, set, ref, push, child, update } from "firebase/database";
 import { SetStateAction } from "react";
-import { UserDataObject } from "../model/model";
+import { UserDataObject, WorkoutDataObject } from "../model/model";
 
 const firebaseConfig = {
   apiKey: "AIzaSyArNu8sadlIN9buRC1GX0wVO9Kv33fCqBk",
@@ -23,7 +23,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 export async function loginEmailPassword(email: string, password: string) {
   try {
@@ -61,14 +61,14 @@ export function logOut() {
 }
 
 // Realtime Database
-const db = getDatabase(app);
+export const db = getDatabase(app);
 
-function writeUserData(
+export const writeUserData = (
   uid: string,
   userData: UserDataObject[],
   setIsSavingUserData: (value: SetStateAction<boolean>) => void,
   setSavedUserData: (value: SetStateAction<boolean>) => void
-) {
+) => {
   if (uid !== "invalidUid") {
     setIsSavingUserData(true);
     set(ref(db, uid), userData)
@@ -81,6 +81,4 @@ function writeUserData(
         setSavedUserData(false);
       });
   }
-}
-
-export { auth, writeUserData, db };
+};
