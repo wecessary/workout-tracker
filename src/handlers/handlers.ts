@@ -44,22 +44,29 @@ export const handleAddSet = (
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
   const newWorkoutData = workoutData.map((obj) => {
-    const lastSet = obj.sets.at(-1) || ({} as Set);
-
     if (obj.index === workoutDataObjectIndex) {
-      return {
-        ...obj,
-        sets: [
-          ...obj.sets,
-          {
-            index: lastSet.index + 1 || 0,
-            reps: lastSet.reps || 0,
-            weight: lastSet.weight || 0,
-            easy: lastSet.easy || true,
-            done: false,
-          },
-        ],
-      };
+      const setLength = obj.sets ? obj.sets.length : 0; //Firebase doesn't store empty array
+      if (setLength) {
+        const lastSet = obj.sets[setLength - 1];
+        return {
+          ...obj,
+          sets: [
+            ...obj.sets,
+            {
+              index: lastSet.index + 1,
+              reps: lastSet.reps,
+              weight: lastSet.weight,
+              easy: lastSet.easy,
+              done: false,
+            },
+          ],
+        };
+      } else {
+        return {
+          ...obj,
+          sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+        };
+      }
     }
     return obj;
   });
@@ -255,7 +262,7 @@ export const handleDeleteSet = (
     }
     return obj;
   });
-  
+
   setWorkoutData(reorderWorkoutObjects(newWorkoutData));
 };
 
