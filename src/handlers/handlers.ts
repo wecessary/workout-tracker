@@ -45,28 +45,21 @@ export const handleAddSet = (
 ) => {
   const newWorkoutData = workoutData.map((obj) => {
     if (obj.index === workoutDataObjectIndex) {
-      const setLength = obj.sets ? obj.sets.length : 0; //Firebase doesn't store empty array
-      if (setLength) {
-        const lastSet = obj.sets[setLength - 1];
-        return {
-          ...obj,
-          sets: [
-            ...obj.sets,
-            {
-              index: lastSet.index + 1,
-              reps: lastSet.reps,
-              weight: lastSet.weight,
-              easy: lastSet.easy,
-              done: false,
-            },
-          ],
-        };
-      } else {
-        return {
-          ...obj,
-          sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
-        };
-      }
+      const doesLastSetExist = obj.sets && obj.sets.length
+      const lastSet = doesLastSetExist ? obj.sets[obj.sets.length - 1] : null;
+      return {
+        ...obj,
+        sets: [
+          ...(obj.sets || []),
+          {
+            index: lastSet ? lastSet.index + 1 : 0,
+            reps: lastSet ? lastSet.reps : 0,
+            weight: lastSet ? lastSet.weight : 0,
+            easy: lastSet ? lastSet.easy : true,
+            done: false,
+          },
+        ],
+      };
     }
     return obj;
   });
