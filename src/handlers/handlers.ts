@@ -38,14 +38,13 @@ export const handleAddWorkout = (
   ]);
 };
 
-export const handleAddSet = (
+export const addSet = (
   workoutDataObjectIndex: number,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+  workoutData: WorkoutDataObject[]
 ) => {
   const newWorkoutData = workoutData.map((obj) => {
     if (obj.index === workoutDataObjectIndex) {
-      const doesLastSetExist = obj.sets && obj.sets.length
+      const doesLastSetExist = obj.sets && obj.sets.length;
       const lastSet = doesLastSetExist ? obj.sets[obj.sets.length - 1] : null;
       return {
         ...obj,
@@ -64,7 +63,7 @@ export const handleAddSet = (
     return obj;
   });
 
-  setWorkoutData(newWorkoutData);
+  return newWorkoutData;
 };
 
 export const handleChangeReps = (

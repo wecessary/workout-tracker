@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import {
   handleChangeName,
   handleAddWorkout,
-  handleAddSet,
   handleChangeReps,
   handleChangeEasy,
   handleChangeWeight,
@@ -14,6 +13,7 @@ import {
   handleDeleteSet,
   handleEditCard,
   resetShowOptions,
+  addSet,
 } from "../handlers/handlers";
 import { currentDateAsString } from "../utilities/date";
 import ExerciseNameInput from "../components/ExerciseNameInput";
@@ -201,7 +201,7 @@ const TrackerPage = () => {
                   <Button
                     variant="primary"
                     onClick={() =>
-                      handleAddSet(obj.index, workoutData, setWorkoutData)
+                      setWorkoutData(addSet(obj.index, workoutData))
                     }
                   >
                     +
