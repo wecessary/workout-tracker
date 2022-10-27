@@ -18,7 +18,7 @@ const ExerciseNameInput = ({
 }: ExerciseNameProps) => {
   return (
     <textarea
-      className="group-hover:bg-gray-100 w-full mb-3 font-bold text-lg tracking-tight text-gray-900 dark:text-white"
+      className=" bg-app-yellow-100 group-hover:bg-app-yellow-500 w-full mb-3 font-bold text-lg tracking-tight text-gray-900 dark:text-white"
       value={value}
       placeholder="Exercise name"
       onChange={(e) => {

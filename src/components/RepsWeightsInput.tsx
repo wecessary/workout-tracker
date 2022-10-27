@@ -32,7 +32,7 @@ const RepsWeightInput = ({
         type="number"
         placeholder="10"
         value={value || ""}
-        className="group-hover:bg-gray-100 w-12 text-right"
+        className="bg-app-yellow-100 group-hover:bg-app-yellow-500 w-12 text-right"
         onChange={(e) =>
           onChange(e, setIndex, workoutDataObject, workoutData, setWorkoutData)
         }
