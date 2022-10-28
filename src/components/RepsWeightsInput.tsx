@@ -6,10 +6,8 @@ import {
 } from "../model/model";
 import { colour } from "../utilities/colour";
 
-type RepsOrWeight = "reps" | "kg";
-
 interface RepsWeightInput {
-  repsOrWeight: RepsOrWeight;
+  repsOrWeight: string;
   value: number;
   onChange: HandleChangeReps | HandleChangeWeight;
   setIndex: number;

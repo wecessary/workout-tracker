@@ -8,12 +8,13 @@ import {
   handleChangeDone,
   handleChangeComment,
   handleShowPopup,
-  handleDeleteExercise,
   handleOnDragEnd,
-  handleDeleteSet,
   handleEditCard,
   resetShowOptions,
   addSet,
+  deleteExercise,
+  deleteSet,
+  changeUnit,
 } from "../handlers/handlers";
 import { currentDateAsString } from "../utilities/date";
 import ExerciseNameInput from "../components/ExerciseNameInput";
@@ -25,7 +26,7 @@ import NotificationChip from "../components/NotificationChip";
 import Card from "../components/Card";
 import DraggableWrapper from "../components/DraggableWrapper";
 import { DragDropContext } from "react-beautiful-dnd";
-import { Bin, GripBar2 } from "../components/Icons";
+import { Bin, GripBar2, Pencil } from "../components/Icons";
 import CardRow from "../components/CardRow";
 import DroppableWrapper from "../components/DroppableWrapper";
 import Controller from "../components/Controller";
@@ -34,6 +35,7 @@ import useWorkoutData from "../hooks/useWorkoutData";
 import { UserDataContext } from "../context/DataContext";
 import useAutoSave from "../hooks/useAutoSave";
 import { colour } from "../utilities/colour";
+import FloatingLabel from "../components/FloatingLabel";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -102,17 +104,32 @@ const TrackerPage = () => {
                           handleShowPopup(exIndex, showOptions, setShowOptions)
                         }
                       >
-                        ...
+                        <Pencil />
                       </Button>
                       <Controller
                         currentExIndex={exIndex}
                         showOptions={showOptions}
                         attributeToShow={"showPopup"}
                       >
-                        <div className="absolute top-2 right-4">
+                        <div className="absolute w-48 top-5 right-4 bg-white rounded-lg border border-gray-200">
                           <Button
                             ref={ref}
-                            variant="transparent"
+                            variant="listGroup"
+                            onClick={() => {
+                              setWorkoutData(
+                                deleteExercise(
+                                  obj.index,
+                                  workoutData,
+                                )
+                              );
+                              resetShowOptions(setShowOptions);
+                            }}
+                          >
+                            Delete Exercise
+                          </Button>
+                          <Button
+                            ref={ref}
+                            variant="listGroup"
                             onClick={() => {
                               handleEditCard(
                                 exIndex,
@@ -121,8 +138,32 @@ const TrackerPage = () => {
                               );
                             }}
                           >
-                            Edit
+                            Delete Sets
                           </Button>
+                          <FloatingLabel
+                            label="Change intensity unit"
+                            value={obj.intensityUnit}
+                            onChange={(e) =>
+                              setWorkoutData(
+                                changeUnit(
+                                  "intensityUnit",
+                                  e,
+                                  workoutData,
+                                  exIndex
+                                )
+                              )
+                            }
+                          />
+                          <FloatingLabel
+                            label="Change reps unit"
+                            value={obj.repsUnit}
+                            onChange={(e) =>
+                              setWorkoutData(
+                                changeUnit("repsUnit", e, workoutData, exIndex)
+                              )
+                            }
+                            localStyling="rounded-b-lg"
+                          />
                         </div>
                       </Controller>
                     </div>
@@ -141,12 +182,13 @@ const TrackerPage = () => {
                           >
                             <button
                               onClick={(e) => {
-                                handleDeleteSet(
-                                  exIndex,
-                                  i,
-                                  workoutData,
-                                  setWorkoutData
+                                setWorkoutData(
+                                  deleteSet(exIndex, i, workoutData)
                                 );
+                                setShowOptions({
+                                  ...showOptions,
+                                  showPopup: false,
+                                });
                                 e.stopPropagation();
                               }}
                             >
@@ -156,7 +198,7 @@ const TrackerPage = () => {
                           <p key={i}>{`set ${set.index + 1}`}</p>
                           <RepsWeightInput
                             key={`reps${i}`}
-                            repsOrWeight="reps"
+                            repsOrWeight={obj.repsUnit}
                             value={set.reps}
                             onChange={handleChangeReps}
                             setIndex={i}
@@ -166,7 +208,7 @@ const TrackerPage = () => {
                           />
                           <RepsWeightInput
                             key={`weight${i}`}
-                            repsOrWeight="kg"
+                            repsOrWeight={obj.intensityUnit}
                             value={set.weight}
                             onChange={handleChangeWeight}
                             setIndex={i}
@@ -223,24 +265,6 @@ const TrackerPage = () => {
                     }}
                     placeholder="How was it?"
                   />
-                  <Controller
-                    attributeToShow="editCard"
-                    currentExIndex={exIndex}
-                    showOptions={showOptions}
-                  >
-                    <Button
-                      onClick={() =>
-                        handleDeleteExercise(
-                          obj.index,
-                          workoutData,
-                          setWorkoutData,
-                          setShowOptions
-                        )
-                      }
-                    >
-                      <Bin />
-                    </Button>
-                  </Controller>
                 </Card>
               </DraggableWrapper>
             );

@@ -7,7 +7,7 @@ import {
 } from "react";
 
 interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
-  variant?: "primary" | "secondary" | "transparent";
+  variant?: "primary" | "secondary" | "transparent" | "listGroup";
 }
 
 const Button = forwardRef(
@@ -23,7 +23,9 @@ const Button = forwardRef(
     const transparent =
       "text-sm shadow-md rounded-md bg-white p-4 hover:bg-slate-100 focus:ring-4 focus:ring-blue-300";
 
-    const buttonTypes = { primary, secondary, transparent };
+    const listGroup =
+      "inline-flex relative items-center py-2 px-2.5 w-full text-sm font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700";
+    const buttonTypes = { primary, secondary, transparent, listGroup };
     return (
       <button
         ref={ref}
