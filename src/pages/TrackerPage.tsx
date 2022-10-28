@@ -33,6 +33,7 @@ import useOutsideClick from "../hooks/useOutsideClick";
 import useWorkoutData from "../hooks/useWorkoutData";
 import { UserDataContext } from "../context/DataContext";
 import useAutoSave from "../hooks/useAutoSave";
+import { colour } from "../utilities/colour";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -65,7 +66,6 @@ const TrackerPage = () => {
         <input
           type="date"
           value={selectedDate}
-          className="bg-app-yellow-100"
           onChange={(e) => setSelectedDate(e.target.value)}
         />
         <DroppableWrapper droppableId="cards">
@@ -209,7 +209,7 @@ const TrackerPage = () => {
                   </Button>
 
                   <textarea
-                    className="bg-app-yellow-100 group-hover:bg-app-yellow-500 text-base w-full text-slate-500"
+                    className={`${colour.main} ${colour.groupHover} text-base w-full text-slate-500`}
                     value={obj.comment}
                     onChange={(e) => {
                       handleChangeComment(
