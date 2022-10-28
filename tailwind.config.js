@@ -7,6 +7,7 @@ module.exports = {
       colors: {
         "app-yellow": {
           100: "#fff3ca",
+          200: "#fcde79",
           500: "#ffca43",
         },
       },

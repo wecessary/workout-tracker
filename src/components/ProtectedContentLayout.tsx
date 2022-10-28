@@ -11,7 +11,7 @@ const Layout = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center p-4 bg-app-yellow-100">
+      <div className="flex flex-col justify-center items-center p-4">
         <h1> {username && `Hi ${username}💪`}</h1>
         <ProtectedRoutes>
           <UserDataContextProvider>

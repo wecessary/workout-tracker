@@ -4,6 +4,7 @@ import {
   HandleChangeWeight,
   WorkoutDataObject,
 } from "../model/model";
+import { colour } from "../utilities/colour";
 
 type RepsOrWeight = "reps" | "kg";
 
@@ -32,7 +33,7 @@ const RepsWeightInput = ({
         type="number"
         placeholder="10"
         value={value || ""}
-        className="bg-app-yellow-100 group-hover:bg-app-yellow-500 w-12 text-right"
+        className={`${colour.main} ${colour.groupHover} w-12 text-right`}
         onChange={(e) =>
           onChange(e, setIndex, workoutDataObject, workoutData, setWorkoutData)
         }

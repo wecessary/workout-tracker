@@ -1,5 +1,6 @@
 import { SetStateAction } from "react";
 import { HandleChangeName, WorkoutDataObject } from "../model/model";
+import { colour } from "../utilities/colour";
 
 interface ExerciseNameProps {
   value: string;
@@ -18,7 +19,7 @@ const ExerciseNameInput = ({
 }: ExerciseNameProps) => {
   return (
     <textarea
-      className=" bg-app-yellow-100 group-hover:bg-app-yellow-500 w-full mb-3 font-bold text-lg tracking-tight text-gray-900 dark:text-white"
+      className={`${colour.main} ${colour.groupHover} w-full mb-3 font-bold text-lg tracking-tight text-gray-900 dark:text-white`}
       value={value}
       placeholder="Exercise name"
       onChange={(e) => {
