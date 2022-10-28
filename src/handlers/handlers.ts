@@ -223,25 +223,20 @@ const reorderSetIndex = (sets: Set[]) => {
   return sets.map((set, i) => ({ ...set, index: i }));
 };
 
-export const handleDeleteExercise = (
+export const deleteExercise = (
   workoutDataObjectIndex: number,
   workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void,
-  setShowOptions: (value: SetStateAction<ShowOptions>) => void
 ) => {
-  setWorkoutData(
-    reorderWorkoutObjects(
-      workoutData.filter((obj) => obj.index !== workoutDataObjectIndex)
-    )
+
+  return reorderWorkoutObjects(
+    workoutData.filter((obj) => obj.index !== workoutDataObjectIndex)
   );
-  resetShowOptions(setShowOptions);
 };
 
-export const handleDeleteSet = (
+export const deleteSet = (
   workoutDataObjectIndex: number,
   IndexOfSetToDelete: number,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+  workoutData: WorkoutDataObject[]
 ) => {
   const newWorkoutData = workoutData.map((obj) => {
     if (obj.index === +workoutDataObjectIndex) {
@@ -255,7 +250,7 @@ export const handleDeleteSet = (
     return obj;
   });
 
-  setWorkoutData(reorderWorkoutObjects(newWorkoutData));
+  return reorderWorkoutObjects(newWorkoutData);
 };
 
 export const handleOnDragEnd = (
@@ -273,4 +268,21 @@ export const handleOnDragEnd = (
     newWorkoutData.splice(result.destination.index, 0, draggedCard);
     setWorkoutData(reorderWorkoutObjects(newWorkoutData));
   }
+};
+
+export const changeUnit = (
+  unit: "repsUnit" | "intensityUnit",
+  e: ChangeEvent<HTMLInputElement>,
+  workoutData: WorkoutDataObject[],
+  workoutDataObjectIndex: number
+) => {
+  const newWorkoutData = workoutData.map((obj) => {
+    if (obj.index === workoutDataObjectIndex) {
+      return unit === "intensityUnit"
+        ? { ...obj, intensityUnit: e.target.value }
+        : { ...obj, repsUnit: e.target.value };
+    }
+    return obj;
+  });
+  return newWorkoutData;
 };
