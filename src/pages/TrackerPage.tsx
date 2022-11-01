@@ -15,6 +15,7 @@ import {
   deleteExercise,
   deleteSet,
   changeUnit,
+  toggleDisplayUnit,
 } from "../handlers/handlers";
 import { currentDateAsString } from "../utilities/date";
 import ExerciseNameInput from "../components/ExerciseNameInput";
@@ -36,6 +37,7 @@ import { UserDataContext } from "../context/DataContext";
 import useAutoSave from "../hooks/useAutoSave";
 import { colour } from "../utilities/colour";
 import FloatingLabel from "../components/FloatingLabel";
+import Toggle from "../components/Toggle";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -58,6 +60,7 @@ const TrackerPage = () => {
   } = useAutoSave(userData, selectedDate, setUserData, workoutData);
   const ref = useOutsideClick(() => resetShowOptions(setShowOptions));
 
+  console.log(workoutData);
   return (
     <>
       <DragDropContext
@@ -111,16 +114,13 @@ const TrackerPage = () => {
                         showOptions={showOptions}
                         attributeToShow={"showPopup"}
                       >
-                        <div className="absolute w-48 top-5 right-4 bg-white rounded-lg border border-gray-200">
+                        <div className="absolute w-48 top-5 right-4 bg-white opacity-90 rounded-lg border border-gray-200">
                           <Button
                             ref={ref}
                             variant="listGroup"
                             onClick={() => {
                               setWorkoutData(
-                                deleteExercise(
-                                  obj.index,
-                                  workoutData,
-                                )
+                                deleteExercise(obj.index, workoutData)
                               );
                               resetShowOptions(setShowOptions);
                             }}
@@ -164,6 +164,40 @@ const TrackerPage = () => {
                             }
                             localStyling="rounded-b-lg"
                           />
+                          <Toggle
+                            label="Display reps unit"
+                            id="toggelDisplayReps"
+                            value={
+                              "displayReps" in obj ? obj.displayReps : true
+                            }
+                            onChange={() =>
+                              setWorkoutData(
+                                toggleDisplayUnit(
+                                  "displayReps",
+                                  workoutData,
+                                  exIndex
+                                )
+                              )
+                            }
+                          />
+                          <Toggle
+                            label="Display intensity unit"
+                            id="toggelDisplayIntensity"
+                            value={
+                              "displayIntensity" in obj
+                                ? obj.displayIntensity
+                                : true
+                            }
+                            onChange={() =>
+                              setWorkoutData(
+                                toggleDisplayUnit(
+                                  "displayIntensity",
+                                  workoutData,
+                                  exIndex
+                                )
+                              )
+                            }
+                          />
                         </div>
                       </Controller>
                     </div>
@@ -197,6 +231,11 @@ const TrackerPage = () => {
                           </Controller>
                           <p key={i}>{`set ${set.index + 1}`}</p>
                           <RepsWeightInput
+                            shouldDisplay={
+                              ("displayReps" in obj
+                                ? obj.displayReps
+                                : true) as boolean
+                            }
                             key={`reps${i}`}
                             repsOrWeight={obj.repsUnit}
                             value={set.reps}
@@ -207,6 +246,11 @@ const TrackerPage = () => {
                             setWorkoutData={setWorkoutData}
                           />
                           <RepsWeightInput
+                            shouldDisplay={
+                              ("displayIntensity" in obj
+                                ? obj.displayIntensity
+                                : true) as boolean
+                            }
                             key={`weight${i}`}
                             repsOrWeight={obj.intensityUnit}
                             value={set.weight}

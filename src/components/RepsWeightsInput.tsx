@@ -14,6 +14,7 @@ interface RepsWeightInput {
   workoutDataObject: WorkoutDataObject;
   workoutData: WorkoutDataObject[];
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void;
+  shouldDisplay: boolean;
 }
 
 const RepsWeightInput = ({
@@ -24,8 +25,9 @@ const RepsWeightInput = ({
   workoutDataObject,
   workoutData,
   setWorkoutData,
+  shouldDisplay,
 }: RepsWeightInput) => {
-  return (
+  return shouldDisplay ? (
     <span>
       <input
         type="number"
@@ -38,7 +40,7 @@ const RepsWeightInput = ({
       />
       {repsOrWeight}
     </span>
-  );
+  ) : null;
 };
 
 export default RepsWeightInput;
