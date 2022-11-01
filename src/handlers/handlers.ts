@@ -225,9 +225,8 @@ const reorderSetIndex = (sets: Set[]) => {
 
 export const deleteExercise = (
   workoutDataObjectIndex: number,
-  workoutData: WorkoutDataObject[],
+  workoutData: WorkoutDataObject[]
 ) => {
-
   return reorderWorkoutObjects(
     workoutData.filter((obj) => obj.index !== workoutDataObjectIndex)
   );
@@ -278,11 +277,27 @@ export const changeUnit = (
 ) => {
   const newWorkoutData = workoutData.map((obj) => {
     if (obj.index === workoutDataObjectIndex) {
-      return unit === "intensityUnit"
-        ? { ...obj, intensityUnit: e.target.value }
-        : { ...obj, repsUnit: e.target.value };
+      return { ...obj, [unit]: e.target.value };
     }
     return obj;
   });
+  return newWorkoutData;
+};
+
+export const toggleDisplayUnit = (
+  unit: "displayReps" | "displayIntensity",
+  workoutData: WorkoutDataObject[],
+  workoutDataObjectIndex: number
+) => {
+  const newWorkoutData = workoutData.map((obj) => {
+    if (obj.index === workoutDataObjectIndex) {
+      const booleanExists = unit in obj;
+      return booleanExists
+        ? { ...obj, [unit]: !obj[unit] }
+        : { ...obj, [unit]: false };
+    }
+    return obj;
+  });
+
   return newWorkoutData;
 };

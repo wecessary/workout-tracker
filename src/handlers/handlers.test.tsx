@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { addSet, changeUnit } from "./handlers";
+import { addSet, changeUnit, toggleDisplayUnit } from "./handlers";
 import { WorkoutDataObject } from "../model/model";
 import { ChangeEvent } from "react";
 
@@ -129,5 +129,69 @@ describe("changeUnit(): test can change units ", () => {
     );
     expect(outputWorkoutData[0].repsUnit).toEqual("reps");
     expect(outputWorkoutData[1].repsUnit).toEqual("foo");
+  });
+});
+
+describe("toggleDisplayUnit function: test can toggle display unit", () => {
+  const workoutDataWithDisplayBooleans = [
+    {
+      index: 0,
+      name: "",
+      repsUnit: "reps",
+      intensityUnit: "kg",
+      sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+      comment: "",
+      displayReps: true,
+      displayIntensity: true,
+    },
+  ];
+
+  test("when the displayReps key doesn't exit in the obj, toggling should set it to false", () => {
+    //this is because the first time a user toggles should be to hide it, as the default is to display the all units
+    const outputWorkoutData = toggleDisplayUnit(
+      "displayReps",
+      baselineWorkoutData,
+      0
+    );
+    expect(outputWorkoutData[0].displayReps).toBe(false);
+    expect(outputWorkoutData[0].displayIntensity).toBe(undefined);
+  });
+
+  test("when the displayIntensity key doesn't exit in the obj, toggling should set it to false", () => {
+    const outputWorkoutData = toggleDisplayUnit(
+      "displayIntensity",
+      baselineWorkoutData,
+      0
+    );
+    expect(outputWorkoutData[0].displayReps).toBe(undefined);
+    expect(outputWorkoutData[0].displayIntensity).toBe(false);
+  });
+
+  test("when the displayReps key already exists, should be able to toggle", () => {
+    const outputWorkoutData = toggleDisplayUnit(
+      "displayReps",
+      workoutDataWithDisplayBooleans,
+      0
+    );
+    expect(outputWorkoutData[0].displayReps).toBe(
+      !workoutDataWithDisplayBooleans[0].displayReps
+    );
+    expect(outputWorkoutData[0].displayIntensity).toBe(
+      workoutDataWithDisplayBooleans[0].displayIntensity
+    );
+  });
+
+  test("when the displayIntensity key already exists, should be able to toggle", () => {
+    const outputWorkoutData = toggleDisplayUnit(
+      "displayIntensity",
+      workoutDataWithDisplayBooleans,
+      0
+    );
+    expect(outputWorkoutData[0].displayReps).toBe(
+      workoutDataWithDisplayBooleans[0].displayReps
+    );
+    expect(outputWorkoutData[0].displayIntensity).toBe(
+      !workoutDataWithDisplayBooleans[0].displayIntensity
+    );
   });
 });

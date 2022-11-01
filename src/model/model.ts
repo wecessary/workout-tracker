@@ -56,6 +56,8 @@ export interface WorkoutDataObject {
   intensityUnit: string;
   sets: Set[];
   comment: string;
+  displayReps?: boolean;
+  displayIntensity?: boolean;
 }
 
 export interface Set {
