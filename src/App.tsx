@@ -2,8 +2,10 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedContentLayout from "./components/ProtectedContentLayout";
 import AuthContextProvider from "./context/AuthContext";
+import Analytics from "./pages/AnalyticsPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import Settings from "./pages/SettingsPage";
 import TrackerPage from "./pages/TrackerPage";
 import UnprotectedRoutes from "./routeProtection/UnprotectedRoutes";
 
@@ -22,7 +24,9 @@ const App = () => {
             </Route>
 
             <Route element={<ProtectedContentLayout />}>
-              <Route path="tracker-page" element={<TrackerPage />} />
+              <Route path="tracker" element={<TrackerPage />} />
+              <Route path="analytics" element={<Analytics />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
           </Routes>
         </BrowserRouter>
