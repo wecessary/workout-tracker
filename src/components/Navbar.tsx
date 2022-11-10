@@ -8,7 +8,7 @@ const NavBar = () => {
         <ArrowUp />
       </Link>
       <Link to="/tracker">
-        <PencilSquare />
+        <PencilSquare colour="black" />
       </Link>
       <Link to="settings">
         <Cog />

@@ -59,7 +59,7 @@ export const GripBar2 = () => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       fill="currentColor"
-      className="w-10 h-4 text-slate-400"
+      className="w-24 h-4 text-slate-500"
     >
       <path
         fillRule="evenodd"
@@ -113,14 +113,14 @@ export const Cog = () => {
   );
 };
 
-export const PencilSquare = () => {
+export const PencilSquare = ({ colour }: { colour: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke="currentColor"
+      stroke={`${colour}`}
       className="w-6 h-6"
     >
       <path
@@ -146,6 +146,25 @@ export const ArrowUp = () => {
         strokeLinecap="round"
         strokeLinejoin="round"
         d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+      />
+    </svg>
+  );
+};
+
+export const Chevron = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="white"
+      className="w-6 h-6"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4.5 15.75l7.5-7.5 7.5 7.5"
       />
     </svg>
   );

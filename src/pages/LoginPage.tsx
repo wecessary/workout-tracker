@@ -10,7 +10,7 @@ const LoginPage = () => {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     await loginEmailPassword(email, password);
-    navigate("/tracker-page");
+    navigate("/tracker");
   }
 
   return (

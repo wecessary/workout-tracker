@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Set } from "../model/model";
 
 const Timer = ({
   beginOnClick,
@@ -6,14 +7,28 @@ const Timer = ({
   resetOnClick,
   startTime,
   endTime,
+  sets,
+  setIndex,
 }: {
   beginOnClick: () => void;
   finishOnClick: () => void;
   resetOnClick: () => void;
   startTime: number;
   endTime: number;
+  sets: Set[];
+  setIndex: number;
 }) => {
-  const [clickCount, setClickCount] = useState(0);
+  const clickCountLoader = () => {
+    if (startTime && endTime) {
+      return 2;
+    }
+    if (startTime) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const [clickCount, setClickCount] = useState(clickCountLoader());
   const [timeDiff, setTimeDiff] = useState(0);
 
   const calTimeDiff = (newTimeInMs: number, oldTimeInMs: number) =>
@@ -41,11 +56,34 @@ const Timer = ({
     },
     {
       icon: "✔",
-      text: "complete",
+      text: "Set complete",
       content: secTominsec(calTimeDiff(endTime, startTime)), // display length
       onClick: resetOnClick,
     },
   ];
+
+  const isBtnDisabled = () => {
+    if (setIndex == 0 && clickCount !== 2) {
+      return false;
+    }
+    const isPrevSetStarted = () => {
+      return sets[setIndex - 1] && sets[setIndex - 1].timeStart ? true : false;
+    };
+
+    const isPrevSetComplete = () => {
+      return sets[setIndex - 1] && sets[setIndex - 1].timeComplete
+        ? true
+        : false;
+    };
+
+    if (isPrevSetStarted() && isPrevSetComplete()) {
+      return false;
+    }
+
+    if (!isPrevSetStarted()) {
+      return true;
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,15 +94,16 @@ const Timer = ({
 
   return (
     <button
+      disabled={isBtnDisabled()}
       onClick={() => {
-        btnContent[clickCount % 3].onClick();
-        setClickCount(clickCount + 1);
+        btnContent[clickCount].onClick();
+        setClickCount((clickCount + 1) % 3);
       }}
-      className="flex gap-2 text-sm w-3/5 border text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg px-1"
+      className=" col-span-7 gap-1 flex px-3 py-1 text-[10px] border text-[#575555] bg-[#F4F4F4] font-medium rounded-lg  disabled:bg-[#C8C8C8]"
     >
-      <div>{btnContent[clickCount % 3].icon}</div>
-      <div className="">{btnContent[clickCount % 3].text}</div>
-      <div>{btnContent[clickCount % 3].content}</div>
+      <div>{btnContent[clickCount].icon}</div>
+      <div className="flex-shrink">{btnContent[clickCount % 3].text}</div>
+      <div>{btnContent[clickCount].content}</div>
     </button>
   );
 };

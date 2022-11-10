@@ -29,7 +29,7 @@ import NotificationChip from "../components/NotificationChip";
 import Card from "../components/Card";
 import DraggableWrapper from "../components/DraggableWrapper";
 import { DragDropContext } from "react-beautiful-dnd";
-import { Bin, GripBar2, Pencil } from "../components/Icons";
+import { Chevron, GripBar2, PencilSquare } from "../components/Icons";
 import CardRow from "../components/CardRow";
 import DroppableWrapper from "../components/DroppableWrapper";
 import Controller from "../components/Controller";
@@ -75,6 +75,7 @@ const TrackerPage = () => {
         <input
           type="date"
           value={selectedDate}
+          className="bg-[#F5F5F5]"
           onChange={(e) => setSelectedDate(e.target.value)}
         />
         <DroppableWrapper droppableId="cards">
@@ -89,7 +90,7 @@ const TrackerPage = () => {
                   <div className="flex justify-center mb-4">
                     <GripBar2 />
                   </div>
-                  <CardRow>
+                  <CardRow rowStyling="grid grid-cols-12 gap-2">
                     <ExerciseNameInput
                       key={exIndex}
                       value={obj.name}
@@ -98,8 +99,11 @@ const TrackerPage = () => {
                       workoutData={workoutData}
                       setWorkoutData={setWorkoutData}
                     />
+                    <Button localStyling="col-span-1 flex items-start">
+                      <Chevron />
+                    </Button>
                     <div
-                      className="relative"
+                      className="relative col-span-1"
                       onClick={(e) => e.stopPropagation()}
                       // without stopPropagation, I think when you click ...,
                       // Edit is mounted, and adding the click event to the whole document,
@@ -111,7 +115,7 @@ const TrackerPage = () => {
                           handleShowPopup(exIndex, showOptions, setShowOptions)
                         }
                       >
-                        <Pencil />
+                        <PencilSquare colour="white" />
                       </Button>
                       <Controller
                         currentExIndex={exIndex}
@@ -209,40 +213,10 @@ const TrackerPage = () => {
                   {obj.sets &&
                     obj.sets.map((set, setIndex) => {
                       return (
-                        <div key={setIndex}>
-                          <CardRow key={`setlabel${setIndex}`}>
-                            <p className="font-medium">{`Set ${
-                              setIndex + 1
-                            }`}</p>
-                          </CardRow>
-                          <CardRow key={`timerRow${setIndex}`}>
-                            <Timer
-                              startTime={set.timeStart || 0}
-                              endTime={set.timeComplete || 0}
-                              beginOnClick={() =>
-                                setWorkoutData(
-                                  startSet(setIndex, obj, workoutData)
-                                )
-                              }
-                              finishOnClick={() =>
-                                setWorkoutData(
-                                  finishSet(setIndex, obj, workoutData)
-                                )
-                              }
-                              resetOnClick={() =>
-                                setWorkoutData(
-                                  resetSetTimes(setIndex, obj, workoutData)
-                                )
-                              }
-                            />
-                            <RestTimer
-                              sets={obj.sets}
-                              currentSetIndex={setIndex}
-                            />
-                          </CardRow>
+                        <div key={setIndex} className="mb-4">
                           <CardRow
                             key={`metricRow${setIndex}`}
-                            rowStyling="text-gray-700 text-sm"
+                            rowStyling="text-gray-700 text-sm grid-cols-12"
                           >
                             <Controller
                               attributeToShow="editCard"
@@ -250,6 +224,7 @@ const TrackerPage = () => {
                               showOptions={showOptions}
                             >
                               <button
+                                className="text-white"
                                 onClick={(e) => {
                                   setWorkoutData(
                                     deleteSet(exIndex, setIndex, workoutData)
@@ -264,6 +239,9 @@ const TrackerPage = () => {
                                 x
                               </button>
                             </Controller>
+                            <p className="col-span-6 font-extrabold text-[#D9D9D9]">{`Set ${
+                              setIndex + 1
+                            }`}</p>
                             <RepsWeightInput
                               shouldDisplay={
                                 ("displayReps" in obj
@@ -294,7 +272,38 @@ const TrackerPage = () => {
                               workoutData={workoutData}
                               setWorkoutData={setWorkoutData}
                             />
+                          </CardRow>
+                          <CardRow
+                            key={`timerRow${setIndex}`}
+                            rowStyling="gap-4 grid-cols-12 items-center justify-between"
+                          >
+                            <Timer
+                              startTime={set.timeStart || 0}
+                              endTime={set.timeComplete || 0}
+                              beginOnClick={() =>
+                                setWorkoutData(
+                                  startSet(setIndex, obj, workoutData)
+                                )
+                              }
+                              finishOnClick={() =>
+                                setWorkoutData(
+                                  finishSet(setIndex, obj, workoutData)
+                                )
+                              }
+                              resetOnClick={() =>
+                                setWorkoutData(
+                                  resetSetTimes(setIndex, obj, workoutData)
+                                )
+                              }
+                              setIndex={setIndex}
+                              sets={obj.sets}
+                            />
+                            <RestTimer
+                              sets={obj.sets}
+                              currentSetIndex={setIndex}
+                            />
                             <TrafficLight
+                              localStyling="col-spans-2"
                               key={`easy${setIndex}`}
                               indicator={set.easy}
                               onChange={handleChangeEasy}
@@ -341,7 +350,7 @@ const TrackerPage = () => {
 
         <Button
           onClick={() => handleAddWorkout(workoutData, setWorkoutData)}
-          variant="primary"
+          variant="outline"
         >
           Add Exercise
         </Button>

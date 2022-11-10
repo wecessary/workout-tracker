@@ -70,7 +70,7 @@ export const RestTimer = ({
   }, [sets]);
 
   return (
-    <p className="w-[45px] text-slate-500 text-[10px]">
+    <p className=" text-[#D9D9D9] text-[10px] col-span-3">
       {timeAgo ? timeFormatter(timeAgo) : null}
     </p>
   );

@@ -13,7 +13,7 @@ const Layout = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center p-4 mb-10">
-        <h1> {username && `Hi ${username}💪`}</h1>
+        <h1 className="text-[#999696]"> {username && `Hi ${username}💪`}</h1>
         <ProtectedRoutes>
           <UserDataContextProvider>
             <CheckDataIsLoaded>

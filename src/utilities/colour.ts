@@ -1,5 +1,5 @@
 export const colour = {
-  main: "bg-app-yellow-100",
-  hover: "hover:bg-app-yellow-200",
-  groupHover: "group-hover:bg-app-yellow-200",
+  main: "bg-[#3C3A3A]",
+  hover: "hover:bg-[#363535]",
+  groupHover: "group-hover:bg-[#363535]",
 };

@@ -76,7 +76,10 @@ export const handleChangeReps = (
   const newSets = workoutDataObject.sets.map((setObj) => {
     //setObj as in the object representing the set e.g. {reps: 5, weight: 10}
     if (setIndex === setObj.index) {
-      return { ...setObj, reps: e.target.valueAsNumber };
+      return {
+        ...setObj,
+        reps: e.target.valueAsNumber || 0,
+      };
     }
     return setObj;
   });
@@ -100,7 +103,10 @@ export const handleChangeWeight = (
   const newSets = workoutDataObject.sets.map((setObj) => {
     //setObj as in the object representing the set e.g. {reps: 5, weight: 10}
     if (setObj.index === setIndex) {
-      return { ...setObj, weight: e.target.valueAsNumber };
+      return {
+        ...setObj,
+        weight: e.target.valueAsNumber || 0,
+      };
     }
     return setObj;
   });
