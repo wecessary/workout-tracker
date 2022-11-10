@@ -5,7 +5,9 @@ import { UserDataObject } from "../model/model";
 const useWorkoutData = (userData: UserDataObject[], selectedDate: string) => {
   const getselectedDayWorkout = () => {
     const index = userData.findIndex((obj) => obj.date === selectedDate);
-    return index === -1 ? initialWorkoutData : userData[index].workoutData;
+    return index === -1
+      ? initialWorkoutData
+      : userData[index].workoutData || initialWorkoutData; // if the workoutData is [] and saved to Firebase. When it's downloaded again, it will become undefined.
   };
 
   const [workoutData, setWorkoutData] = useState(getselectedDayWorkout());

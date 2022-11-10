@@ -8,11 +8,12 @@ import {
 
 interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   variant?: "primary" | "secondary" | "transparent" | "listGroup";
+  localStyling?: string;
 }
 
 const Button = forwardRef(
   (
-    { children, onClick, variant }: ButtonProps,
+    { children, onClick, variant, localStyling }: ButtonProps,
     ref?: ForwardedRef<HTMLButtonElement>
   ) => {
     const primary =
@@ -30,7 +31,7 @@ const Button = forwardRef(
       <button
         ref={ref}
         onClick={onClick}
-        className={variant && buttonTypes[variant]}
+        className={variant && buttonTypes[variant] + " " + localStyling}
       >
         {children}
       </button>

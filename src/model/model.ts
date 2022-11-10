@@ -66,6 +66,8 @@ export interface Set {
   weight: number;
   easy: boolean;
   done: boolean;
+  timeStart?: number;
+  timeComplete?: number;
 }
 
 export interface UserDataObject {
