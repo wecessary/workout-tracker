@@ -14,6 +14,7 @@ interface TrafficLightProps {
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void;
   green: string;
   red: string;
+  localStyling?: string;
 }
 
 const TrafficLight = ({
@@ -25,16 +26,18 @@ const TrafficLight = ({
   setWorkoutData,
   green,
   red,
+  localStyling,
 }: TrafficLightProps) => {
   return (
-      <button
-        onClick={() => {
-          onChange(setIndex, workoutDataObject, workoutData, setWorkoutData);
-        }}
-      >
-        {indicator ? green : red}
-      </button>
+    <button
+      className={`${localStyling}`}
+      onClick={() => {
+        onChange(setIndex, workoutDataObject, workoutData, setWorkoutData);
+      }}
+    >
+      {indicator ? green : red}
+    </button>
   );
 };
 
-export default TrafficLight
+export default TrafficLight;

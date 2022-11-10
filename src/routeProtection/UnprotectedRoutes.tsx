@@ -19,7 +19,7 @@ const UnprotectedRoutes = () => {
   return unProtectedLogic(
     user,
     loading,
-    <Navigate to="/tracker-page" />,
+    <Navigate to="/tracker" />,
     <Outlet />
   );
 };

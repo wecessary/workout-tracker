@@ -18,12 +18,12 @@ describe("Tracker Page", () => {
   test("can add sets", async () => {
     const { user } = setup(<TrackerPage />);
     const setLables = await screen.findAllByText(/set/i);
-    expect(setLables).toHaveLength(1);
+    expect(setLables).toHaveLength(2);
 
     const addSetBtn = await screen.findByRole("button", { name: "+" });
     await user.click(addSetBtn);
     const upDatedSetLables = await screen.findAllByText(/set/i);
-    await waitFor(() => expect(upDatedSetLables).toHaveLength(2));
+    await waitFor(() => expect(upDatedSetLables).toHaveLength(4));
   });
 
   test("can add exercise", async () => {

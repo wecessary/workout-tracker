@@ -28,12 +28,12 @@ const RepsWeightInput = ({
   shouldDisplay,
 }: RepsWeightInput) => {
   return shouldDisplay ? (
-    <span>
+    <span className="flex text-[#D9D9D9] font-medium col-span-3 ">
       <input
         type="number"
         placeholder="10"
         value={value || ""}
-        className={`${colour.main} ${colour.groupHover} w-12 text-right`}
+        className={`${colour.main} ${colour.groupHover} w-1/3 text-right text-[#D9D9D9] mr-1 placeholder:opacity-40`}
         onChange={(e) =>
           onChange(e, setIndex, workoutDataObject, workoutData, setWorkoutData)
         }

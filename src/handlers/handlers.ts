@@ -76,7 +76,10 @@ export const handleChangeReps = (
   const newSets = workoutDataObject.sets.map((setObj) => {
     //setObj as in the object representing the set e.g. {reps: 5, weight: 10}
     if (setIndex === setObj.index) {
-      return { ...setObj, reps: e.target.valueAsNumber };
+      return {
+        ...setObj,
+        reps: e.target.valueAsNumber || 0,
+      };
     }
     return setObj;
   });
@@ -100,7 +103,10 @@ export const handleChangeWeight = (
   const newSets = workoutDataObject.sets.map((setObj) => {
     //setObj as in the object representing the set e.g. {reps: 5, weight: 10}
     if (setObj.index === setIndex) {
-      return { ...setObj, weight: e.target.valueAsNumber };
+      return {
+        ...setObj,
+        weight: e.target.valueAsNumber || 0,
+      };
     }
     return setObj;
   });
@@ -137,27 +143,64 @@ export const handleChangeEasy = (
   setWorkoutData(newWorkoutData);
 };
 
-export const handleChangeDone = (
+export const startSet = (
   setIndex: number,
   workoutDataObject: WorkoutDataObject,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+  workoutData: WorkoutDataObject[]
 ) => {
   const newSets = workoutDataObject.sets.map((setObj) => {
     if (setObj.index === setIndex) {
-      return { ...setObj, done: !setObj.done };
+      return { ...setObj, timeStart: Date.now() };
     }
     return setObj;
   });
 
-  const newWorkoutData = workoutData.map((obj) => {
+  return workoutData.map((obj) => {
     if (workoutDataObject.index === obj.index) {
       return { ...obj, sets: newSets };
     }
     return obj;
   });
+};
 
-  setWorkoutData(newWorkoutData);
+export const finishSet = (
+  setIndex: number,
+  workoutDataObject: WorkoutDataObject,
+  workoutData: WorkoutDataObject[]
+) => {
+  const newSets = workoutDataObject.sets.map((setObj) => {
+    if (setObj.index === setIndex) {
+      return { ...setObj, timeComplete: Date.now() };
+    }
+    return setObj;
+  });
+
+  return workoutData.map((obj) => {
+    if (workoutDataObject.index === obj.index) {
+      return { ...obj, sets: newSets };
+    }
+    return obj;
+  });
+};
+
+export const resetSetTimes = (
+  setIndex: number,
+  workoutDataObject: WorkoutDataObject,
+  workoutData: WorkoutDataObject[]
+) => {
+  const newSets = workoutDataObject.sets.map((setObj) => {
+    if (setObj.index === setIndex) {
+      return { ...setObj, timeStart: 0, timeComplete: 0 };
+    }
+    return setObj;
+  });
+
+  return workoutData.map((obj) => {
+    if (workoutDataObject.index === obj.index) {
+      return { ...obj, sets: newSets };
+    }
+    return obj;
+  });
 };
 
 export const handleChangeComment = (
