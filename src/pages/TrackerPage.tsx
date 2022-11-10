@@ -5,7 +5,6 @@ import {
   handleChangeReps,
   handleChangeEasy,
   handleChangeWeight,
-  handleChangeDone,
   handleChangeComment,
   handleShowPopup,
   handleOnDragEnd,
@@ -16,6 +15,9 @@ import {
   deleteSet,
   changeUnit,
   toggleDisplayUnit,
+  startSet,
+  finishSet,
+  resetSetTimes,
 } from "../handlers/handlers";
 import { currentDateAsString } from "../utilities/date";
 import ExerciseNameInput from "../components/ExerciseNameInput";
@@ -38,6 +40,8 @@ import useAutoSave from "../hooks/useAutoSave";
 import { colour } from "../utilities/colour";
 import FloatingLabel from "../components/FloatingLabel";
 import Toggle from "../components/Toggle";
+import RestTimer from "../components/RestTimer";
+import Timer from "../components/Timer";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -59,8 +63,8 @@ const TrackerPage = () => {
     setHasSavedUserData,
   } = useAutoSave(userData, selectedDate, setUserData, workoutData);
   const ref = useOutsideClick(() => resetShowOptions(setShowOptions));
-
   console.log(workoutData);
+
   return (
     <>
       <DragDropContext
@@ -114,7 +118,7 @@ const TrackerPage = () => {
                         showOptions={showOptions}
                         attributeToShow={"showPopup"}
                       >
-                        <div className="absolute w-48 top-5 right-4 bg-white opacity-90 rounded-lg border border-gray-200">
+                        <div className="absolute w-48 top-5 right-4 bg-white z-10 rounded-lg border border-gray-200">
                           <Button
                             ref={ref}
                             variant="listGroup"
@@ -203,86 +207,106 @@ const TrackerPage = () => {
                     </div>
                   </CardRow>
                   {obj.sets &&
-                    obj.sets.map((set, i) => {
+                    obj.sets.map((set, setIndex) => {
                       return (
-                        <CardRow
-                          key={`set${i}`}
-                          rowStyling="text-gray-700 text-sm"
-                        >
-                          <Controller
-                            attributeToShow="editCard"
-                            currentExIndex={exIndex}
-                            showOptions={showOptions}
-                          >
-                            <button
-                              onClick={(e) => {
+                        <div key={setIndex}>
+                          <CardRow key={`setlabel${setIndex}`}>
+                            <p className="font-medium">{`Set ${
+                              setIndex + 1
+                            }`}</p>
+                          </CardRow>
+                          <CardRow key={`timerRow${setIndex}`}>
+                            <Timer
+                              startTime={set.timeStart || 0}
+                              endTime={set.timeComplete || 0}
+                              beginOnClick={() =>
                                 setWorkoutData(
-                                  deleteSet(exIndex, i, workoutData)
-                                );
-                                setShowOptions({
-                                  ...showOptions,
-                                  showPopup: false,
-                                });
-                                e.stopPropagation();
-                              }}
+                                  startSet(setIndex, obj, workoutData)
+                                )
+                              }
+                              finishOnClick={() =>
+                                setWorkoutData(
+                                  finishSet(setIndex, obj, workoutData)
+                                )
+                              }
+                              resetOnClick={() =>
+                                setWorkoutData(
+                                  resetSetTimes(setIndex, obj, workoutData)
+                                )
+                              }
+                            />
+                            <RestTimer
+                              sets={obj.sets}
+                              currentSetIndex={setIndex}
+                            />
+                          </CardRow>
+                          <CardRow
+                            key={`metricRow${setIndex}`}
+                            rowStyling="text-gray-700 text-sm"
+                          >
+                            <Controller
+                              attributeToShow="editCard"
+                              currentExIndex={exIndex}
+                              showOptions={showOptions}
                             >
-                              x
-                            </button>
-                          </Controller>
-                          <p key={i}>{`set ${set.index + 1}`}</p>
-                          <RepsWeightInput
-                            shouldDisplay={
-                              ("displayReps" in obj
-                                ? obj.displayReps
-                                : true) as boolean
-                            }
-                            key={`reps${i}`}
-                            repsOrWeight={obj.repsUnit}
-                            value={set.reps}
-                            onChange={handleChangeReps}
-                            setIndex={i}
-                            workoutDataObject={obj}
-                            workoutData={workoutData}
-                            setWorkoutData={setWorkoutData}
-                          />
-                          <RepsWeightInput
-                            shouldDisplay={
-                              ("displayIntensity" in obj
-                                ? obj.displayIntensity
-                                : true) as boolean
-                            }
-                            key={`weight${i}`}
-                            repsOrWeight={obj.intensityUnit}
-                            value={set.weight}
-                            onChange={handleChangeWeight}
-                            setIndex={i}
-                            workoutDataObject={obj}
-                            workoutData={workoutData}
-                            setWorkoutData={setWorkoutData}
-                          />
-                          <TrafficLight
-                            key={`easy${i}`}
-                            indicator={set.easy}
-                            onChange={handleChangeEasy}
-                            setIndex={i}
-                            workoutDataObject={obj}
-                            workoutData={workoutData}
-                            setWorkoutData={setWorkoutData}
-                            green="😊"
-                            red="😔"
-                          />
-                          <TrafficLight
-                            key={`done${i}`}
-                            indicator={set.done}
-                            onChange={handleChangeDone}
-                            setIndex={i}
-                            workoutDataObject={obj}
-                            workoutData={workoutData}
-                            setWorkoutData={setWorkoutData}
-                            green="✅"
-                            red="❌"
-                          />
-                        </CardRow>
+                              <button
+                                onClick={(e) => {
+                                  setWorkoutData(
+                                    deleteSet(exIndex, setIndex, workoutData)
+                                  );
+                                  setShowOptions({
+                                    ...showOptions,
+                                    showPopup: false,
+                                  });
+                                  e.stopPropagation();
+                                }}
+                              >
+                                x
+                              </button>
+                            </Controller>
+                            <RepsWeightInput
+                              shouldDisplay={
+                                ("displayReps" in obj
+                                  ? obj.displayReps
+                                  : true) as boolean
+                              }
+                              key={`reps${setIndex}`}
+                              repsOrWeight={obj.repsUnit}
+                              value={set.reps}
+                              onChange={handleChangeReps}
+                              setIndex={setIndex}
+                              workoutDataObject={obj}
+                              workoutData={workoutData}
+                              setWorkoutData={setWorkoutData}
+                            />
+                            <RepsWeightInput
+                              shouldDisplay={
+                                ("displayIntensity" in obj
+                                  ? obj.displayIntensity
+                                  : true) as boolean
+                              }
+                              key={`weight${setIndex}`}
+                              repsOrWeight={obj.intensityUnit}
+                              value={set.weight}
+                              onChange={handleChangeWeight}
+                              setIndex={setIndex}
+                              workoutDataObject={obj}
+                              workoutData={workoutData}
+                              setWorkoutData={setWorkoutData}
+                            />
+                            <TrafficLight
+                              key={`easy${setIndex}`}
+                              indicator={set.easy}
+                              onChange={handleChangeEasy}
+                              setIndex={setIndex}
+                              workoutDataObject={obj}
+                              workoutData={workoutData}
+                              setWorkoutData={setWorkoutData}
+                              green="😊"
+                              red="😔"
+                            />
+                          </CardRow>
+                        </div>
                       );
                     })}
                   <Button
@@ -315,14 +339,12 @@ const TrackerPage = () => {
           })}
         </DroppableWrapper>
 
-        <div className="flex">
-          <Button
-            onClick={() => handleAddWorkout(workoutData, setWorkoutData)}
-            variant="primary"
-          >
-            Add Exercise
-          </Button>
-        </div>
+        <Button
+          onClick={() => handleAddWorkout(workoutData, setWorkoutData)}
+          variant="primary"
+        >
+          Add Exercise
+        </Button>
         {(isSavingUserData || hasSavedUserData) && (
           <NotificationChip
             statuses={[isSavingUserData, hasSavedUserData]}

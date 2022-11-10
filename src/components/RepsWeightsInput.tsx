@@ -28,7 +28,7 @@ const RepsWeightInput = ({
   shouldDisplay,
 }: RepsWeightInput) => {
   return shouldDisplay ? (
-    <span>
+    <span className="flex">
       <input
         type="number"
         placeholder="10"

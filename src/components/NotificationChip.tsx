@@ -28,7 +28,7 @@ const NotificationChip = ({
   }, [...statuses]);
 
   return (
-    <div className="flex gap-4 p-4 shadow-md rounded-md sticky mt-10 bottom-2 bg-white text-slate-400">
+    <div className="flex gap-4 p-4 shadow-md rounded-md fixed bottom-16 bg-white text-slate-400">
       {children}
       <button onClick={resetStatus}>X</button>
     </div>
