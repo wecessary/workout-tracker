@@ -40,8 +40,8 @@ import useAutoSave from "../hooks/useAutoSave";
 import { colour } from "../utilities/colour";
 import FloatingLabel from "../components/FloatingLabel";
 import Toggle from "../components/Toggle";
-import RestTimer from "../components/RestTimer";
-import Timer from "../components/Timer";
+import RestTimer from "../components/timers/RestTimer";
+import Timer from "../components/timers/Timer";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -63,8 +63,6 @@ const TrackerPage = () => {
     setHasSavedUserData,
   } = useAutoSave(userData, selectedDate, setUserData, workoutData);
   const ref = useOutsideClick(() => resetShowOptions(setShowOptions));
-  console.log(workoutData);
-
   return (
     <>
       <DragDropContext

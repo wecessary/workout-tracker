@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Set } from "../model/model";
+import { Set } from "../../model/model";
 
 export const timeTracker = (currentSet: Set, nextSet: Set) => {
   const isSetStarted = (set: Set) => (set && set.timeStart) || false;
