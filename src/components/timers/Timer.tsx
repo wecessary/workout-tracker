@@ -1,5 +1,44 @@
 import { useEffect, useState } from "react";
-import { Set } from "../model/model";
+import { Set } from "../../model/model";
+
+export const timerDisabled = (setIndex: number, sets: Set[]) => {
+  const currentSetComplete = () => {
+    return sets[setIndex] && sets[setIndex].timeComplete ? true : false;
+  };
+
+  const prevSetStarted = () => {
+    return sets[setIndex - 1] && sets[setIndex - 1].timeStart ? true : false;
+  };
+
+  const prevSetComplete = () => {
+    return sets[setIndex - 1] && sets[setIndex - 1].timeComplete ? true : false;
+  };
+
+  if (currentSetComplete()) {
+    //a set is complete, disable it, regardless
+    return true;
+  }
+  if (setIndex === 0 && !currentSetComplete()) {
+    //first set is a special case in that it does look at prev set
+    return false;
+  }
+
+  if (prevSetStarted() && prevSetComplete() && !currentSetComplete()) {
+    //prev set is complete, do not disable current set if it is not complete
+    return false;
+  }
+
+  if (prevSetStarted() && !prevSetComplete()) {
+    //prev set ongoing, disable next set
+    return true;
+  }
+
+  if (!prevSetStarted()) {
+    //prev set exists and hasn't started, disable next set
+    return true;
+  }
+  return false;
+};
 
 const Timer = ({
   beginOnClick,
@@ -28,7 +67,6 @@ const Timer = ({
     return 0;
   };
 
-  const [clickCount, setClickCount] = useState(clickCountLoader());
   const [timeDiff, setTimeDiff] = useState(0);
 
   const calTimeDiff = (newTimeInMs: number, oldTimeInMs: number) =>
@@ -62,48 +100,24 @@ const Timer = ({
     },
   ];
 
-  const isBtnDisabled = () => {
-    if (setIndex == 0 && clickCount !== 2) {
-      return false;
-    }
-    const isPrevSetStarted = () => {
-      return sets[setIndex - 1] && sets[setIndex - 1].timeStart ? true : false;
-    };
-
-    const isPrevSetComplete = () => {
-      return sets[setIndex - 1] && sets[setIndex - 1].timeComplete
-        ? true
-        : false;
-    };
-
-    if (isPrevSetStarted() && isPrevSetComplete()) {
-      return false;
-    }
-
-    if (!isPrevSetStarted()) {
-      return true;
-    }
-  };
-
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeDiff(startTime ? calTimeDiff(Date.now(), startTime) : 0);
     }, 1000);
     return () => clearInterval(interval);
-  }, [clickCount]);
+  }, [clickCountLoader()]);
 
   return (
     <button
-      disabled={isBtnDisabled()}
+      disabled={timerDisabled(setIndex, sets)}
       onClick={() => {
-        btnContent[clickCount].onClick();
-        setClickCount((clickCount + 1) % 3);
+        btnContent[clickCountLoader()].onClick();
       }}
       className=" col-span-7 gap-1 flex px-3 py-1 text-[10px] border text-[#575555] bg-[#F4F4F4] font-medium rounded-lg  disabled:bg-[#C8C8C8]"
     >
-      <div>{btnContent[clickCount].icon}</div>
-      <div className="flex-shrink">{btnContent[clickCount % 3].text}</div>
-      <div>{btnContent[clickCount].content}</div>
+      <div>{btnContent[clickCountLoader() % 3].icon}</div>
+      <div>{btnContent[clickCountLoader() % 3].text}</div>
+      <div>{btnContent[clickCountLoader() % 3].content}</div>
     </button>
   );
 };

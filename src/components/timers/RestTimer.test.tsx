@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { Set } from "../model/model";
+import { Set } from "../../model/model";
 import { timeTracker } from "./RestTimer";
 
 const set1 = {
