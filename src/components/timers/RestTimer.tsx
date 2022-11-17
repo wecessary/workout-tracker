@@ -1,55 +1,36 @@
 import { useEffect, useState } from "react";
 import { Set } from "../../model/model";
+import { secToMinSec } from "../../utilities/date";
+import {
+  currentSetComplete,
+  currentSetStarted,
+  nextSetExists,
+  nextSetStarted,
+} from "./setCheckers";
 
-export const timeTracker = (currentSet: Set, nextSet: Set) => {
-  const isSetStarted = (set: Set) => (set && set.timeStart) || false;
-  const isSetComplete = (set: Set) => (set && set.timeComplete) || false;
+export const restTimer = (sets: Set[], setIndex: number) => {
+  const currentSetCompleteTime =
+    (sets[setIndex] && sets[setIndex].timeComplete) || 0;
+  const nextSetStartTIme =
+    (sets[setIndex + 1] && sets[setIndex + 1].timeStart) || 0;
 
-  const currentSetStarted = isSetStarted(currentSet);
-  const currentSetComplete = isSetComplete(currentSet);
-  const nextSetStarted = isSetStarted(nextSet);
-  const nextSetComplete = isSetComplete(nextSet);
-  const bothSetsExist = currentSet && nextSet;
+  const isResting =
+    currentSetComplete(setIndex, sets) &&
+    nextSetExists(setIndex, sets) &&
+    !nextSetStarted(setIndex, sets);
 
-  if (bothSetsExist && !nextSetStarted && currentSetComplete) {
-    //when the first set has finished but the second set hasn't
-    return currentSet.timeComplete ? Date.now() - currentSet.timeComplete : 0;
-  }
-
-  if (bothSetsExist && nextSetStarted && currentSetComplete) {
-    //when both sets have begun
-    return currentSet.timeComplete && nextSet.timeStart
-      ? nextSet.timeStart - currentSet.timeComplete
+  const restTime = // this is the final start time
+    currentSetStarted(setIndex, sets) &&
+    currentSetComplete(setIndex, sets) &&
+    nextSetExists(setIndex, sets) &&
+    nextSetStarted(setIndex, sets)
+      ? nextSetStartTIme - currentSetCompleteTime
       : 0;
-  }
-  return 0;
+
+  return isResting ? Date.now() - currentSetCompleteTime : restTime; //this is the running timer
 };
 
-export const timeFormatter = (time: number) => {
-  if (!time) {
-    return null;
-  }
-  const timeAgoInSecs = Math.floor(time / 1000);
-  const timeAgoInMin = Math.floor(timeAgoInSecs / 60);
-  const timeAgoInHr = Math.floor(timeAgoInMin / 60);
-  const timeAgoInDays = Math.floor(timeAgoInHr / 24);
-
-  const lessThanXSec = (secs: number) => timeAgoInSecs < secs;
-
-  if (lessThanXSec(60)) {
-    return `${timeAgoInSecs}s rest`;
-  }
-
-  if (lessThanXSec(3600)) {
-    return `${timeAgoInMin}m rest`;
-  }
-  if (lessThanXSec(86400)) {
-    return `${timeAgoInHr}h rest`;
-  }
-  return `${timeAgoInDays}d rest`;
-};
-
-export const RestTimer = ({
+export const RestTimeDisplay = ({
   sets,
   currentSetIndex,
 }: {
@@ -57,13 +38,11 @@ export const RestTimer = ({
   currentSetIndex: number;
 }) => {
   const [timeAgo, setTimeAgo] = useState(0);
-  const currentSet = sets[currentSetIndex];
-  const nextSet = sets[currentSetIndex + 1];
 
   useEffect(() => {
-    setTimeAgo(timeTracker(currentSet, nextSet));
+    setTimeAgo(restTimer(sets, currentSetIndex));
     const interval = setInterval(
-      () => setTimeAgo(timeTracker(currentSet, nextSet)),
+      () => setTimeAgo(restTimer(sets, currentSetIndex)),
       1000
     );
     return () => clearInterval(interval);
@@ -71,9 +50,9 @@ export const RestTimer = ({
 
   return (
     <p className=" text-[#D9D9D9] text-[10px] col-span-3">
-      {timeAgo ? timeFormatter(timeAgo) : null}
+      {timeAgo ? `${secToMinSec(timeAgo / 1000, "ms")} rest` : null}
     </p>
   );
 };
 
-export default RestTimer;
+export default RestTimeDisplay;

@@ -1,43 +1,20 @@
 import { useEffect, useState } from "react";
 import { Set } from "../../model/model";
+import { secToMinSec } from "../../utilities/date";
+import {
+  currentSetComplete,
+  prevSetStarted,
+  prevSetComplete,
+  prevSetExists,
+} from "./setCheckers";
 
 export const timerDisabled = (setIndex: number, sets: Set[]) => {
-  const currentSetComplete = () => {
-    return sets[setIndex] && sets[setIndex].timeComplete ? true : false;
-  };
+  const shouldDisable =
+    currentSetComplete(setIndex, sets) || //current set is complete, disable it, regardless
+    (prevSetStarted(setIndex, sets) && !prevSetComplete(setIndex, sets)) || //prev set ongoing, disable current set
+    (prevSetExists(setIndex, sets) && !prevSetStarted(setIndex, sets)); //prev set exists and hasn't started, disable current set
 
-  const prevSetStarted = () => {
-    return sets[setIndex - 1] && sets[setIndex - 1].timeStart ? true : false;
-  };
-
-  const prevSetComplete = () => {
-    return sets[setIndex - 1] && sets[setIndex - 1].timeComplete ? true : false;
-  };
-
-  if (currentSetComplete()) {
-    //a set is complete, disable it, regardless
-    return true;
-  }
-  if (setIndex === 0 && !currentSetComplete()) {
-    //first set is a special case in that it does look at prev set
-    return false;
-  }
-
-  if (prevSetStarted() && prevSetComplete() && !currentSetComplete()) {
-    //prev set is complete, do not disable current set if it is not complete
-    return false;
-  }
-
-  if (prevSetStarted() && !prevSetComplete()) {
-    //prev set ongoing, disable next set
-    return true;
-  }
-
-  if (!prevSetStarted()) {
-    //prev set exists and hasn't started, disable next set
-    return true;
-  }
-  return false;
+  return shouldDisable;
 };
 
 const Timer = ({
@@ -57,27 +34,10 @@ const Timer = ({
   sets: Set[];
   setIndex: number;
 }) => {
-  const clickCountLoader = () => {
-    if (startTime && endTime) {
-      return 2;
-    }
-    if (startTime) {
-      return 1;
-    }
-    return 0;
-  };
-
   const [timeDiff, setTimeDiff] = useState(0);
 
   const calTimeDiff = (newTimeInMs: number, oldTimeInMs: number) =>
     Math.floor((newTimeInMs - oldTimeInMs) / 1000);
-
-  const secTominsec = (timeInSec: number) => {
-    const min = Math.floor(timeInSec / 60);
-    const s = Math.floor(timeInSec % 60);
-
-    return `${min < 10 ? "0" + min : min}:${s < 10 ? "0" + s : s}`;
-  };
 
   const btnContent = [
     {
@@ -89,16 +49,26 @@ const Timer = ({
     {
       icon: "||",
       text: "Finish Set",
-      content: secTominsec(timeDiff) || null, // needs to display time
+      content: secToMinSec(timeDiff, "00:00") || null, // needs to display time
       onClick: finishOnClick, // needs to record finish time
     },
     {
       icon: "✔",
       text: "Set complete",
-      content: secTominsec(calTimeDiff(endTime, startTime)), // display length
+      content: secToMinSec(calTimeDiff(endTime, startTime), "00:00"), // display length
       onClick: resetOnClick,
     },
   ];
+
+  const clickCountLoader = () => {
+    if (startTime && endTime) {
+      return 2;
+    }
+    if (startTime) {
+      return 1;
+    }
+    return 0;
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
