@@ -40,7 +40,7 @@ import useAutoSave from "../hooks/useAutoSave";
 import { colour } from "../utilities/colour";
 import FloatingLabel from "../components/FloatingLabel";
 import Toggle from "../components/Toggle";
-import RestTimer from "../components/timers/RestTimer";
+import RestTimeDisplay from "../components/timers/RestTimer";
 import Timer from "../components/timers/Timer";
 
 const TrackerPage = () => {
@@ -296,7 +296,7 @@ const TrackerPage = () => {
                               setIndex={setIndex}
                               sets={obj.sets}
                             />
-                            <RestTimer
+                            <RestTimeDisplay
                               sets={obj.sets}
                               currentSetIndex={setIndex}
                             />

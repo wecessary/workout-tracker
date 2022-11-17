@@ -2,48 +2,68 @@
  * @jest-environment jsdom
  */
 
-import { Set } from "../../model/model";
-import { timeTracker } from "./RestTimer";
-
-const set1 = {
-  index: 0,
-  reps: 0,
-  weight: 0,
-  easy: true,
-  done: true,
-  timeStart: Date.now(),
-  timeComplete: Date.now() + 3000,
-};
-
-const set2 = {
-  index: 0,
-  reps: 0,
-  weight: 0,
-  easy: true,
-  done: true,
-  timeStart: Date.now() + 6000,
-  timeComplete: Date.now() + 9000,
-};
-
-const emptySet3 = null as unknown as Set;
-
-const set3 = {
-  index: 0,
-  reps: 0,
-  weight: 0,
-  easy: true,
-  done: false,
-};
+import { restTimer } from "./RestTimer";
 
 describe("test RestTime function", () => {
-  test("when set 1 is complete and set 2 has started, will only calculate time diff between set 1 end and set 2 start", () => {
-    const restTImeDiffSet1and2 = timeTracker(set1, set2);
+  test("when set 1 and 2 are complete, will only calculate time diff between 2's start and 1's complete", () => {
+    const sets = [
+      {
+        index: 0,
+        reps: 0,
+        weight: 0,
+        easy: true,
+        done: true,
+        timeStart: Date.now(),
+        timeComplete: Date.now() + 1000,
+      },
+      {
+        index: 1,
+        reps: 0,
+        weight: 0,
+        easy: true,
+        done: false,
+        timeStart: Date.now() + 2000,
+        timeComplete: Date.now() + 4000,
+      },
+    ];
 
-    expect(restTImeDiffSet1and2).toEqual(3000);
+    expect(restTimer(sets, 0)).toEqual(1000);
   });
 
-  test("when there is no next set, will not calculate rest time", () => {
-    const timeDiffSet2and3 = timeTracker(set2, emptySet3);
-    expect(timeDiffSet2and3).toBeFalsy();
+  test("when set 1 is complete and set 2 has not started, will be counting rest time", () => {
+    const sets = [
+      {
+        index: 0,
+        reps: 0,
+        weight: 0,
+        easy: true,
+        done: true,
+        timeStart: Date.now() - 4000,
+        timeComplete: Date.now() - 3000,
+      },
+      {
+        index: 1,
+        reps: 0,
+        weight: 0,
+        easy: true,
+        done: false,
+      },
+    ];
+    expect(restTimer(sets, 0)).toBe(3000);
+  });
+
+  test("when set 1 exists and set 2 does not exist, rest time is set to zero", () => {
+    const sets = [
+      {
+        index: 0,
+        reps: 0,
+        weight: 0,
+        easy: true,
+        done: true,
+        timeStart: Date.now() - 4000,
+        timeComplete: Date.now() - 3000,
+      },
+    ];
+    expect(restTimer(sets, 0)).toBe(0);
   });
 });

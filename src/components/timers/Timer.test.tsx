@@ -133,8 +133,49 @@ describe("isBtnDisabled function", () => {
     expect(timerDisabled(2, sets4)).toBe(false);
   });
 
-  test("an ongoing set should not be disabled", () => {
+  test("when first two sets are complete and third set has not started, fourth set should be disabled", () => {
     const sets5 = [
+      {
+        index: 0,
+        reps: 0,
+        weight: 0,
+        easy: true,
+        done: true,
+        timeStart: Date.now(),
+        timeComplete: Date.now() + 1000,
+      },
+      {
+        index: 1,
+        reps: 0,
+        weight: 0,
+        easy: true,
+        done: true,
+        timeStart: Date.now() + 2000,
+        timeComplete: Date.now() + 3000,
+      },
+      {
+        index: 2,
+        reps: 0,
+        weight: 0,
+        easy: true,
+        done: false,
+      },
+      {
+        index: 3,
+        reps: 0,
+        weight: 0,
+        easy: true,
+        done: false,
+      },
+    ];
+    expect(timerDisabled(0, sets5)).toBe(true);
+    expect(timerDisabled(1, sets5)).toBe(true);
+    expect(timerDisabled(2, sets5)).toBe(false);
+    expect(timerDisabled(3, sets5)).toBe(true);
+  });
+
+  test("an ongoing set should not be disabled", () => {
+    const sets6 = [
       {
         index: 0,
         reps: 0,
@@ -144,11 +185,11 @@ describe("isBtnDisabled function", () => {
         timeStart: Date.now(),
       },
     ];
-    expect(timerDisabled(0, sets5)).toBe(false);
+    expect(timerDisabled(0, sets6)).toBe(false);
   });
 
   test("if prev set is ongoing, next sets should be disabled", () => {
-    const sets6 = [
+    const sets7 = [
       {
         index: 0,
         reps: 0,
@@ -172,8 +213,8 @@ describe("isBtnDisabled function", () => {
         done: true,
       },
     ];
-    expect(timerDisabled(0, sets6)).toBe(false);
-    expect(timerDisabled(1, sets6)).toBe(true);
-    expect(timerDisabled(2, sets6)).toBe(true);
+    expect(timerDisabled(0, sets7)).toBe(false);
+    expect(timerDisabled(1, sets7)).toBe(true);
+    expect(timerDisabled(2, sets7)).toBe(true);
   });
 });
