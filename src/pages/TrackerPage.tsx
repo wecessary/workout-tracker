@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import {
-  handleChangeName,
+  changeName,
   handleAddWorkout,
   handleChangeReps,
   handleChangeEasy,
@@ -42,6 +42,8 @@ import FloatingLabel from "../components/FloatingLabel";
 import Toggle from "../components/Toggle";
 import RestTimeDisplay from "../components/timers/RestTimer";
 import Timer from "../components/timers/Timer";
+import Analytics from "./AnalyticsPage";
+import Autofill from "../components/Autofill";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -63,6 +65,7 @@ const TrackerPage = () => {
     setHasSavedUserData,
   } = useAutoSave(userData, selectedDate, setUserData, workoutData);
   const ref = useOutsideClick(() => resetShowOptions(setShowOptions));
+
   return (
     <>
       <DragDropContext
@@ -89,13 +92,12 @@ const TrackerPage = () => {
                     <GripBar2 />
                   </div>
                   <CardRow rowStyling="grid grid-cols-12 gap-2">
-                    <ExerciseNameInput
-                      key={exIndex}
+                    <Autofill
+                      userData={userData}
                       value={obj.name}
-                      onChange={handleChangeName}
-                      workoutDataObjectIndex={obj.index}
-                      workoutData={workoutData}
-                      setWorkoutData={setWorkoutData}
+                      onChange={(name) =>
+                        setWorkoutData(changeName(name, exIndex, workoutData))
+                      }
                     />
                     <Button localStyling="col-span-1 flex items-start">
                       <Chevron />
