@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@types/react-beautiful-dnd": "^13.1.2",
+    "downshift": "^7.0.1",
     "firebase": "^9.10.0",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",

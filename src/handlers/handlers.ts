@@ -2,19 +2,17 @@ import { ChangeEvent, SetStateAction } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { Set, ShowOptions, WorkoutDataObject } from "../model/model";
 
-export const handleChangeName = (
-  e: ChangeEvent<HTMLTextAreaElement>,
+export const changeName = (
+  newName: string,
   workoutDataObjectIndex: number,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+  workoutData: WorkoutDataObject[]
 ) => {
-  const newWorkoutData = workoutData.map((obj) => {
+  return workoutData.map((obj) => {
     if (obj.index === workoutDataObjectIndex) {
-      return { ...obj, name: e.target.value };
+      return { ...obj, name: newName };
     }
     return obj;
   });
-  setWorkoutData(newWorkoutData);
 };
 
 export const handleAddWorkout = (
