@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedContentLayout from "./components/ProtectedContentLayout";
 import AuthContextProvider from "./context/AuthContext";
 import Analytics from "./pages/AnalyticsPage";
+import GetStartedPage from "./pages/GetStartedPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Settings from "./pages/SettingsPage";
@@ -19,6 +20,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route element={<UnprotectedRoutes />}>
+              <Route path="/get-started" element={<GetStartedPage />}></Route>
               <Route path="/" element={<LoginPage />}></Route>
               <Route path="/register" element={<RegisterPage />}></Route>
             </Route>
