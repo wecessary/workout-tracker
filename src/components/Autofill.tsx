@@ -1,5 +1,5 @@
 import { useCombobox } from "downshift";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserDataObject } from "../model/model";
 import { colour } from "../utilities/colour";
 
@@ -36,6 +36,7 @@ const Autofill = ({
     highlightedIndex,
     getItemProps,
     inputValue,
+    setInputValue,
   } = useCombobox({
     initialInputValue: value,
     items: inputItems,
@@ -52,7 +53,10 @@ const Autofill = ({
       onChange(inputValue || "");
     },
   });
-  console.log(exerciseNames(userData));
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   return (
     <div

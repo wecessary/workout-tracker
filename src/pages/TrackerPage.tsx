@@ -111,6 +111,7 @@ const TrackerPage = () => {
                       // which means clicking immediately also dismounts Edit
                     >
                       <Button
+                        ariaLabel="show edit options"
                         onClick={() =>
                           handleShowPopup(exIndex, showOptions, setShowOptions)
                         }
