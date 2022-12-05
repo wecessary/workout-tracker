@@ -3,11 +3,19 @@ import { ComponentPropsWithoutRef, ForwardedRef, forwardRef } from "react";
 interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   variant?: "primary" | "secondary" | "transparent" | "listGroup" | "outline";
   localStyling?: string;
+  ariaLabel?: string;
 }
 
 const Button = forwardRef(
   (
-    { children, onClick, variant, localStyling, disabled }: ButtonProps,
+    {
+      children,
+      onClick,
+      variant,
+      localStyling,
+      disabled,
+      ariaLabel,
+    }: ButtonProps,
     ref?: ForwardedRef<HTMLButtonElement>
   ) => {
     const primary =
@@ -30,6 +38,7 @@ const Button = forwardRef(
         ref={ref}
         onClick={onClick}
         className={(variant && buttonTypes[variant]) + " " + localStyling}
+        aria-label={ariaLabel}
       >
         {children}
       </button>

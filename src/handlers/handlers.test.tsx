@@ -2,7 +2,12 @@
  * @jest-environment jsdom
  */
 
-import { addSet, changeUnit, toggleDisplayUnit } from "./handlers";
+import {
+  addSet,
+  changeUnit,
+  deleteExercise,
+  toggleDisplayUnit,
+} from "./handlers";
 import { WorkoutDataObject } from "../model/model";
 import { ChangeEvent } from "react";
 
@@ -20,7 +25,7 @@ const baselineWorkoutData = [
 const twoExcercisesWorkoutData = [
   {
     index: 0,
-    name: "",
+    name: "exercise1",
     repsUnit: "reps",
     intensityUnit: "kg",
     sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
@@ -28,7 +33,34 @@ const twoExcercisesWorkoutData = [
   },
   {
     index: 1,
-    name: "",
+    name: "exercise2",
+    repsUnit: "reps",
+    intensityUnit: "kg",
+    sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+    comment: "",
+  },
+];
+
+const threeExcercisesWorkoutData = [
+  {
+    index: 0,
+    name: "exercise1",
+    repsUnit: "reps",
+    intensityUnit: "kg",
+    sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+    comment: "",
+  },
+  {
+    index: 1,
+    name: "exercise2",
+    repsUnit: "reps",
+    intensityUnit: "kg",
+    sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+    comment: "",
+  },
+  {
+    index: 2,
+    name: "exercise3",
     repsUnit: "reps",
     intensityUnit: "kg",
     sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
@@ -193,5 +225,29 @@ describe("toggleDisplayUnit function: test can toggle display unit", () => {
     expect(outputWorkoutData[0].displayIntensity).toBe(
       !workoutDataWithDisplayBooleans[0].displayIntensity
     );
+  });
+});
+
+describe("deleteExercise function: test can delete exercices", () => {
+  test("when there is one exercise, it can be deleted", () => {
+    expect(deleteExercise(0, baselineWorkoutData)).toHaveLength(0);
+  });
+
+  test("when there are two exercises, can delete the second one", () => {
+    const deleteSecondExercise = deleteExercise(1, twoExcercisesWorkoutData);
+
+    expect(deleteSecondExercise).toHaveLength(1);
+    expect(deleteSecondExercise[0].name).toBe("exercise1");
+
+    const deleteFirstExercise = deleteExercise(0, twoExcercisesWorkoutData);
+    expect(deleteFirstExercise).toHaveLength(1);
+    expect(deleteFirstExercise[0].name).toBe("exercise2");
+  });
+
+  test("when there are three exercises, can delete the selected one", () => {
+    const deleteSecondExercise = deleteExercise(1, threeExcercisesWorkoutData);
+    expect(deleteSecondExercise).toHaveLength(2);
+    expect(deleteSecondExercise[0].name).toBe("exercise1");
+    expect(deleteSecondExercise[1].name).toBe("exercise3");
   });
 });
