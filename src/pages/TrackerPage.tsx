@@ -44,6 +44,14 @@ import RestTimeDisplay from "../components/timers/RestTimer";
 import Timer from "../components/timers/Timer";
 import Analytics from "./AnalyticsPage";
 import Autofill from "../components/Autofill";
+import {
+  addDateToWorkoutData,
+  attendanceStats,
+  getExerciseSets,
+  getLastXdaysAllData,
+  getSetsOnly,
+  sortByDate,
+} from "../dataAnalysis/dataWrangleFunctions";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -65,6 +73,9 @@ const TrackerPage = () => {
     setHasSavedUserData,
   } = useAutoSave(userData, selectedDate, setUserData, workoutData);
   const ref = useOutsideClick(() => resetShowOptions(setShowOptions));
+  // console.log(
+  //   getSetsOnly(addDateToWorkoutData(getLastXdaysAllData(userData, 7)))
+  // );
 
   return (
     <>

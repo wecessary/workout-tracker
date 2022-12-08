@@ -3,7 +3,7 @@ import { ArrowUp, Cog, PencilSquare } from "./Icons";
 
 const NavBar = () => {
   return (
-    <nav className="w-[90%] flex justify-evenly fixed bottom-0 p-4 bg-white border rounded-2xl">
+    <nav className="w-[90%] flex justify-evenly fixed bottom-0 p-4 bg-white border rounded-2xl z-50">
       <Link to="/analytics">
         <ArrowUp />
       </Link>

@@ -60,6 +60,30 @@ export interface WorkoutDataObject {
   displayIntensity?: boolean;
 }
 
+export interface WorkoutDataObjectWithDate {
+  date: string;
+  index: number;
+  name: string;
+  repsUnit: string;
+  intensityUnit: string;
+  sets: Set[];
+  comment: string;
+  displayReps?: boolean;
+  displayIntensity?: boolean;
+}
+
+export interface WorkoutDataObjectNamesDatesAllLevel {
+  date: string;
+  index: number;
+  name: string;
+  repsUnit: string;
+  intensityUnit: string;
+  sets: SetWithAllDetails[];
+  comment: string;
+  displayReps?: boolean;
+  displayIntensity?: boolean;
+}
+
 export interface Set {
   index: number;
   reps: number;
@@ -70,9 +94,28 @@ export interface Set {
   timeComplete?: number;
 }
 
+export interface SetWithAllDetails {
+  name: string;
+  date: string;
+  index: number;
+  reps: number;
+  weight: number;
+  easy: boolean;
+  done: boolean;
+  timeStart?: number;
+  timeComplete?: number;
+  repsUnit: string;
+  intensityUnit: string;
+}
+
 export interface UserDataObject {
   date: string;
   workoutData: WorkoutDataObject[];
+}
+
+export interface UserDataObjectNamesAndDatesAllLevel {
+  date: string;
+  workoutData: WorkoutDataObjectNamesDatesAllLevel[];
 }
 
 export type SetUserData = (value: SetStateAction<UserDataObject[]>) => void;

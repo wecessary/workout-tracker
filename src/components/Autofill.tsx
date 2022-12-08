@@ -6,11 +6,13 @@ import { colour } from "../utilities/colour";
 const exerciseNames = (userData: UserDataObject[]) => {
   const namesNestedArrays = userData.map((oneDay) => {
     const workout = oneDay.workoutData;
-    return workout.map((exercise) => {
-      if (exercise.name) {
-        return exercise.name.trim();
-      }
-    });
+    return workout
+      ? workout.map((exercise) => {
+          if (exercise.name) {
+            return exercise.name.trim();
+          }
+        })
+      : [];
     //array of names of one workout
   });
   const namesWithDuplicates = namesNestedArrays.flat().filter((x) => x);
