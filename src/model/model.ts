@@ -108,6 +108,23 @@ export interface SetWithAllDetails {
   intensityUnit: string;
 }
 
+export interface SetWithStats {
+  totalTime: number;
+  duration: number;
+  restTime: number;
+  name: string;
+  date: string;
+  index: number;
+  reps: number;
+  weight: number;
+  easy: boolean;
+  done: boolean;
+  timeStart?: number | undefined;
+  timeComplete?: number | undefined;
+  repsUnit: string;
+  intensityUnit: string;
+}
+
 export interface UserDataObject {
   date: string;
   workoutData: WorkoutDataObject[];

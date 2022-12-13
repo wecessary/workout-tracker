@@ -2,6 +2,7 @@ import { User } from "firebase/auth";
 import {
   Set,
   SetWithAllDetails,
+  SetWithStats,
   UserDataObject,
   UserDataObjectNamesAndDatesAllLevel,
   WorkoutDataObject,
@@ -65,6 +66,12 @@ export const sortByDate = (userData: UserDataObject[]) => {
   );
 };
 
+export const sortByDateAscending = (userData: UserDataObject[]) => {
+  return userData.sort(
+    (a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()
+  );
+};
+
 export const getPastWorkoutOnly = (userData: UserDataObject[]) => {
   return userData.filter((obj) => Date.now() > new Date(obj.date).valueOf());
 };
@@ -113,21 +120,35 @@ export const getStatsFromSets = (arrayOfSets: SetWithAllDetails[]) => {
       ...set,
       duration,
       restTime,
+      totalTime: duration + restTime,
     };
   });
 };
 
-export const attendanceStats = (userData: UserDataObject[]) => {
+export const getSetsStatsWithTimeComplete = (userData: UserDataObject[]) => {
+  const isSetWithStats = (
+    set: SetWithStats | undefined
+  ): set is SetWithStats => {
+    return !!set;
+  };
+
   const setsWithStats = getStatsFromSets(getSetsOnly(userData));
-  const setsWithTimeComplete = setsWithStats
+  return setsWithStats
     .map((set) => {
       if (set.timeComplete) {
         return set;
       }
     })
-    .filter((x) => x); //remove undefined elements
+    .filter(isSetWithStats); //remove undefined elements
+};
 
-  console.log(setsWithStats);
+export const getTimeByDate = (userData: UserDataObject[]) => {
+  const setsWithTimeComplete = getSetsStatsWithTimeComplete(userData);
+  setsWithTimeComplete.map((set) => ({}));
+};
+export const attendanceStats = (userData: UserDataObject[]) => {
+  const setsWithTimeComplete = getSetsStatsWithTimeComplete(userData);
+
   const datesOnly = setsWithTimeComplete.map((set) =>
     set && set.date ? set.date : ""
   );
@@ -141,7 +162,14 @@ export const attendanceStats = (userData: UserDataObject[]) => {
   const durations = setsWithTimeComplete.map((set) =>
     set && set.duration ? set.duration : 0
   );
-  return [uniqueDates, restTimes, durations];
+
+  const names = setsWithTimeComplete.map((set) => set.name);
+
+  const uniqueNames = names.filter(
+    (val, index, self) => self.indexOf(val) === index
+  );
+
+  return [uniqueDates, restTimes, durations, names, uniqueNames];
 };
 
 export const getExerciseSets = (
@@ -183,12 +211,66 @@ export const getExerciseBestIn = (
   const userDataDetailsAllLevel = addDateToWorkoutData(userData);
   const setsWithStats = getStatsFromSets(getSetsOnly(userDataDetailsAllLevel));
 
-  console.log(
-    setsWithStats.reduce((prev, curr) =>
-      prev[metric] > curr[metric] ? prev : curr
-    )
-  );
   return setsWithStats.reduce((prev, curr) =>
     prev[metric] > curr[metric] ? prev : curr
   );
+};
+
+export const getSum = (array: any[]) => {
+  return array.reduce((a, b) => a + b, 0);
+};
+
+export const getMean = (array: any[]) => {
+  return array.reduce((a, b) => a + b, 0) / array.length;
+};
+
+export const getMax = (array: any[]) => {
+  return array.reduce((a, b) => Math.max(a, b), 0);
+};
+
+// export const sumGroupByDate = (
+//   array: any[],
+//   key: "date",
+//   varaible: "totalTime" | "restTime"
+// ) => {
+//   interface SumGroupBy extends Record<"totalTime" | "restTime", any> {
+//     date: string;
+//   }
+
+//   const sumGroupBy = [] as SumGroupBy[];
+//   const foo = array.reduce((cache, obj) => {
+//     if (!cache[obj[key]]) {
+//       cache[obj[key]] = { [key]: obj[key], [varaible]: 0 };
+//       sumGroupBy.push(cache[obj[key]]);
+//     }
+//     cache[obj[key]][varaible] += obj[varaible];
+//     return cache;
+//   }, {});
+//   return sumGroupBy;
+// };
+interface GroupedSetsWithStats {
+  [date: string]: number[];
+}
+// export const groupBy = (objectArray: any[], property: string) => {
+//   return objectArray.reduce((cache, obj) => {
+//     const key = obj[property]; // this would be e.g. "2022-10-11" = {...}.date
+//     const currentGroup = cache[key] ?? []; //this stores all the objects in the current group
+//     return { ...cache, [key]: [...currentGroup, obj] };
+//   }, {}) as GroupedSetsWithStats;
+// };
+
+export const groupBy = (objectArray: any[], property: string, stat: string) => {
+  return objectArray.reduce((cache, obj) => {
+    const key = obj[property]; // this would be e.g. "2022-10-11" = {...}.date
+    const currentGroup = cache[key] ?? []; //this stores all the objects in the current group
+    return { ...cache, [key]: [...currentGroup, obj[stat]] };
+  }, {}) as GroupedSetsWithStats;
+};
+
+export const sumGroupBy = (groupByArray: GroupedSetsWithStats) => {
+  const arrayOfEachDay = Object.values(groupByArray);
+
+  return arrayOfEachDay.map((day) => {
+    return day.length === 1 ? day[0] : day.reduce((a, b) => a + b, 0);
+  });
 };
