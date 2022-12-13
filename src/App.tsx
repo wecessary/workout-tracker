@@ -5,6 +5,7 @@ import AuthContextProvider from "./context/AuthContext";
 import Analytics from "./pages/AnalyticsPage";
 import GetStartedPage from "./pages/GetStartedPage";
 import LoginPage from "./pages/LoginPage";
+import MuscleWrapped from "./pages/MuscleWrapped";
 import RegisterPage from "./pages/RegisterPage";
 import Settings from "./pages/SettingsPage";
 import TrackerPage from "./pages/TrackerPage";
@@ -28,6 +29,7 @@ const App = () => {
             <Route element={<ProtectedContentLayout />}>
               <Route path="tracker" element={<TrackerPage />} />
               <Route path="analytics" element={<Analytics />} />
+              <Route path="muscle-wrapped" element={<MuscleWrapped />} />
               <Route path="settings" element={<Settings />} />
             </Route>
           </Routes>

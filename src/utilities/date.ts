@@ -20,3 +20,7 @@ export const secToMinSec = (timeInSec: number, format: string) => {
 
   return `${min > 0 ? min + "m" : ""}${s > 0 ? s + "s" : ""}`;
 };
+
+export const milSecToMin = (timeInMilSec: number) => {
+  return Math.round(timeInMilSec / 1000 / 60);
+};
