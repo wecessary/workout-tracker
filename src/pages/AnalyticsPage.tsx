@@ -5,6 +5,7 @@ import {
   attendanceStats,
   getExerciseStats,
   getLastXdaysAllData,
+  getPastWorkoutOnly,
   getSetsAllDetails,
   getSetsStatsWithTimeComplete,
   getStatsFromSets,
@@ -19,6 +20,18 @@ import { colour } from "../utilities/colour";
 import { milSecToMin, secToMinSec } from "../utilities/date";
 import { Play } from "../components/Icons";
 import Plot from "react-plotly.js";
+import { layout, layoutXAutoTick } from "../utilities/plotlyConfig";
+
+const cardsWith = "w-[95vw]";
+const Header = ({ text }: { text: string }) => {
+  return (
+    <h1
+      className={`${cardsWith} text-[6vw] font-bold border-t-2 border-b-2 border-white tracking-widest`}
+    >
+      {text}
+    </h1>
+  );
+};
 
 type AttendanceStats = [string[], number[], number[], string[], string[]];
 
@@ -37,28 +50,21 @@ const Analytics = () => {
   const lastWeekTotalDuration = getSum(lastWeekDurations);
   const lastWeekTotalTime = lastWeekTotalRest + lastWeekTotalDuration;
 
-  const cardsWith = "w-[95vw]";
-
   const last7daysSets = getStatsFromSets(
     getSetsAllDetails(sortByDateAscending(getLastXdaysAllData(userData, 7)))
   );
 
-  console.log(groupBy(last7daysSets, "date", "totalTime"));
-  console.log(
-    sumGroupBy(groupBy(last7daysSets, "date", "totalTime")).map((x) => x / 1000)
+  const allTimeSets = getStatsFromSets(
+    getSetsAllDetails(sortByDateAscending(getPastWorkoutOnly(userData)))
   );
-
+  console.log(Object.keys(groupBy(allTimeSets, "date", "totalTime")));
   return (
     <>
       <div className="min-h-screen bg-[#363535] text-[#F5F5F5] flex flex-col items-center gap-4">
         <h1 className={`${cardsWith} text-[5vw] tracking-widest`}>
           MUSCLE REPORT
         </h1>
-        <h1
-          className={`${cardsWith} text-[6vw] font-bold border-t-2 border-b-2 border-white tracking-widest`}
-        >
-          LAST 7 DAYS
-        </h1>
+        <Header text="LAST 7 DAYS" />
         <div
           className={`${cardsWith} grid grid-cols-12 border-black border bg-[#1F1F1F] rounded-lg py-4`}
         >
@@ -104,28 +110,17 @@ const Analytics = () => {
                 marker: { color: "white" },
               },
             ]}
-            layout={{
-              margin: { l: 35, r: 35 },
-              paper_bgcolor: "#1F1F1F",
-              plot_bgcolor: "#1F1F1F",
-
-              title: {
-                text: "Time spent at Muscle Department",
-                font: { color: "white" },
-              },
-              yaxis: { title: { text: "Minutes" }, color: "white" },
-              xaxis: { autotick: false, color: "white" },
-            }}
+            layout={layout}
             config={{ staticPlot: true, responsive: true }}
           />
         </div>
 
         <h1
-          className={`${cardsWith} text-[6vw] font-bold border-t-2 border-b-2 border-white`}
+          className={`${cardsWith} text-[6vw] font-bold border-t-2 border-b-2 border-white hidden`}
         >
           MUSCLE WRAPPED
         </h1>
-        <div className={`${cardsWith}`}>
+        <div className={`${cardsWith} hidden`}>
           <div className=" border-black border bg-[#1F1F1F] flex flex-col items-center  w-[30vw] rounded-lg py-6">
             <div className="flex items-center justify-center">
               <div className="flex flex-col items-center leading-none">
@@ -140,6 +135,26 @@ const Analytics = () => {
             </div>
             <Play animatePulse={true} />
           </div>
+        </div>
+        <Header text="YOUR PROGRESSION" />
+        <div
+          className={`${cardsWith} rounded-lg bg-[#1F1F1F] flex justify-center`}
+        >
+          <Plot
+            className="w-[99%]"
+            data={[
+              {
+                y: sumGroupBy(groupBy(allTimeSets, "date", "totalTime")).map(
+                  (x) => x / 1000 / 60
+                ),
+                x: Object.keys(groupBy(allTimeSets, "date", "totalTime")),
+                type: "scatter",
+                marker: { color: "white" },
+              },
+            ]}
+            layout={layoutXAutoTick}
+            config={{ staticPlot: false, responsive: true }}
+          />
         </div>
       </div>
     </>

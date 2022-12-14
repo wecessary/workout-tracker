@@ -100,7 +100,8 @@ export const getLastXdaysAllData = (
 export const getSetsAllDetails = (userData: UserDataObject[]) => {
   const userDataDetailsAllLevel = addDateToWorkoutData(userData);
   const arrayofEachDay = userDataDetailsAllLevel.map(
-    (userData) => userData.workoutData || dummyWorkoutDataAllDetails // if workoutData is an empty array, can cause error
+    (userData) =>
+      userData.workoutData || ([] as WorkoutDataObjectDetailsAllLevel[]) // if workoutData is an empty array, can cause error
   );
 
   const arrayOfEachDaySets = arrayofEachDay.map((oneDay) => {

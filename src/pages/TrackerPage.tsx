@@ -76,7 +76,7 @@ const TrackerPage = () => {
   // console.log(
   //   getSetsOnly(addDateToWorkoutData(getLastXdaysAllData(userData, 7)))
   // );
-  console.log(getSetsAllDetails(userData));
+  console.log(userData);
 
   return (
     <>
