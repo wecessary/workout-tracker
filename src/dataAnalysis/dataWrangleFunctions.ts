@@ -1,4 +1,5 @@
 import { User } from "firebase/auth";
+import { dummyWorkoutDataAllDetails } from "../data/initalData";
 import {
   Set,
   SetWithAllDetails,
@@ -6,6 +7,7 @@ import {
   UserDataObject,
   UserDataObjectNamesAndDatesAllLevel,
   WorkoutDataObject,
+  WorkoutDataObjectDetailsAllLevel,
   WorkoutDataObjectWithDate,
 } from "../model/model";
 import { currentDateAsString } from "../utilities/date";
@@ -39,7 +41,10 @@ export const addAllDetailsToSets = (
       repsUnit: workoutDataObj.repsUnit,
       intensityUnit: workoutDataObj.intensityUnit,
     }));
-    return { ...workoutDataObj, sets: setsWithNameAndDate };
+    return {
+      ...workoutDataObj,
+      sets: setsWithNameAndDate,
+    } as WorkoutDataObjectDetailsAllLevel;
   });
 };
 
@@ -81,24 +86,31 @@ export const getLastXWorkout = (userData: UserDataObject[], x: number) => {
   return sortByDate(pastWorkout).slice(Math.max(userData.length - x, 0));
 };
 
-export const getLastXdaysAllData = (userData: UserDataObject[], x: number) => {
+export const getLastXdaysAllData = (
+  userData: UserDataObject[],
+  days: number
+) => {
   const xDaysAgo =
-    new Date(currentDateAsString).valueOf() - x * 24 * 60 * 60 * 1000;
+    new Date(currentDateAsString).valueOf() - days * 24 * 60 * 60 * 1000;
   return getPastWorkoutOnly(
-    userData.filter((obj) => new Date(obj.date).valueOf() >= xDaysAgo)
+    userData.filter((obj) => new Date(obj.date).valueOf() > xDaysAgo)
   );
 };
 
-export const getSetsOnly = (userData: UserDataObject[]) => {
+export const getSetsAllDetails = (userData: UserDataObject[]) => {
   const userDataDetailsAllLevel = addDateToWorkoutData(userData);
-  const workoutDataOnly = userDataDetailsAllLevel.map((obj) => obj.workoutData);
-  return workoutDataOnly
-    .map((obj) => {
-      const oneWorkout = obj;
-      const arrayOfSets = oneWorkout.map((exercise) => exercise.sets);
-      return arrayOfSets.flat();
-    })
-    .flat();
+  const arrayofEachDay = userDataDetailsAllLevel.map(
+    (userData) => userData.workoutData || dummyWorkoutDataAllDetails // if workoutData is an empty array, can cause error
+  );
+
+  const arrayOfEachDaySets = arrayofEachDay.map((oneDay) => {
+    return oneDay.reduce(
+      (accumator, exercise) => accumator.concat(exercise.sets),
+      [] as SetWithAllDetails[]
+    );
+  });
+
+  return arrayOfEachDaySets.flat();
 };
 
 export const getStatsFromSets = (arrayOfSets: SetWithAllDetails[]) => {
@@ -132,7 +144,7 @@ export const getSetsStatsWithTimeComplete = (userData: UserDataObject[]) => {
     return !!set;
   };
 
-  const setsWithStats = getStatsFromSets(getSetsOnly(userData));
+  const setsWithStats = getStatsFromSets(getSetsAllDetails(userData));
   return setsWithStats
     .map((set) => {
       if (set.timeComplete) {
@@ -177,7 +189,9 @@ export const getExerciseSets = (
   exercise: string
 ) => {
   const userDataDatesAllLevels = addDateToWorkoutData(sortByDate(userData));
-  const setsWithStats = getStatsFromSets(getSetsOnly(userDataDatesAllLevels));
+  const setsWithStats = getStatsFromSets(
+    getSetsAllDetails(userDataDatesAllLevels)
+  );
 
   return setsWithStats.filter((set) => set.name === exercise);
 };
@@ -209,68 +223,47 @@ export const getExerciseBestIn = (
 ) => {
   const pastWorkout = getPastWorkoutOnly(userData);
   const userDataDetailsAllLevel = addDateToWorkoutData(userData);
-  const setsWithStats = getStatsFromSets(getSetsOnly(userDataDetailsAllLevel));
+  const setsWithStats = getStatsFromSets(
+    getSetsAllDetails(userDataDetailsAllLevel)
+  );
 
   return setsWithStats.reduce((prev, curr) =>
     prev[metric] > curr[metric] ? prev : curr
   );
 };
 
-export const getSum = (array: any[]) => {
+export const getSum = (array: number[]) => {
   return array.reduce((a, b) => a + b, 0);
 };
 
-export const getMean = (array: any[]) => {
+export const getMean = (array: number[]) => {
   return array.reduce((a, b) => a + b, 0) / array.length;
 };
 
-export const getMax = (array: any[]) => {
+export const getMax = (array: number[]) => {
   return array.reduce((a, b) => Math.max(a, b), 0);
 };
 
-// export const sumGroupByDate = (
-//   array: any[],
-//   key: "date",
-//   varaible: "totalTime" | "restTime"
-// ) => {
-//   interface SumGroupBy extends Record<"totalTime" | "restTime", any> {
-//     date: string;
-//   }
-
-//   const sumGroupBy = [] as SumGroupBy[];
-//   const foo = array.reduce((cache, obj) => {
-//     if (!cache[obj[key]]) {
-//       cache[obj[key]] = { [key]: obj[key], [varaible]: 0 };
-//       sumGroupBy.push(cache[obj[key]]);
-//     }
-//     cache[obj[key]][varaible] += obj[varaible];
-//     return cache;
-//   }, {});
-//   return sumGroupBy;
-// };
 interface GroupedSetsWithStats {
   [date: string]: number[];
 }
-// export const groupBy = (objectArray: any[], property: string) => {
-//   return objectArray.reduce((cache, obj) => {
-//     const key = obj[property]; // this would be e.g. "2022-10-11" = {...}.date
-//     const currentGroup = cache[key] ?? []; //this stores all the objects in the current group
-//     return { ...cache, [key]: [...currentGroup, obj] };
-//   }, {}) as GroupedSetsWithStats;
-// };
 
-export const groupBy = (objectArray: any[], property: string, stat: string) => {
-  return objectArray.reduce((cache, obj) => {
+export const groupBy = (
+  setsWithStats: SetWithStats[],
+  property: "date" | "name",
+  stat: "reps" | "weight" | "totalTime" | "restTime" | "duration"
+) => {
+  return setsWithStats.reduce((cache, obj) => {
     const key = obj[property]; // this would be e.g. "2022-10-11" = {...}.date
     const currentGroup = cache[key] ?? []; //this stores all the objects in the current group
     return { ...cache, [key]: [...currentGroup, obj[stat]] };
-  }, {}) as GroupedSetsWithStats;
+  }, {} as GroupedSetsWithStats) as GroupedSetsWithStats;
 };
 
 export const sumGroupBy = (groupByArray: GroupedSetsWithStats) => {
-  const arrayOfEachDay = Object.values(groupByArray);
+  const arrayOfDailyWorkouts = Object.values(groupByArray);
 
-  return arrayOfEachDay.map((day) => {
+  return arrayOfDailyWorkouts.map((day) => {
     return day.length === 1 ? day[0] : day.reduce((a, b) => a + b, 0);
   });
 };

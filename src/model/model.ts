@@ -72,7 +72,7 @@ export interface WorkoutDataObjectWithDate {
   displayIntensity?: boolean;
 }
 
-export interface WorkoutDataObjectNamesDatesAllLevel {
+export interface WorkoutDataObjectDetailsAllLevel {
   date: string;
   index: number;
   name: string;
@@ -132,7 +132,7 @@ export interface UserDataObject {
 
 export interface UserDataObjectNamesAndDatesAllLevel {
   date: string;
-  workoutData: WorkoutDataObjectNamesDatesAllLevel[];
+  workoutData: WorkoutDataObjectDetailsAllLevel[];
 }
 
 export type SetUserData = (value: SetStateAction<UserDataObject[]>) => void;
