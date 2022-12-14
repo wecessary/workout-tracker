@@ -5,7 +5,7 @@ import {
   attendanceStats,
   getExerciseStats,
   getLastXdaysAllData,
-  getSetsOnly,
+  getSetsAllDetails,
   getSetsStatsWithTimeComplete,
   getStatsFromSets,
   getSum,
@@ -37,28 +37,10 @@ const Analytics = () => {
   const lastWeekTotalDuration = getSum(lastWeekDurations);
   const lastWeekTotalTime = lastWeekTotalRest + lastWeekTotalDuration;
 
-  const [allUDatesWorked, allRestTimes, allDurations] = attendanceStats(
-    userData
-  ) as AttendanceStats;
-
-  const [
-    exerciseReps,
-    exerciseWeights,
-    exerciseRestTimes,
-    exerciseDurations,
-    exerciseUniqueDates,
-  ] = getExerciseStats(userData, "Push up") as [
-    number[],
-    number[],
-    number[],
-    number[],
-    string[]
-  ];
-
   const cardsWith = "w-[95vw]";
 
   const last7daysSets = getStatsFromSets(
-    getSetsOnly(sortByDateAscending(getLastXdaysAllData(userData, 7)))
+    getSetsAllDetails(sortByDateAscending(getLastXdaysAllData(userData, 7)))
   );
 
   console.log(groupBy(last7daysSets, "date", "totalTime"));
@@ -69,9 +51,11 @@ const Analytics = () => {
   return (
     <>
       <div className="min-h-screen bg-[#363535] text-[#F5F5F5] flex flex-col items-center gap-4">
-        <h1 className={`${cardsWith} text-[10vw] font-bold`}>MUSCLE REPORT</h1>
+        <h1 className={`${cardsWith} text-[5vw] tracking-widest`}>
+          MUSCLE REPORT
+        </h1>
         <h1
-          className={`${cardsWith} text-[6vw] font-bold border-t-2 border-b-2 border-white`}
+          className={`${cardsWith} text-[6vw] font-bold border-t-2 border-b-2 border-white tracking-widest`}
         >
           LAST 7 DAYS
         </h1>
@@ -104,32 +88,36 @@ const Analytics = () => {
             </div>
           </div>
         </div>
+
         <div
-          className={`${cardsWith} grid grid-cols-12 border-black border bg-[#1F1F1F] rounded-lg py-4 justify-items-center`}
+          className={`${cardsWith} rounded-lg bg-[#1F1F1F] flex justify-center`}
         >
-          <div className="col-start-1 col-span-12">
-            <Plot
-              data={[
-                {
-                  y: sumGroupBy(
-                    groupBy(last7daysSets, "date", "totalTime")
-                  ).map((x) => x / 1000 / 60),
-                  x: Object.keys(groupBy(last7daysSets, "date", "totalTime")),
-                  type: "scatter",
-                  mode: "lines+markers",
-                  marker: { color: "white" },
-                },
-              ]}
-              layout={{
-                paper_bgcolor: "black",
-                plot_bgcolor: "black",
-                width: 300,
-                height: 240,
-                title: "Time spent at Muscle Department",
-                yaxis: { title: { text: "Minutes" } },
-              }}
-            />
-          </div>
+          <Plot
+            className="w-[99%]"
+            data={[
+              {
+                y: sumGroupBy(groupBy(last7daysSets, "date", "totalTime")).map(
+                  (x) => x / 1000 / 60
+                ),
+                x: Object.keys(groupBy(last7daysSets, "date", "totalTime")),
+                type: "bar",
+                marker: { color: "white" },
+              },
+            ]}
+            layout={{
+              margin: { l: 35, r: 35 },
+              paper_bgcolor: "#1F1F1F",
+              plot_bgcolor: "#1F1F1F",
+
+              title: {
+                text: "Time spent at Muscle Department",
+                font: { color: "white" },
+              },
+              yaxis: { title: { text: "Minutes" }, color: "white" },
+              xaxis: { autotick: false, color: "white" },
+            }}
+            config={{ staticPlot: true, responsive: true }}
+          />
         </div>
 
         <h1
