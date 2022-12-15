@@ -216,7 +216,7 @@ export const ArrowLeft = () => {
       viewBox="0 0 24 24"
       strokeWidth={1.0}
       stroke="currentColor"
-      className=" w-16 h-16"
+      className=" w-14 h-14"
     >
       <path
         strokeLinecap="round"
