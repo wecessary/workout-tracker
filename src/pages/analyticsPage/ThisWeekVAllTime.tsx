@@ -30,7 +30,7 @@ const ThisWeekVsAllTime = ({
       <div className="row-span-1">
         <div className="flex items-center gap-2">
           <select
-            className="bg-[#1F1F1F] text-[8vw] ml-4"
+            className="bg-[#1F1F1F] text-[4vw] ml-4"
             onChange={(e) => {
               setExercise(e.target.value);
             }}
