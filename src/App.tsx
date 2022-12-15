@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedContentLayout from "./components/ProtectedContentLayout";
 import AuthContextProvider from "./context/AuthContext";
-import Analytics from "./pages/AnalyticsPage";
+import Analytics from "./pages/analyticsPage/AnalyticsPage";
 import GetStartedPage from "./pages/GetStartedPage";
 import LoginPage from "./pages/LoginPage";
 import MuscleWrapped from "./pages/MuscleWrapped";
