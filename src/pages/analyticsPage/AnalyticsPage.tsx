@@ -41,7 +41,6 @@ const Analytics = () => {
     lastWeekUniqueNames,
   ] = attendanceStats(getLastXdaysAllData(userData, 7)) as AttendanceStats;
 
-
   const last2MonthsSets = getStatsFromSets(
     getSetsAllDetails(getPastWorkoutOnly(userData))
   );
@@ -62,7 +61,6 @@ const Analytics = () => {
     exAllDates,
   ] = getExerciseStats(userData, exercise) as ExerciseStats;
 
-
   console.log(exAllDates);
   console.log(exAllWeights);
 
@@ -79,11 +77,11 @@ const Analytics = () => {
           <div className="col-start-2 col-span-3 flex flex-col">
             <div>
               <span className="text-[15vw]">{lastWeekDatesWorked.length}</span>
-              <span className="text-[4vw]">days</span>
+              <span className="text-[4vw]">DAYS</span>
             </div>
             <div>
               <span className="text-[15vw]">{lastWeekUniqueNames.length}</span>
-              <span className="text-[4vw]">exercises</span>
+              <span className="text-[4vw]">EXERCISES</span>
             </div>
           </div>
           <div className="col-start-7 col-span-3 flex flex-col">
@@ -93,11 +91,11 @@ const Analytics = () => {
                   getSum(lastWeekRestTimes) + getSum(lastWeekDurations)
                 )}
               </span>
-              <span className="text-[4vw]">minutes</span>
+              <span className="text-[4vw]">MINUTES</span>
             </div>
             <div>
               <span className="text-[15vw]">{lastWeekNames.length}</span>
-              <span className="text-[4vw]">sets</span>
+              <span className="text-[4vw]">SETS</span>
             </div>
           </div>
         </div>

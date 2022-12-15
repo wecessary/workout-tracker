@@ -38,12 +38,12 @@ const ThisWeekVsAllTime = ({
               setExercise(e.target.value);
             }}
           >
-            <option>{lastWeekUniqueNames[0]}</option>
+            <option>{lastWeekUniqueNames[0].toUpperCase()}</option>
             {lastWeekUniqueNames.map((name, i) => {
               if (name === lastWeekUniqueNames[0]) {
                 return null;
               }
-              return <option key={i}>{name}</option>;
+              return <option key={i}>{name.toUpperCase()}</option>;
             })}
           </select>
           <ArrowLeft />
@@ -66,7 +66,7 @@ const ThisWeekVsAllTime = ({
               <h1>TIME</h1>
             </div>
           </div>
-          <div className="col-start-4 col-span-9 border-t-2 w-full"></div>
+          <div className="col-start-4 col-span-8 border-t-2 w-full"></div>
         </div>
       </div>
       <div className="row-span-2">
