@@ -4,19 +4,15 @@ import {
   attendanceStats,
   getExerciseStats,
   getLastXdaysAllData,
-  getMax,
-  getMean,
-  getMin,
   getPastWorkoutOnly,
   getSetsAllDetails,
   getStatsFromSets,
   getSum,
   groupBy,
-  sortByDateAscending,
   sumGroupBy,
 } from "../../dataAnalysis/dataWrangleFunctions";
 import { milSecToMin } from "../../utilities/date";
-import { ArrowLeft, Play } from "../../components/Icons";
+import { Play } from "../../components/Icons";
 import Plot from "react-plotly.js";
 import { layoutXAutoTick } from "../../utilities/plotlyConfig";
 import { Header } from "./Header";
@@ -25,11 +21,18 @@ import ThisWeekVsAllTime from "./ThisWeekVAllTime";
 const cardsWidth = "w-[95vw]";
 
 type AttendanceStats = [string[], number[], number[], string[], string[]];
-type ExerciseStats = [number[], number[], number[], number[], string[]];
+type ExerciseStats = [
+  number[],
+  number[],
+  number[],
+  number[],
+  string[],
+  string[]
+];
 
 const Analytics = () => {
   const { datafromDB } = useContext(UserDataContext);
-  const [userData, setUserData] = useState(datafromDB || []);
+  const userData = datafromDB || [];
   const [
     lastWeekDatesWorked,
     lastWeekRestTimes,
@@ -38,28 +41,30 @@ const Analytics = () => {
     lastWeekUniqueNames,
   ] = attendanceStats(getLastXdaysAllData(userData, 7)) as AttendanceStats;
 
-  const lastWeekTotalRest = getSum(lastWeekRestTimes);
-  const lastWeekTotalDuration = getSum(lastWeekDurations);
-  const lastWeekTotalTime = lastWeekTotalRest + lastWeekTotalDuration;
 
-  const allTimeSets = getStatsFromSets(
-    getSetsAllDetails(sortByDateAscending(getPastWorkoutOnly(userData)))
+  const last2MonthsSets = getStatsFromSets(
+    getSetsAllDetails(getPastWorkoutOnly(userData))
   );
+
+  const [exercise, setExercise] = useState(lastWeekUniqueNames[0]);
 
   const [exReps, exWeights, exRestTimes, exDurations, exUniqueDates] =
     getExerciseStats(
       getLastXdaysAllData(userData, 7),
-      "squats"
+      exercise
     ) as ExerciseStats;
-
-  const [exercise, setExercise] = useState(lastWeekUniqueNames[0]);
   const [
     exAllReps,
     exAllWeights,
     exAllRestTimes,
     exAllDurations,
     exAllUniqueDates,
+    exAllDates,
   ] = getExerciseStats(userData, exercise) as ExerciseStats;
+
+
+  console.log(exAllDates);
+  console.log(exAllWeights);
 
   return (
     <>
@@ -67,7 +72,7 @@ const Analytics = () => {
         <h1 className={`${cardsWidth} text-[5vw] tracking-widest`}>
           MUSCLE REPORT
         </h1>
-        <Header text="LAST 7 DAYS" />
+        <Header text="LAST 7 DAYS" cardsWidth={cardsWidth} />
         <div
           className={`${cardsWidth} grid grid-cols-12 border-black border bg-[#1F1F1F] rounded-lg py-4`}
         >
@@ -84,7 +89,9 @@ const Analytics = () => {
           <div className="col-start-7 col-span-3 flex flex-col">
             <div>
               <span className="text-[15vw]">
-                {milSecToMin(lastWeekTotalTime)}
+                {milSecToMin(
+                  getSum(lastWeekRestTimes) + getSum(lastWeekDurations)
+                )}
               </span>
               <span className="text-[4vw]">minutes</span>
             </div>
@@ -124,7 +131,7 @@ const Analytics = () => {
             <Play animatePulse={true} />
           </div>
         </div>
-        <Header text="YOUR PROGRESSION" />
+        <Header text="YOUR PROGRESSION" cardsWidth={cardsWidth} />
         <div
           className={`${cardsWidth} rounded-lg bg-[#1F1F1F] flex justify-center`}
         >
@@ -132,10 +139,10 @@ const Analytics = () => {
             className="w-[99%]"
             data={[
               {
-                y: sumGroupBy(groupBy(allTimeSets, "date", "totalTime")).map(
-                  (x) => x / 1000 / 60
-                ),
-                x: Object.keys(groupBy(allTimeSets, "date", "totalTime")),
+                y: sumGroupBy(
+                  groupBy(last2MonthsSets, "date", "totalTime")
+                ).map((x) => x / 1000 / 60),
+                x: Object.keys(groupBy(last2MonthsSets, "date", "totalTime")),
                 type: "bar",
                 marker: { color: "white" },
               },

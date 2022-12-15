@@ -1,37 +1,13 @@
-import { User } from "firebase/auth";
-import { dummyWorkoutDataAllDetails } from "../data/initalData";
 import {
-  Set,
   SetWithAllDetails,
   SetWithStats,
   UserDataObject,
-  UserDataObjectNamesAndDatesAllLevel,
-  WorkoutDataObject,
   WorkoutDataObjectDetailsAllLevel,
   WorkoutDataObjectWithDate,
 } from "../model/model";
 import { currentDateAsString } from "../utilities/date";
 
-export const getAllNames = (userData: UserDataObject[]) => {
-  const namesNestedArrays = userData.map((oneDay) => {
-    const workout = oneDay.workoutData;
-    return workout.map((exercise) => {
-      if (exercise.name) {
-        return exercise.name.trim();
-      }
-    });
-    //array of names of one workout
-  });
-
-  const namesWithDuplicates = namesNestedArrays.flat().filter((x) => x);
-  return namesWithDuplicates.filter(
-    (val, index, self) => self.indexOf(val) === index
-  );
-};
-
-export const addAllDetailsToSets = (
-  workoutData: WorkoutDataObjectWithDate[]
-) => {
+export const addDetailsToSets = (workoutData: WorkoutDataObjectWithDate[]) => {
   return workoutData?.map((workoutDataObj) => {
     const OneExercise = workoutDataObj;
     const setsWithNameAndDate = OneExercise.sets?.map((set) => ({
@@ -57,7 +33,7 @@ export const addDateToWorkoutData = (userData: UserDataObject[]) => {
         date: userObj.date,
       })
     );
-    const allHaveDatesAndNames = addAllDetailsToSets(workoutDataWithDates);
+    const allHaveDatesAndNames = addDetailsToSets(workoutDataWithDates);
     return {
       ...userObj,
       workoutData: allHaveDatesAndNames,
@@ -213,7 +189,7 @@ export const getExerciseStats = (
     (val, index, self) => self.indexOf(val) === index && val
   );
 
-  return [reps, weights, restTimes, durations, uniqueDates];
+  return [reps, weights, restTimes, durations, uniqueDates, datesOnly];
 };
 
 export const getExerciseBestIn = (

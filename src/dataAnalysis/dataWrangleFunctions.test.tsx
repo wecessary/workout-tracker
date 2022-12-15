@@ -5,7 +5,7 @@
 import "@testing-library/jest-dom";
 import {
   addDateToWorkoutData,
-  addAllDetailsToSets,
+  addDetailsToSets,
   getStatsFromSets,
 } from "./dataWrangleFunctions";
 
@@ -116,50 +116,26 @@ const workoutData2 = [
 
 describe("data wrangle functions: add date and name to sets ", () => {
   test("when there is only one exercise", () => {
-    expect(addAllDetailsToSets(workoutData1)[0].sets[0].name).toEqual(
-      testName1
-    );
-    expect(addAllDetailsToSets(workoutData1)[0].sets[1].name).toEqual(
-      testName1
-    );
+    expect(addDetailsToSets(workoutData1)[0].sets[0].name).toEqual(testName1);
+    expect(addDetailsToSets(workoutData1)[0].sets[1].name).toEqual(testName1);
 
-    expect(addAllDetailsToSets(workoutData1)[0].sets[0].date).toEqual(
-      testDate1
-    );
-    expect(addAllDetailsToSets(workoutData1)[0].sets[1].date).toEqual(
-      testDate1
-    );
+    expect(addDetailsToSets(workoutData1)[0].sets[0].date).toEqual(testDate1);
+    expect(addDetailsToSets(workoutData1)[0].sets[1].date).toEqual(testDate1);
   });
   test("when there are two exercises", () => {
     //sets in first exercise
-    expect(addAllDetailsToSets(workoutData2)[0].sets[0].name).toEqual(
-      testName1
-    );
-    expect(addAllDetailsToSets(workoutData2)[0].sets[1].name).toEqual(
-      testName1
-    );
+    expect(addDetailsToSets(workoutData2)[0].sets[0].name).toEqual(testName1);
+    expect(addDetailsToSets(workoutData2)[0].sets[1].name).toEqual(testName1);
 
-    expect(addAllDetailsToSets(workoutData2)[0].sets[0].date).toEqual(
-      testDate1
-    );
-    expect(addAllDetailsToSets(workoutData2)[0].sets[1].date).toEqual(
-      testDate1
-    );
+    expect(addDetailsToSets(workoutData2)[0].sets[0].date).toEqual(testDate1);
+    expect(addDetailsToSets(workoutData2)[0].sets[1].date).toEqual(testDate1);
 
     //sets in second exercise
-    expect(addAllDetailsToSets(workoutData2)[1].sets[0].name).toEqual(
-      testName2
-    );
-    expect(addAllDetailsToSets(workoutData2)[1].sets[1].name).toEqual(
-      testName2
-    );
+    expect(addDetailsToSets(workoutData2)[1].sets[0].name).toEqual(testName2);
+    expect(addDetailsToSets(workoutData2)[1].sets[1].name).toEqual(testName2);
 
-    expect(addAllDetailsToSets(workoutData2)[1].sets[0].date).toEqual(
-      testDate2
-    );
-    expect(addAllDetailsToSets(workoutData2)[1].sets[1].date).toEqual(
-      testDate2
-    );
+    expect(addDetailsToSets(workoutData2)[1].sets[0].date).toEqual(testDate2);
+    expect(addDetailsToSets(workoutData2)[1].sets[1].date).toEqual(testDate2);
   });
 });
 
