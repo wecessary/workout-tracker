@@ -39,11 +39,11 @@ const ThisWeekVsAllTime = ({
             }}
           >
             <option>{lastWeekUniqueNames[0]}</option>
-            {lastWeekUniqueNames.map((name) => {
+            {lastWeekUniqueNames.map((name, i) => {
               if (name === lastWeekUniqueNames[0]) {
                 return null;
               }
-              return <option>{name}</option>;
+              return <option key={i}>{name}</option>;
             })}
           </select>
           <ArrowLeft />
