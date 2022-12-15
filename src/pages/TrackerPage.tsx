@@ -42,7 +42,7 @@ import FloatingLabel from "../components/FloatingLabel";
 import Toggle from "../components/Toggle";
 import RestTimeDisplay from "../components/timers/RestTimer";
 import Timer from "../components/timers/Timer";
-import Analytics from "./AnalyticsPage";
+import Analytics from "./analyticsPage/AnalyticsPage";
 import Autofill from "../components/Autofill";
 import {
   addDateToWorkoutData,

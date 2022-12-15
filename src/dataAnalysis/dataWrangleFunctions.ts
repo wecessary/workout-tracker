@@ -134,7 +134,7 @@ export const getStatsFromSets = (arrayOfSets: SetWithAllDetails[]) => {
       duration,
       restTime,
       totalTime: duration + restTime,
-    };
+    } as SetWithStats;
   });
 };
 
@@ -155,10 +155,6 @@ export const getSetsStatsWithTimeComplete = (userData: UserDataObject[]) => {
     .filter(isSetWithStats); //remove undefined elements
 };
 
-export const getTimeByDate = (userData: UserDataObject[]) => {
-  const setsWithTimeComplete = getSetsStatsWithTimeComplete(userData);
-  setsWithTimeComplete.map((set) => ({}));
-};
 export const attendanceStats = (userData: UserDataObject[]) => {
   const setsWithTimeComplete = getSetsStatsWithTimeComplete(userData);
 
@@ -194,7 +190,9 @@ export const getExerciseSets = (
     getSetsAllDetails(userDataDatesAllLevels)
   );
 
-  return setsWithStats.filter((set) => set.name === exercise);
+  return setsWithStats.filter(
+    (set) => set.name.toLowerCase() === exercise.toLowerCase()
+  );
 };
 
 export const getExerciseStats = (
@@ -223,7 +221,7 @@ export const getExerciseBestIn = (
   metric: "reps" | "weight" | "restTime" | "duration"
 ) => {
   const pastWorkout = getPastWorkoutOnly(userData);
-  const userDataDetailsAllLevel = addDateToWorkoutData(userData);
+  const userDataDetailsAllLevel = addDateToWorkoutData(pastWorkout);
   const setsWithStats = getStatsFromSets(
     getSetsAllDetails(userDataDetailsAllLevel)
   );
@@ -238,11 +236,15 @@ export const getSum = (array: number[]) => {
 };
 
 export const getMean = (array: number[]) => {
-  return array.reduce((a, b) => a + b, 0) / array.length;
+  return Math.round(array.reduce((a, b) => a + b, 0) / array.length);
 };
 
 export const getMax = (array: number[]) => {
   return array.reduce((a, b) => Math.max(a, b), 0);
+};
+
+export const getMin = (array: number[]) => {
+  return array.reduce((a, b) => Math.min(a, b));
 };
 
 interface GroupedSetsWithStats {
