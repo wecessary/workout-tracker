@@ -166,9 +166,10 @@ export const getExerciseSets = (
     getSetsAllDetails(userDataDatesAllLevels)
   );
 
-  return setsWithStats.filter(
-    (set) => set.name.toLowerCase() === exercise.toLowerCase()
-  );
+  return setsWithStats.filter((set) => {
+    const setName = set.name || "";
+    return setName.toLowerCase() === exercise.toLowerCase();
+  });
 };
 
 export const getExerciseStats = (
