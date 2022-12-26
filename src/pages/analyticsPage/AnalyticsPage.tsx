@@ -45,7 +45,7 @@ const Analytics = () => {
     getSetsAllDetails(getPastWorkoutOnly(userData))
   );
 
-  const [exercise, setExercise] = useState(lastWeekUniqueNames[0]);
+  const [exercise, setExercise] = useState(lastWeekUniqueNames[0] || "");
 
   const [exReps, exWeights, exRestTimes, exDurations, exUniqueDates] =
     getExerciseStats(

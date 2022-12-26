@@ -23,6 +23,8 @@ const ThisWeekVsAllTime = ({
   exReps: number[];
   exAllReps: number[];
 }) => {
+  const exercise = lastWeekUniqueNames[0] || "";
+
   return (
     <div
       className={`${cardsWidth} rounded-lg bg-[#1F1F1F] grid grid-rows-6 pt-4`}
@@ -38,9 +40,12 @@ const ThisWeekVsAllTime = ({
               setExercise(e.target.value);
             }}
           >
-            <option>{lastWeekUniqueNames[0].toUpperCase()}</option>
+            <option>{exercise.toUpperCase()}</option>
             {lastWeekUniqueNames.map((name, i) => {
               if (name === lastWeekUniqueNames[0]) {
+                return null;
+              }
+              if (!name) {
                 return null;
               }
               return <option key={i}>{name.toUpperCase()}</option>;

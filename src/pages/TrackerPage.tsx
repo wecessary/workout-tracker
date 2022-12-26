@@ -20,7 +20,6 @@ import {
   resetSetTimes,
 } from "../handlers/handlers";
 import { currentDateAsString } from "../utilities/date";
-import ExerciseNameInput from "../components/ExerciseNameInput";
 import RepsWeightInput from "../components/RepsWeightsInput";
 import TrafficLight from "../components/TrafficLight";
 import Button from "../components/Button";
@@ -42,16 +41,7 @@ import FloatingLabel from "../components/FloatingLabel";
 import Toggle from "../components/Toggle";
 import RestTimeDisplay from "../components/timers/RestTimer";
 import Timer from "../components/timers/Timer";
-import Analytics from "./analyticsPage/AnalyticsPage";
 import Autofill from "../components/Autofill";
-import {
-  addDateToWorkoutData,
-  attendanceStats,
-  getExerciseSets,
-  getLastXdaysAllData,
-  getSetsAllDetails,
-  sortByDate,
-} from "../dataAnalysis/dataWrangleFunctions";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -73,11 +63,6 @@ const TrackerPage = () => {
     setHasSavedUserData,
   } = useAutoSave(userData, selectedDate, setUserData, workoutData);
   const ref = useOutsideClick(() => resetShowOptions(setShowOptions));
-  // console.log(
-  //   getSetsOnly(addDateToWorkoutData(getLastXdaysAllData(userData, 7)))
-  // );
-  console.log(userData);
-
   return (
     <>
       <div className="flex flex-col justify-center items-center p-4 mb-10">
