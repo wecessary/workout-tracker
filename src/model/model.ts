@@ -142,3 +142,29 @@ export interface ShowOptions {
   showPopup: boolean;
   editCard: boolean;
 }
+
+export interface ExerciseStatObj {
+  name: string;
+  reps: number;
+  weights: number;
+  restTimes: number;
+  durations: number;
+  dates: string;
+}
+
+export type ExerciseStats = [
+  number[],
+  number[],
+  number[],
+  number[],
+  string[],
+  string[]
+];
+
+export type AttendanceStats = [
+  string[],
+  number[],
+  number[],
+  string[],
+  string[]
+];
