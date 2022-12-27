@@ -57,7 +57,7 @@ const ThisWeekVsAllTime = ({
       <div className="row-span-1">
         <div className="grid grid-cols-12 justify-items-center items-center ">
           <div className="col-start-7 col-span-2">
-            <div className="text-[6vw] font-bold flex flex-col">
+            <div className="text-[6vw] font-bold flex flex-col leading-none">
               <h1>THIS </h1>
               <h1>WEEK</h1>
             </div>
@@ -65,7 +65,7 @@ const ThisWeekVsAllTime = ({
           <div className="text-[4vw] col-span-1">
             <h1>VS</h1>
           </div>
-          <div className="text-[6vw] font-bold col-span-2 ">
+          <div className="text-[6vw] font-bold col-span-2 leading-none ">
             <div className="flex flex-col">
               <h1>ALL </h1>
               <h1>TIME</h1>

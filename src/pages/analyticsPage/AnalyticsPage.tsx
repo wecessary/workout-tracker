@@ -3,32 +3,28 @@ import { UserDataContext } from "../../context/DataContext";
 import {
   attendanceStats,
   getExerciseStats,
+  getExerciseStatsObj,
   getLastXdaysAllData,
   getPastWorkoutOnly,
   getSetsAllDetails,
   getStatsFromSets,
   getSum,
-  groupBy,
-  sumGroupBy,
 } from "../../dataAnalysis/dataWrangleFunctions";
 import { milSecToMin } from "../../utilities/date";
 import { Play } from "../../components/Icons";
-import Plot from "react-plotly.js";
-import { layoutXAutoTick } from "../../utilities/plotlyConfig";
 import { Header } from "./Header";
 import ThisWeekVsAllTime from "./ThisWeekVAllTime";
+import { AttendanceStats } from "../../model/model";
+import {
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const cardsWidth = "w-[95vw]";
-
-type AttendanceStats = [string[], number[], number[], string[], string[]];
-type ExerciseStats = [
-  number[],
-  number[],
-  number[],
-  number[],
-  string[],
-  string[]
-];
 
 const Analytics = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -48,10 +44,7 @@ const Analytics = () => {
   const [exercise, setExercise] = useState(lastWeekUniqueNames[0] || "");
 
   const [exReps, exWeights, exRestTimes, exDurations, exUniqueDates] =
-    getExerciseStats(
-      getLastXdaysAllData(userData, 7),
-      exercise
-    ) as ExerciseStats;
+    getExerciseStats(getLastXdaysAllData(userData, 7), exercise);
   const [
     exAllReps,
     exAllWeights,
@@ -59,14 +52,14 @@ const Analytics = () => {
     exAllDurations,
     exAllUniqueDates,
     exAllDates,
-  ] = getExerciseStats(userData, exercise) as ExerciseStats;
+  ] = getExerciseStats(userData, exercise);
 
-  console.log(exAllDates);
-  console.log(exAllWeights);
+  console.log(getExerciseStatsObj(userData, exercise));
+  console.log(exercise);
 
   return (
     <>
-      <div className="min-h-screen bg-[#363535] text-[#F5F5F5] flex flex-col items-center gap-4">
+      <div className="min-h-screen bg-[#363535] text-[#F5F5F5] flex flex-col items-center gap-4 pb-16">
         <h1 className={`${cardsWidth} text-[5vw] tracking-widest`}>
           MUSCLE REPORT
         </h1>
@@ -133,21 +126,15 @@ const Analytics = () => {
         <div
           className={`${cardsWidth} rounded-lg bg-[#1F1F1F] flex justify-center`}
         >
-          <Plot
-            className="w-[99%]"
-            data={[
-              {
-                y: sumGroupBy(
-                  groupBy(last2MonthsSets, "date", "totalTime")
-                ).map((x) => x / 1000 / 60),
-                x: Object.keys(groupBy(last2MonthsSets, "date", "totalTime")),
-                type: "bar",
-                marker: { color: "white" },
-              },
-            ]}
-            layout={layoutXAutoTick}
-            config={{ staticPlot: false, responsive: true }}
-          />
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart data={getExerciseStatsObj(userData, exercise)}>
+              <Line type="monotone" dataKey="weights" stroke="#8884d8" />
+              <Line type="monotone" dataKey="reps" stroke="#FE0606" />
+              <XAxis dataKey="date" fillOpacity={0} />
+              <YAxis />
+              <Tooltip contentStyle={{ color: "#000000" }} />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </>

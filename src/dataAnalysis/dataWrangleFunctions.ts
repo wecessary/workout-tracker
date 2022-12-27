@@ -1,4 +1,5 @@
 import {
+  ExerciseStats,
   SetWithAllDetails,
   SetWithStats,
   UserDataObject,
@@ -168,7 +169,7 @@ export const getExerciseSets = (
 
   return setsWithStats.filter((set) => {
     const setName = set.name || "";
-    return setName.toLowerCase() === exercise.toLowerCase();
+    return setName.toLowerCase().trim() === exercise.toLowerCase().trim();
   });
 };
 
@@ -189,8 +190,32 @@ export const getExerciseStats = (
   const uniqueDates = datesOnly.filter(
     (val, index, self) => self.indexOf(val) === index && val
   );
+  return [
+    reps,
+    weights,
+    restTimes,
+    durations,
+    uniqueDates,
+    datesOnly,
+  ] as ExerciseStats;
+};
 
-  return [reps, weights, restTimes, durations, uniqueDates, datesOnly];
+export const getExerciseStatsObj = (
+  userData: UserDataObject[],
+  exercise: string
+) => {
+  const relevantSets = getExerciseSets(getPastWorkoutOnly(userData), exercise);
+
+  return relevantSets
+    .map((set) => ({
+      name: exercise,
+      reps: set.reps,
+      weights: set.weight,
+      restTimes: set.restTime,
+      durations: set.duration,
+      date: set && set.date ? set.date : "",
+    }))
+    .sort((a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf());
 };
 
 export const getExerciseBestIn = (

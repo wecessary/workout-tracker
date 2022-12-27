@@ -49,14 +49,13 @@
     "@types/react-beautiful-dnd": "^13.1.2",
     "downshift": "^7.0.1",
     "firebase": "^9.10.0",
-    "plotly.js": "^2.16.4",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.0.3",
     "react-insta-stories": "^2.4.2",
-    "react-plotly.js": "^2.6.0",
-    "react-router-dom": "^6.4.0"
+    "react-router-dom": "^6.4.0",
+    "recharts": "^2.2.0"
   },
   "browserslist": [
     "last 5 versions"
