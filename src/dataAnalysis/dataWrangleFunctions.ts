@@ -221,7 +221,7 @@ export const getMax = (array: number[]) => {
 };
 
 export const getMin = (array: number[]) => {
-  return array.reduce((a, b) => Math.min(a, b));
+  return array.reduce((a, b) => Math.min(a, b), 0);
 };
 
 interface GroupedSetsWithStats {
