@@ -42,13 +42,13 @@ export const addDateToWorkoutData = (userData: UserDataObject[]) => {
   });
 };
 
-export const sortByDate = (userData: UserDataObject[]) => {
+export const sortByDateNewToOld = (userData: UserDataObject[]) => {
   return userData.sort(
     (a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf()
   );
 };
 
-export const sortByDateAscending = (userData: UserDataObject[]) => {
+export const sortByDateOldToNew = (userData: UserDataObject[]) => {
   return userData.sort(
     (a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()
   );
@@ -58,19 +58,25 @@ export const getPastWorkoutOnly = (userData: UserDataObject[]) => {
   return userData.filter((obj) => Date.now() > new Date(obj.date).valueOf());
 };
 
-export const getLastXWorkout = (userData: UserDataObject[], x: number) => {
-  const pastWorkout = getPastWorkoutOnly(userData);
-  return sortByDate(pastWorkout).slice(Math.max(userData.length - x, 0));
+export const getLastXWorkouts = (
+  /* Give you the last logged workouts, regardless of when they were done. E.g.
+   If you last workout was ten years ago, and you ask for the last workout, you will get this ten year ago workout */
+
+  userData: UserDataObject[],
+  x: number
+) => {
+  const pastWorkoutSorted = sortByDateNewToOld(getPastWorkoutOnly(userData));
+  return pastWorkoutSorted.slice(0, Math.max(x, 0));
 };
 
-export const getLastXdaysAllData = (
+export const getUserDataSinceXDaysAgo = (
   userData: UserDataObject[],
   days: number
 ) => {
   const xDaysAgo =
     new Date(currentDateAsString).valueOf() - days * 24 * 60 * 60 * 1000;
   return getPastWorkoutOnly(
-    userData.filter((obj) => new Date(obj.date).valueOf() > xDaysAgo)
+    userData.filter((obj) => new Date(obj.date).valueOf() >= xDaysAgo)
   );
 };
 
@@ -119,7 +125,8 @@ export const getSetsStatsWithTimeComplete = (userData: UserDataObject[]) => {
   const isSetWithStats = (
     set: SetWithStats | undefined
   ): set is SetWithStats => {
-    return !!set;
+    return !!set; // this lets typescript know to narrow down the type to SetWithStats if it returns true
+    // otherwise the return type of set will still be SetWithStats | undefined
   };
 
   const setsWithStats = getStatsFromSets(getSetsAllDetails(userData));
@@ -162,7 +169,9 @@ export const getExerciseSets = (
   userData: UserDataObject[],
   exercise: string
 ) => {
-  const userDataDatesAllLevels = addDateToWorkoutData(sortByDate(userData));
+  const userDataDatesAllLevels = addDateToWorkoutData(
+    sortByDateNewToOld(userData)
+  );
   const setsWithStats = getStatsFromSets(
     getSetsAllDetails(userDataDatesAllLevels)
   );
