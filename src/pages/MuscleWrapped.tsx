@@ -3,16 +3,14 @@ import { useContext, useState } from "react";
 import { UserDataContext } from "../context/DataContext";
 import {
   attendanceStats,
-  getExerciseBestIn,
-  getLastXdaysAllData,
+  getUserDataSinceXDaysAgo,
 } from "../dataAnalysis/dataWrangleFunctions";
-import { UserDataObject } from "../model/model";
 
 const MuscleWrapped = () => {
   const { datafromDB } = useContext(UserDataContext);
   const [userData, setUserData] = useState(datafromDB || []);
   const [uniqueDates, restTimes, durations] = attendanceStats(
-    getLastXdaysAllData(userData, 7)
+    getUserDataSinceXDaysAgo(userData, 7)
   ) as [string[], number[], number[]];
   const workoutTime = Math.floor(
     durations.reduce((x: number, y: number) => x + y, 0) / 1000 / 60

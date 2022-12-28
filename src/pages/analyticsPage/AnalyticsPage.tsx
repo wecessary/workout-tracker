@@ -4,7 +4,7 @@ import {
   attendanceStats,
   getExerciseStats,
   getExerciseStatsObj,
-  getLastXdaysAllData,
+  getUserDataSinceXDaysAgo,
   getPastWorkoutOnly,
   getSetsAllDetails,
   getStatsFromSets,
@@ -35,7 +35,7 @@ const Analytics = () => {
     lastWeekDurations,
     lastWeekNames,
     lastWeekUniqueNames,
-  ] = attendanceStats(getLastXdaysAllData(userData, 7)) as AttendanceStats;
+  ] = attendanceStats(getUserDataSinceXDaysAgo(userData, 6)) as AttendanceStats;
 
   const last2MonthsSets = getStatsFromSets(
     getSetsAllDetails(getPastWorkoutOnly(userData))
@@ -44,7 +44,7 @@ const Analytics = () => {
   const [exercise, setExercise] = useState(lastWeekUniqueNames[0] || "");
 
   const [exReps, exWeights, exRestTimes, exDurations, exUniqueDates] =
-    getExerciseStats(getLastXdaysAllData(userData, 7), exercise);
+    getExerciseStats(getUserDataSinceXDaysAgo(userData, 6), exercise);
   const [
     exAllReps,
     exAllWeights,
