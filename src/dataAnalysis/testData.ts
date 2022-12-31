@@ -1,4 +1,4 @@
-import { getDateXDaysFromToday } from "../utilities/date";
+import { getDateOfXDaysFromToday } from "../utilities/date";
 
 export const testName1 = "exercise1";
 export const testDate1 = "2022-12-07";
@@ -7,10 +7,10 @@ export const testDate2 = "2022-12-09";
 export const testName3 = "exercise3";
 export const testName4 = "exercise4";
 export const testDate3 = "2050-12-09";
-export const yesterday = getDateXDaysFromToday(-1);
-export const twoDaysAgo = getDateXDaysFromToday(-2);
-export const fiveDaysAgo = getDateXDaysFromToday(-5);
-export const tomorrow = getDateXDaysFromToday(1);
+export const yesterday = getDateOfXDaysFromToday(-1);
+export const twoDaysAgo = getDateOfXDaysFromToday(-2);
+export const fiveDaysAgo = getDateOfXDaysFromToday(-5);
+export const tomorrow = getDateOfXDaysFromToday(1);
 
 export const workoutData1 = [
   {

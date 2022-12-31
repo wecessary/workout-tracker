@@ -5,6 +5,7 @@ import {
   UserDataObject,
   WorkoutDataObjectDetailsAllLevel,
   WorkoutDataObjectWithDate,
+  AttendanceStats,
 } from "../model/model";
 import { currentDateAsString } from "../utilities/date";
 
@@ -159,10 +160,16 @@ export const attendanceStats = (userData: UserDataObject[]) => {
   const names = setsWithTimeComplete.map((set) => set.name);
 
   const uniqueNames = names.filter(
-    (val, index, self) => self.indexOf(val) === index
+    (val, index, self) => self.indexOf(val) === index && val
   );
 
-  return [uniqueDates, restTimes, durations, names, uniqueNames];
+  return [
+    uniqueDates,
+    restTimes,
+    durations,
+    names,
+    uniqueNames,
+  ] as AttendanceStats;
 };
 
 export const getExerciseSets = (
