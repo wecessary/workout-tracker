@@ -24,7 +24,7 @@ export const milSecToMin = (timeInMilSec: number) => {
   return Math.round(timeInMilSec / 1000 / 60);
 };
 
-export const getDateXDaysFromToday = (x: number) => {
+export const getDateOfXDaysFromToday = (x: number) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + x);
 

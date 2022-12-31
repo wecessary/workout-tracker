@@ -3,48 +3,33 @@ import { UserDataContext } from "../../context/DataContext";
 import {
   attendanceStats,
   getExerciseStats,
-  getExerciseStatsObj,
   getUserDataSinceXDaysAgo,
-  getPastWorkoutOnly,
-  getSetsAllDetails,
-  getStatsFromSets,
   getSum,
 } from "../../dataAnalysis/dataWrangleFunctions";
-import { milSecToMin } from "../../utilities/date";
 import { Play } from "../../components/Icons";
-import { Header } from "./Header";
 import ThisWeekVsAllTime from "./ThisWeekVAllTime";
-import { AttendanceStats } from "../../model/model";
-import {
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import Last7Days from "./Last7Days";
+import Progression from "./Progression";
 
 const cardsWidth = "w-[95vw]";
 
 const Analytics = () => {
   const { datafromDB } = useContext(UserDataContext);
   const userData = datafromDB || [];
+
   const [
     lastWeekDatesWorked,
     lastWeekRestTimes,
     lastWeekDurations,
     lastWeekNames,
     lastWeekUniqueNames,
-  ] = attendanceStats(getUserDataSinceXDaysAgo(userData, 6)) as AttendanceStats;
-
-  const last2MonthsSets = getStatsFromSets(
-    getSetsAllDetails(getPastWorkoutOnly(userData))
+  ] = attendanceStats(getUserDataSinceXDaysAgo(userData, 6));
+  const [lastWeekEx, setLastWeekExercise] = useState(
+    lastWeekUniqueNames[0] || ""
   );
-
-  const [exercise, setExercise] = useState(lastWeekUniqueNames[0] || "");
-
   const [exReps, exWeights, exRestTimes, exDurations, exUniqueDates] =
-    getExerciseStats(getUserDataSinceXDaysAgo(userData, 6), exercise);
+    getExerciseStats(getUserDataSinceXDaysAgo(userData, 6), lastWeekEx);
+
   const [
     exAllReps,
     exAllWeights,
@@ -52,10 +37,7 @@ const Analytics = () => {
     exAllDurations,
     exAllUniqueDates,
     exAllDates,
-  ] = getExerciseStats(userData, exercise);
-
-  console.log(getExerciseStatsObj(userData, exercise));
-  console.log(exercise);
+  ] = getExerciseStats(userData, lastWeekEx);
 
   return (
     <>
@@ -63,37 +45,17 @@ const Analytics = () => {
         <h1 className={`${cardsWidth} text-[5vw] tracking-widest`}>
           MUSCLE REPORT
         </h1>
-        <Header text="LAST 7 DAYS" cardsWidth={cardsWidth} />
-        <div
-          className={`${cardsWidth} grid grid-cols-12 border-black border bg-[#1F1F1F] rounded-lg py-4`}
-        >
-          <div className="col-start-2 col-span-3 flex flex-col">
-            <div>
-              <span className="text-[15vw]">{lastWeekDatesWorked.length}</span>
-              <span className="text-[4vw]">DAYS</span>
-            </div>
-            <div>
-              <span className="text-[15vw]">{lastWeekUniqueNames.length}</span>
-              <span className="text-[4vw]">EXERCISES</span>
-            </div>
-          </div>
-          <div className="col-start-7 col-span-3 flex flex-col">
-            <div>
-              <span className="text-[15vw]">
-                {milSecToMin(
-                  getSum(lastWeekRestTimes) + getSum(lastWeekDurations)
-                )}
-              </span>
-              <span className="text-[4vw]">MINUTES</span>
-            </div>
-            <div>
-              <span className="text-[15vw]">{lastWeekNames.length}</span>
-              <span className="text-[4vw]">SETS</span>
-            </div>
-          </div>
-        </div>
+        <Progression userData={userData} cardsWidth={cardsWidth} />
+        <Last7Days
+          cardsWidth={cardsWidth}
+          daysWorkedOut={lastWeekDatesWorked.length}
+          numExDone={lastWeekUniqueNames.length}
+          restTime={getSum(lastWeekRestTimes)}
+          timeExercising={getSum(lastWeekDurations)}
+          numSetsDone={lastWeekNames.length}
+        />
         <ThisWeekVsAllTime
-          setExercise={setExercise}
+          setExercise={setLastWeekExercise}
           exWeights={exWeights}
           exReps={exReps}
           exAllWeights={exAllWeights}
@@ -121,20 +83,6 @@ const Analytics = () => {
             </div>
             <Play animatePulse={true} />
           </div>
-        </div>
-        <Header text="YOUR PROGRESSION" cardsWidth={cardsWidth} />
-        <div
-          className={`${cardsWidth} rounded-lg bg-[#1F1F1F] flex justify-center`}
-        >
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={getExerciseStatsObj(userData, exercise)}>
-              <Line type="monotone" dataKey="weights" stroke="#8884d8" />
-              <Line type="monotone" dataKey="reps" stroke="#FE0606" />
-              <XAxis dataKey="date" fillOpacity={0} />
-              <YAxis />
-              <Tooltip contentStyle={{ color: "#000000" }} />
-            </LineChart>
-          </ResponsiveContainer>
         </div>
       </div>
     </>
