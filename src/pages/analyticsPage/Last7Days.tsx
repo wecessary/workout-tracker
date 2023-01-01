@@ -19,9 +19,7 @@ const Last7Days = ({
   return (
     <>
       <Header text="LAST 7 DAYS" cardsWidth={cardsWidth} />
-      <div
-        className={`${cardsWidth} grid grid-cols-12 border-black border bg-[#1F1F1F] rounded-lg py-4`}
-      >
+      <div className={`${cardsWidth} grid grid-cols-12 rounded-lg py-4`}>
         <div className="col-start-2 col-span-3 flex flex-col">
           <div>
             <span className="text-[15vw]">{daysWorkedOut}</span>

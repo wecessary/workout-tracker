@@ -13,6 +13,7 @@ import {
   getExerciseStatsObj,
 } from "../../dataAnalysis/dataWrangleFunctions";
 import { UserDataObject } from "../../model/model";
+import { colour } from "../../utilities/colour";
 import { Header } from "./Header";
 
 const Progression = ({
@@ -29,9 +30,9 @@ const Progression = ({
   return (
     <>
       <Header text="YOUR PROGRESSION" cardsWidth={cardsWidth} />
-      <div className={`${cardsWidth} rounded-lg bg-[#1F1F1F]`}>
+      <div className={`${cardsWidth}`}>
         <select
-          className="bg-[#1F1F1F] text-[4vw] m-4 p-1"
+          className={`${colour.background} text-[4vw] m-4 p-1`}
           onChange={(e) => setExercise(e.target.value)}
           onBlur={(e) => setExercise(e.target.value)}
         >

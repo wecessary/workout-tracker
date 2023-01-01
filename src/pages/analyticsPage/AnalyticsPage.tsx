@@ -10,6 +10,7 @@ import { Play } from "../../components/Icons";
 import ThisWeekVsAllTime from "./ThisWeekVAllTime";
 import Last7Days from "./Last7Days";
 import Progression from "./Progression";
+import { colour } from "../../utilities/colour";
 
 const cardsWidth = "w-[95vw]";
 
@@ -41,7 +42,9 @@ const Analytics = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-[#363535] text-[#F5F5F5] flex flex-col items-center gap-4 pb-16">
+      <div
+        className={`min-h-screen ${colour.background} text-[#F5F5F5] flex flex-col items-center gap-4 pb-16 pt-4`}
+      >
         <h1 className={`${cardsWidth} text-[5vw] tracking-widest`}>
           MUSCLE REPORT
         </h1>

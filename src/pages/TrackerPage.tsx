@@ -66,6 +66,9 @@ const TrackerPage = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center p-4 mb-10">
+        <h1 className={`text-[5vw] text-white tracking-widest w-full`}>
+          MUSCLE JOURNAL
+        </h1>
         <DragDropContext
           onDragEnd={(result) =>
             handleOnDragEnd(workoutData, setWorkoutData, result)
@@ -74,7 +77,8 @@ const TrackerPage = () => {
           <input
             type="date"
             value={selectedDate}
-            className="bg-[#F5F5F5]"
+            style={{ colorScheme: "dark" }}
+            className={`${colour.background} text-[#D9D9D9] w-full border rounded border-gray-600`}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
           <DroppableWrapper droppableId="cards">
@@ -336,7 +340,7 @@ const TrackerPage = () => {
                     </Button>
 
                     <textarea
-                      className={`${colour.main} ${colour.groupHover} text-base w-full text-slate-500`}
+                      className={`${colour.cardColour} ${colour.groupHover} text-base w-full text-white ${colour.offWhitePlaceholder}`}
                       value={obj.comment}
                       onChange={(e) => {
                         handleChangeComment(
