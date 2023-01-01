@@ -4,12 +4,12 @@ import { ArrowUp, Cog, PencilSquare } from "./Icons";
 const NavBar = () => {
   return (
     <div className="w-screen flex justify-center">
-      <nav className="w-[90%] flex justify-evenly fixed bottom-0 p-4 bg-white border rounded-2xl z-50">
+      <nav className="w-[90%] flex justify-evenly fixed bottom-0 p-4 bg-[#423C42] shadow text-white rounded-2xl z-50">
         <Link to="/analytics">
           <ArrowUp />
         </Link>
         <Link to="/tracker">
-          <PencilSquare colour="black" />
+          <PencilSquare colour="white" />
         </Link>
         <Link to="settings">
           <Cog />
