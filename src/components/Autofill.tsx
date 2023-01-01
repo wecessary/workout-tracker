@@ -62,10 +62,10 @@ const Autofill = ({
 
   return (
     <div
-      className={`${colour.main} ${colour.groupHover} col-span-10 w-full mb-3 font-bold text-lg tracking-tight text-white`}
+      className={`${colour.cardColour} ${colour.groupHover} col-span-10 w-full mb-3 font-bold text-lg tracking-tight text-white ${colour.offWhitePlaceholder}`}
     >
       <input
-        className={`${colour.main} ${colour.groupHover} `}
+        className={`${colour.cardColour} ${colour.groupHover} `}
         {...getInputProps()}
         data-testid="combobox-input"
         placeholder="Exercise name"

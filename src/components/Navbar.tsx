@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
+import { colour } from "../utilities/colour";
 import { ArrowUp, Cog, PencilSquare } from "./Icons";
 
 const NavBar = () => {
   return (
     <div className="w-screen flex justify-center">
-      <nav className="w-[90%] flex justify-evenly fixed bottom-0 p-4 bg-[#423C42] shadow text-white rounded-2xl z-50">
+      <nav
+        className={`w-full flex justify-evenly fixed bottom-0 p-4 ${colour.background} text-[#a4a4a3] z-50`}
+      >
         <Link to="/analytics">
           <ArrowUp />
         </Link>
         <Link to="/tracker">
-          <PencilSquare colour="white" />
+          <PencilSquare colour="#a4a4a3" />
         </Link>
         <Link to="settings">
           <Cog />
