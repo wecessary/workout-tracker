@@ -42,6 +42,7 @@ import Toggle from "../../components/Toggle";
 import RestTimeDisplay from "../../components/timers/RestTimer";
 import Timer from "../../components/timers/Timer";
 import Autofill from "../../components/Autofill";
+import SetHeader from "./SetHeader";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -222,6 +223,14 @@ const TrackerPage = () => {
                       obj.sets.map((set, setIndex) => {
                         return (
                           <div key={setIndex} className="mb-4">
+                            <CardRow>
+                              <SetHeader
+                                workoutData={workoutData}
+                                setWorkoutData={setWorkoutData}
+                                workoutObjIndex={exIndex}
+                                setIndex={setIndex}
+                              />
+                            </CardRow>
                             <CardRow
                               key={`metricRow${setIndex}`}
                               rowStyling="text-gray-700 text-sm grid grid-cols-12"
@@ -247,9 +256,7 @@ const TrackerPage = () => {
                                   x
                                 </button>
                               </PopUpControll>
-                              <p className="col-span-6 font-extrabold text-[#D9D9D9]">{`Set ${
-                                setIndex + 1
-                              }`}</p>
+
                               <RepsWeightInput
                                 shouldDisplay={
                                   ("displayReps" in obj
