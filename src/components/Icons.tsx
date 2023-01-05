@@ -193,11 +193,11 @@ export const Play = ({ animatePulse }: { animatePulse: boolean }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      fill="none"
+      fill="#fffff"
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      strokeWidth={1.0}
       stroke="currentColor"
-      className={`w-10 h-10  ${animatePulse && "animate-pulse"}`}
+      className={`w-5 h-5 ${animatePulse && "animate-pulse"}`}
     >
       <path
         strokeLinecap="round"
@@ -226,3 +226,37 @@ export const ArrowLeft = () => {
     </svg>
   );
 };
+
+export const Stop = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="#fffff"
+    viewBox="0 0 24 24"
+    strokeWidth={1.0}
+    stroke="currentColor"
+    className="w-5 h-5"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z"
+    />
+  </svg>
+);
+
+export const Check = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-4 h-4"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M4.5 12.75l6 6 9-13.5"
+    />
+  </svg>
+);
