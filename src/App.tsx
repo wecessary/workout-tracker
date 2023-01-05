@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedContentLayout from "./components/ProtectedContentLayout";
@@ -15,7 +16,18 @@ const container = document.getElementById("root");
 const root = createRoot(container!);
 
 const App = () => {
-  return (
+  const [appIsLoading, setAppIsLoading] = useState(true);
+  const loaderContainer = document.querySelector(".load-container");
+
+  useEffect(() => {
+    const minLoaderShowTime = setTimeout(() => {
+      loaderContainer?.remove();
+      setAppIsLoading(false);
+    }, 1250);
+    return () => clearTimeout(minLoaderShowTime);
+  }, []);
+
+  return appIsLoading ? null : (
     <>
       <AuthContextProvider>
         <BrowserRouter>
