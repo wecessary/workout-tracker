@@ -6,7 +6,7 @@ const NavBar = () => {
   return (
     <div className="w-screen flex justify-center">
       <nav
-        className={`w-full flex justify-evenly fixed bottom-0 p-4 ${colour.background} text-[#a4a4a3] z-50`}
+        className={`w-full flex justify-evenly fixed bottom-0 p-4 ${colour.background} text-[#a4a4a3] z-40`}
       >
         <Link to="/analytics">
           <ArrowUp />
