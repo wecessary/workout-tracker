@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { ShowOptions } from "../model/model";
 
-const Controller = ({
+const PopUpControll = ({
   children,
   currentExIndex,
   showOptions,
@@ -10,7 +10,7 @@ const Controller = ({
   children: ReactNode;
   currentExIndex: number;
   showOptions: ShowOptions;
-  attributeToShow: "showPopup" | "editCard";
+  attributeToShow: "showMenu" | "editCard";
 }) => {
   const isCurrentExercise = showOptions.exerciseIndex === currentExIndex;
   const showAttribute = showOptions[attributeToShow];
@@ -18,4 +18,4 @@ const Controller = ({
   return isCurrentExercise && showAttribute ? <>{children}</> : null;
 };
 
-export default Controller;
+export default PopUpControll;

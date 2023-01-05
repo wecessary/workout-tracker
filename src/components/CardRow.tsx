@@ -7,7 +7,7 @@ const CardRow = ({
   children: ReactNode;
   rowStyling?: string;
 }) => {
-  return <div className={`${rowStyling} grid my-2`}>{children}</div>;
+  return <div className={`${rowStyling} my-2`}>{children}</div>;
 };
 
 export default CardRow;

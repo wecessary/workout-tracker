@@ -18,30 +18,30 @@ import {
   startSet,
   finishSet,
   resetSetTimes,
-} from "../handlers/handlers";
-import { currentDateAsString } from "../utilities/date";
-import RepsWeightInput from "../components/RepsWeightsInput";
-import TrafficLight from "../components/TrafficLight";
-import Button from "../components/Button";
-import StatusIndicator from "../components/StatusIndicator";
-import NotificationChip from "../components/NotificationChip";
-import Card from "../components/Card";
-import DraggableWrapper from "../components/DraggableWrapper";
+} from "../../handlers/handlers";
+import { currentDateAsString } from "../../utilities/date";
+import RepsWeightInput from "../../components/RepsWeightsInput";
+import TrafficLight from "../../components/TrafficLight";
+import Button from "../../components/Button";
+import StatusIndicator from "../../components/StatusIndicator";
+import NotificationChip from "../../components/NotificationChip";
+import Card from "../../components/Card";
+import DraggableWrapper from "../../components/DraggableWrapper";
 import { DragDropContext } from "react-beautiful-dnd";
-import { Chevron, GripBar2, PencilSquare } from "../components/Icons";
-import CardRow from "../components/CardRow";
-import DroppableWrapper from "../components/DroppableWrapper";
-import Controller from "../components/Controller";
-import useOutsideClick from "../hooks/useOutsideClick";
-import useWorkoutData from "../hooks/useWorkoutData";
-import { UserDataContext } from "../context/DataContext";
-import useAutoSave from "../hooks/useAutoSave";
-import { colour } from "../utilities/colour";
-import FloatingLabel from "../components/FloatingLabel";
-import Toggle from "../components/Toggle";
-import RestTimeDisplay from "../components/timers/RestTimer";
-import Timer from "../components/timers/Timer";
-import Autofill from "../components/Autofill";
+import { GripBar2, PencilSquare } from "../../components/Icons";
+import CardRow from "../../components/CardRow";
+import DroppableWrapper from "../../components/DroppableWrapper";
+import PopUpControll from "../../components/PopUpControll";
+import useOutsideClick from "../../hooks/useOutsideClick";
+import useWorkoutData from "../../hooks/useWorkoutData";
+import { UserDataContext } from "../../context/DataContext";
+import useAutoSave from "../../hooks/useAutoSave";
+import { colour } from "../../utilities/colour";
+import FloatingLabel from "../../components/FloatingLabel";
+import Toggle from "../../components/Toggle";
+import RestTimeDisplay from "../../components/timers/RestTimer";
+import Timer from "../../components/timers/Timer";
+import Autofill from "../../components/Autofill";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -53,7 +53,7 @@ const TrackerPage = () => {
   );
   const [showOptions, setShowOptions] = useState({
     exerciseIndex: NaN,
-    showPopup: false,
+    showMenu: false,
     editCard: false,
   });
   const {
@@ -93,7 +93,7 @@ const TrackerPage = () => {
                     <div className="flex justify-center mb-4">
                       <GripBar2 />
                     </div>
-                    <CardRow rowStyling="grid grid-cols-12 gap-2">
+                    <CardRow rowStyling="gap-2">
                       <Autofill
                         userData={userData}
                         value={obj.name}
@@ -101,16 +101,11 @@ const TrackerPage = () => {
                           setWorkoutData(changeName(name, exIndex, workoutData))
                         }
                       />
-                      <Button localStyling="col-span-1 flex items-start">
-                        <Chevron />
-                      </Button>
+                    </CardRow>
+                    <CardRow rowStyling="grid grid-cols-12 gap-2">
                       <div
-                        className="relative col-span-1"
+                        className="relative col-start-11 col-span-1"
                         onClick={(e) => e.stopPropagation()}
-                        // without stopPropagation, I think when you click ...,
-                        // Edit is mounted, and adding the click event to the whole document,
-                        // so rightaway the ... has the useoutSideClick callback attached to it
-                        // which means clicking immediately also dismounts Edit
                       >
                         <Button
                           ariaLabel="show edit options"
@@ -124,14 +119,16 @@ const TrackerPage = () => {
                         >
                           <PencilSquare colour="white" />
                         </Button>
-                        <Controller
+                        <PopUpControll
                           currentExIndex={exIndex}
                           showOptions={showOptions}
-                          attributeToShow={"showPopup"}
+                          attributeToShow={"showMenu"}
                         >
-                          <div className="absolute w-48 top-5 right-4 bg-white z-10 rounded-lg border border-gray-200">
+                          <div
+                            ref={ref}
+                            className="absolute w-48 top-5 right-4 bg-white z-50 rounded-lg border border-gray-200"
+                          >
                             <Button
-                              ref={ref}
                               variant="listGroup"
                               onClick={() => {
                                 setWorkoutData(
@@ -143,7 +140,6 @@ const TrackerPage = () => {
                               Delete Exercise
                             </Button>
                             <Button
-                              ref={ref}
                               variant="listGroup"
                               onClick={() => {
                                 handleEditCard(
@@ -219,7 +215,7 @@ const TrackerPage = () => {
                               }
                             />
                           </div>
-                        </Controller>
+                        </PopUpControll>
                       </div>
                     </CardRow>
                     {obj.sets &&
@@ -228,9 +224,9 @@ const TrackerPage = () => {
                           <div key={setIndex} className="mb-4">
                             <CardRow
                               key={`metricRow${setIndex}`}
-                              rowStyling="text-gray-700 text-sm grid-cols-12"
+                              rowStyling="text-gray-700 text-sm grid grid-cols-12"
                             >
-                              <Controller
+                              <PopUpControll
                                 attributeToShow="editCard"
                                 currentExIndex={exIndex}
                                 showOptions={showOptions}
@@ -243,14 +239,14 @@ const TrackerPage = () => {
                                     );
                                     setShowOptions({
                                       ...showOptions,
-                                      showPopup: false,
+                                      showMenu: false,
                                     });
                                     e.stopPropagation();
                                   }}
                                 >
                                   x
                                 </button>
-                              </Controller>
+                              </PopUpControll>
                               <p className="col-span-6 font-extrabold text-[#D9D9D9]">{`Set ${
                                 setIndex + 1
                               }`}</p>
@@ -287,7 +283,7 @@ const TrackerPage = () => {
                             </CardRow>
                             <CardRow
                               key={`timerRow${setIndex}`}
-                              rowStyling="gap-4 grid-cols-12 items-center justify-between"
+                              rowStyling="gap-4 grid grid-cols-12 items-center justify-between"
                             >
                               <Timer
                                 startTime={set.timeStart || 0}

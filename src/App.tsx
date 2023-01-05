@@ -9,7 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import MuscleWrapped from "./pages/MuscleWrapped";
 import RegisterPage from "./pages/RegisterPage";
 import Settings from "./pages/SettingsPage";
-import TrackerPage from "./pages/TrackerPage";
+import TrackerPage from "./pages/trackerPage/TrackerPage";
 import UnprotectedRoutes from "./routeProtection/UnprotectedRoutes";
 
 const container = document.getElementById("root");

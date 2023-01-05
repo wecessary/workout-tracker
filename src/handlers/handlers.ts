@@ -221,7 +221,7 @@ export const resetShowOptions = (
 ) => {
   setShowOptions({
     exerciseIndex: NaN,
-    showPopup: false,
+    showMenu: false,
     editCard: false,
   });
 };
@@ -236,7 +236,7 @@ export const handleShowPopup = (
   } else {
     setShowOptions({
       exerciseIndex,
-      showPopup: true,
+      showMenu: true,
       editCard: false,
     });
   }
@@ -247,10 +247,9 @@ export const handleEditCard = (
   showOptions: ShowOptions,
   setShowOptions: (value: SetStateAction<ShowOptions>) => void
 ) => {
-  if (showOptions.exerciseIndex !== exerciseIndex) {
-    return;
+  if (showOptions.exerciseIndex === exerciseIndex) {
+    setShowOptions({ ...showOptions, editCard: !showOptions.editCard });
   }
-  setShowOptions({ ...showOptions, editCard: !showOptions.editCard });
 };
 
 const reorderWorkoutObjects = (workoutData: WorkoutDataObject[]) => {

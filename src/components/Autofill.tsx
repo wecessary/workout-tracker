@@ -1,25 +1,8 @@
 import { useCombobox } from "downshift";
 import { useEffect, useState } from "react";
+import { attendanceStats } from "../dataAnalysis/dataWrangleFunctions";
 import { UserDataObject } from "../model/model";
 import { colour } from "../utilities/colour";
-
-const exerciseNames = (userData: UserDataObject[]) => {
-  const namesNestedArrays = userData.map((oneDay) => {
-    const workout = oneDay.workoutData;
-    return workout
-      ? workout.map((exercise) => {
-          if (exercise.name) {
-            return exercise.name.trim();
-          }
-        })
-      : [];
-    //array of names of one workout
-  });
-  const namesWithDuplicates = namesNestedArrays.flat().filter((x) => x);
-  return namesWithDuplicates.filter(
-    (val, index, self) => self.indexOf(val) === index
-  );
-};
 
 const Autofill = ({
   userData,
@@ -30,7 +13,8 @@ const Autofill = ({
   value: string;
   onChange: (inputValue: string) => void;
 }) => {
-  const [inputItems, setInputItems] = useState(exerciseNames(userData));
+  const allExNames = attendanceStats(userData)[4];
+  const [inputItems, setInputItems] = useState(allExNames);
   const {
     isOpen,
     getMenuProps,
@@ -44,7 +28,7 @@ const Autofill = ({
     items: inputItems,
     onInputValueChange: ({ inputValue }) => {
       setInputItems(
-        exerciseNames(userData).filter(
+        allExNames.filter(
           (item) =>
             item &&
             item
@@ -62,10 +46,10 @@ const Autofill = ({
 
   return (
     <div
-      className={`${colour.cardColour} ${colour.groupHover} col-span-10 w-full mb-3 font-bold text-lg tracking-tight text-white ${colour.offWhitePlaceholder}`}
+      className={`${colour.cardColour} ${colour.groupHover} w-full mb-3 font-bold text-lg tracking-tight text-white ${colour.offWhitePlaceholder}`}
     >
       <input
-        className={`${colour.cardColour} ${colour.groupHover} `}
+        className={`${colour.cardColour} ${colour.groupHover} w-full`}
         {...getInputProps()}
         data-testid="combobox-input"
         placeholder="Exercise name"

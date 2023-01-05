@@ -139,7 +139,7 @@ export type SetUserData = (value: SetStateAction<UserDataObject[]>) => void;
 
 export interface ShowOptions {
   exerciseIndex: number;
-  showPopup: boolean;
+  showMenu: boolean;
   editCard: boolean;
 }
 

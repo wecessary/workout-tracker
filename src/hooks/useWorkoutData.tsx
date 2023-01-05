@@ -3,6 +3,10 @@ import { initialWorkoutData } from "../data/initalData";
 import { UserDataObject } from "../model/model";
 
 const useWorkoutData = (userData: UserDataObject[], selectedDate: string) => {
+  /* this hook sets the inital state of workoutData to
+      the selected date's workoutData, if it doesn't exist,
+      it will be the initalWorkoutData
+  */
   const getselectedDayWorkout = () => {
     const index = userData.findIndex((obj) => obj.date === selectedDate);
     return index === -1

@@ -5,7 +5,7 @@
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
-import TrackerPage from "./TrackerPage";
+import TrackerPage from "./trackerPage/TrackerPage";
 
 function setup(jsx: JSX.Element) {
   return {
