@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Set } from "../../model/model";
 import { secToMinSec } from "../../utilities/date";
+import { Check, Play, Stop } from "../Icons";
 import {
   currentSetComplete,
   prevSetStarted,
@@ -41,19 +42,19 @@ const Timer = ({
 
   const btnContent = [
     {
-      icon: ">",
+      icon: <Play animatePulse={true} />,
       text: "Begin Set",
       content: null,
       onClick: beginOnClick, // needs to record start time
     },
     {
-      icon: "||",
+      icon: <Stop />,
       text: "Finish Set",
       content: secToMinSec(timeDiff, "00:00") || null, // needs to display time
       onClick: finishOnClick, // needs to record finish time
     },
     {
-      icon: "✔",
+      icon: <Check />,
       text: "Set complete",
       content: secToMinSec(calTimeDiff(endTime, startTime), "00:00"), // display length
       onClick: resetOnClick,
@@ -83,7 +84,7 @@ const Timer = ({
       onClick={() => {
         btnContent[clickCountLoader()].onClick();
       }}
-      className=" col-span-7 gap-1 flex px-3 py-1 text-[10px] border text-[#575555] bg-[#F4F4F4] font-medium rounded-lg  disabled:bg-[#C8C8C8]"
+      className=" col-span-7 gap-1 flex items-center px-3 py-1 text-[10px] border text-[#575555] bg-[#F4F4F4] font-medium rounded-lg  disabled:bg-[#C8C8C8]"
     >
       <div>{btnContent[clickCountLoader() % 3].icon}</div>
       <div>{btnContent[clickCountLoader() % 3].text}</div>
