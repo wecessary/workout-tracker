@@ -74,27 +74,13 @@ const TrackerPage = () => {
                   draggableIndex={exIndex}
                   key={exIndex}
                 >
-                  <Card>
-                    <CardRow rowStyling="grid grid-cols-12 gap-2">
-                      <div className="col-start-5">
-                        <GripBar2 />
-                      </div>
-                      <PopUpMenu
-                        workoutData={workoutData}
-                        setWorkoutData={setWorkoutData}
-                        exIndex={exIndex}
-                        workoutDataObject={obj}
-                      />
-                    </CardRow>
-                    <CardRow rowStyling="gap-2">
-                      <Autofill
-                        userData={userData}
-                        value={obj.name}
-                        onChange={(name) =>
-                          setWorkoutData(changeName(name, exIndex, workoutData))
-                        }
-                      />
-                    </CardRow>
+                  <Card
+                    userData={userData}
+                    workoutData={workoutData}
+                    exIndex={exIndex}
+                    setWorkoutData={setWorkoutData}
+                    workoutDataObj={obj}
+                  >
                     {obj.sets &&
                       obj.sets.map((set, setIndex) => {
                         return (
