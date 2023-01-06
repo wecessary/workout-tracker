@@ -91,21 +91,12 @@ const TrackerPage = () => {
                   key={exIndex}
                 >
                   <Card>
-                    <div className="flex justify-center mb-4">
-                      <GripBar2 />
-                    </div>
-                    <CardRow rowStyling="gap-2">
-                      <Autofill
-                        userData={userData}
-                        value={obj.name}
-                        onChange={(name) =>
-                          setWorkoutData(changeName(name, exIndex, workoutData))
-                        }
-                      />
-                    </CardRow>
                     <CardRow rowStyling="grid grid-cols-12 gap-2">
+                      <div className="col-start-5">
+                        <GripBar2 />
+                      </div>
                       <div
-                        className="relative col-start-11 col-span-1"
+                        className="relative col-start-12 col-span-1"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <Button
@@ -219,6 +210,16 @@ const TrackerPage = () => {
                         </PopUpControll>
                       </div>
                     </CardRow>
+                    <CardRow rowStyling="gap-2">
+                      <Autofill
+                        userData={userData}
+                        value={obj.name}
+                        onChange={(name) =>
+                          setWorkoutData(changeName(name, exIndex, workoutData))
+                        }
+                      />
+                    </CardRow>
+
                     {obj.sets &&
                       obj.sets.map((set, setIndex) => {
                         return (
@@ -334,12 +335,12 @@ const TrackerPage = () => {
                         );
                       })}
                     <Button
-                      variant="primary"
+                      variant="outline"
                       onClick={() =>
                         setWorkoutData(addSet(obj.index, workoutData))
                       }
                     >
-                      +
+                      Add set
                     </Button>
 
                     <textarea
