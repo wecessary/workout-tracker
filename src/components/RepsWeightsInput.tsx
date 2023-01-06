@@ -38,7 +38,7 @@ const RepsWeightInput = ({
           onChange(e, setIndex, workoutDataObject, workoutData, setWorkoutData)
         }
       />
-      {repsOrWeight}
+      {repsOrWeight.toUpperCase()}
     </span>
   ) : null;
 };
