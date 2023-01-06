@@ -6,15 +6,8 @@ import {
   handleChangeEasy,
   handleChangeWeight,
   handleChangeComment,
-  handleShowPopup,
   handleOnDragEnd,
-  handleEditCard,
-  resetShowOptions,
   addSet,
-  deleteExercise,
-  deleteSet,
-  changeUnit,
-  toggleDisplayUnit,
   startSet,
   finishSet,
   resetSetTimes,
@@ -28,21 +21,18 @@ import NotificationChip from "../../components/NotificationChip";
 import Card from "../../components/Card";
 import DraggableWrapper from "../../components/DraggableWrapper";
 import { DragDropContext } from "react-beautiful-dnd";
-import { GripBar2, PencilSquare } from "../../components/Icons";
+import { GripBar2 } from "../../components/Icons";
 import CardRow from "../../components/CardRow";
 import DroppableWrapper from "../../components/DroppableWrapper";
-import PopUpControll from "../../components/PopUpControll";
-import useOutsideClick from "../../hooks/useOutsideClick";
 import useWorkoutData from "../../hooks/useWorkoutData";
 import { UserDataContext } from "../../context/DataContext";
 import useAutoSave from "../../hooks/useAutoSave";
 import { colour } from "../../utilities/colour";
-import FloatingLabel from "../../components/FloatingLabel";
-import Toggle from "../../components/Toggle";
 import RestTimeDisplay from "../../components/timers/RestTimer";
 import Timer from "../../components/timers/Timer";
 import Autofill from "../../components/Autofill";
 import SetHeader from "./SetHeader";
+import PopUpMenu from "./PopUpMenu";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -52,18 +42,12 @@ const TrackerPage = () => {
     userData,
     selectedDate
   );
-  const [showOptions, setShowOptions] = useState({
-    exerciseIndex: NaN,
-    showMenu: false,
-    editCard: false,
-  });
   const {
     isSavingUserData,
     hasSavedUserData,
     setIsSavingUserData,
     setHasSavedUserData,
   } = useAutoSave(userData, selectedDate, setUserData, workoutData);
-  const ref = useOutsideClick(() => resetShowOptions(setShowOptions));
   return (
     <>
       <div className="flex flex-col justify-center items-center p-4 mb-10">
@@ -95,120 +79,12 @@ const TrackerPage = () => {
                       <div className="col-start-5">
                         <GripBar2 />
                       </div>
-                      <div
-                        className="relative col-start-12 col-span-1"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Button
-                          ariaLabel="show edit options"
-                          onClick={() =>
-                            handleShowPopup(
-                              exIndex,
-                              showOptions,
-                              setShowOptions
-                            )
-                          }
-                        >
-                          <PencilSquare colour="white" />
-                        </Button>
-                        <PopUpControll
-                          currentExIndex={exIndex}
-                          showOptions={showOptions}
-                          attributeToShow={"showMenu"}
-                        >
-                          <div
-                            ref={ref}
-                            className="absolute w-48 top-5 right-4 bg-white z-50 rounded-lg border border-gray-200"
-                          >
-                            <Button
-                              variant="listGroup"
-                              onClick={() => {
-                                setWorkoutData(
-                                  deleteExercise(obj.index, workoutData)
-                                );
-                                resetShowOptions(setShowOptions);
-                              }}
-                            >
-                              Delete Exercise
-                            </Button>
-                            <Button
-                              variant="listGroup"
-                              onClick={() => {
-                                handleEditCard(
-                                  exIndex,
-                                  showOptions,
-                                  setShowOptions
-                                );
-                              }}
-                            >
-                              Delete Sets
-                            </Button>
-                            <FloatingLabel
-                              label="Change intensity unit"
-                              value={obj.intensityUnit}
-                              onChange={(e) =>
-                                setWorkoutData(
-                                  changeUnit(
-                                    "intensityUnit",
-                                    e,
-                                    workoutData,
-                                    exIndex
-                                  )
-                                )
-                              }
-                            />
-                            <FloatingLabel
-                              label="Change reps unit"
-                              value={obj.repsUnit}
-                              onChange={(e) =>
-                                setWorkoutData(
-                                  changeUnit(
-                                    "repsUnit",
-                                    e,
-                                    workoutData,
-                                    exIndex
-                                  )
-                                )
-                              }
-                              localStyling="rounded-b-lg"
-                            />
-                            <Toggle
-                              label="Display reps unit"
-                              id="toggelDisplayReps"
-                              value={
-                                "displayReps" in obj ? obj.displayReps : true
-                              }
-                              onChange={() =>
-                                setWorkoutData(
-                                  toggleDisplayUnit(
-                                    "displayReps",
-                                    workoutData,
-                                    exIndex
-                                  )
-                                )
-                              }
-                            />
-                            <Toggle
-                              label="Display intensity unit"
-                              id="toggelDisplayIntensity"
-                              value={
-                                "displayIntensity" in obj
-                                  ? obj.displayIntensity
-                                  : true
-                              }
-                              onChange={() =>
-                                setWorkoutData(
-                                  toggleDisplayUnit(
-                                    "displayIntensity",
-                                    workoutData,
-                                    exIndex
-                                  )
-                                )
-                              }
-                            />
-                          </div>
-                        </PopUpControll>
-                      </div>
+                      <PopUpMenu
+                        workoutData={workoutData}
+                        setWorkoutData={setWorkoutData}
+                        exIndex={exIndex}
+                        workoutDataObject={obj}
+                      />
                     </CardRow>
                     <CardRow rowStyling="gap-2">
                       <Autofill
@@ -219,7 +95,6 @@ const TrackerPage = () => {
                         }
                       />
                     </CardRow>
-
                     {obj.sets &&
                       obj.sets.map((set, setIndex) => {
                         return (
@@ -236,28 +111,6 @@ const TrackerPage = () => {
                               key={`metricRow${setIndex}`}
                               rowStyling="text-gray-700 text-sm grid grid-cols-12"
                             >
-                              <PopUpControll
-                                attributeToShow="editCard"
-                                currentExIndex={exIndex}
-                                showOptions={showOptions}
-                              >
-                                <button
-                                  className="text-white"
-                                  onClick={(e) => {
-                                    setWorkoutData(
-                                      deleteSet(exIndex, setIndex, workoutData)
-                                    );
-                                    setShowOptions({
-                                      ...showOptions,
-                                      showMenu: false,
-                                    });
-                                    e.stopPropagation();
-                                  }}
-                                >
-                                  x
-                                </button>
-                              </PopUpControll>
-
                               <RepsWeightInput
                                 shouldDisplay={
                                   ("displayReps" in obj
