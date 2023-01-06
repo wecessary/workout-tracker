@@ -49,7 +49,7 @@ const Autofill = ({
       className={`${colour.cardColour} ${colour.groupHover} w-full mb-3 font-bold text-lg tracking-tight text-white ${colour.offWhitePlaceholder}`}
     >
       <input
-        className={`${colour.cardColour} ${colour.groupHover} w-full`}
+        className={`${colour.cardColour} ${colour.groupHover} p-2 border-[#575656] border-2 rounded w-full`}
         {...getInputProps()}
         data-testid="combobox-input"
         placeholder="Exercise name"

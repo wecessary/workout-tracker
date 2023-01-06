@@ -20,12 +20,11 @@ const Button = forwardRef(
     ref?: ForwardedRef<HTMLButtonElement>
   ) => {
     const primary =
-      "text-[#575555] bg-white hover:bg-[#C8C8C8] font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800";
+      "text-black bg-[#F4F4F4] hover:bg-[#C8C8C8] font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2";
     const secondary =
-      "text-white bg-slate-400 hover:bg-slate-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800";
+      "text-white bg-slate-400 hover:bg-slate-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2";
 
-    const outline =
-      `disabled:opacity-50 disabled:hover:bg-transparent ${colour.offWhite} bg-transparent border border-white hover:bg-[#C8C8C8] font-medium rounded-lg text-sm px-5 py-2.5  mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800`;
+    const outline = `disabled:opacity-50 ${colour.offWhite} bg-transparent border border-white font-medium rounded-lg text-sm px-3 py-2.5`;
 
     const transparent =
       "text-sm shadow-md rounded-md bg-white p-4 hover:bg-slate-100 focus:ring-4 focus:ring-blue-300";
