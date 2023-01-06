@@ -60,7 +60,7 @@ const SetHeader = ({
   return (
     <>
       <div className="flex gap-6 text-[#D9D9D9]">
-        <p className="font-extrabold">{`Set ${setIndex + 1}`}</p>
+        <p className="font-extrabold">{`SET ${setIndex + 1}`}</p>
         <button
           className={`${animation}`}
           onClick={(e) => {

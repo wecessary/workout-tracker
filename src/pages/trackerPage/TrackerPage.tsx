@@ -183,7 +183,7 @@ const TrackerPage = () => {
                     </Button>
 
                     <textarea
-                      className={`${colour.cardColour} ${colour.groupHover} text-base w-full text-white ${colour.offWhitePlaceholder}`}
+                      className={`${colour.cardColour} ${colour.groupHover} mt-4 text-base w-full text-white ${colour.offWhitePlaceholder}`}
                       value={obj.comment}
                       onChange={(e) => {
                         handleChangeComment(
