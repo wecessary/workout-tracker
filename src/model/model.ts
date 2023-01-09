@@ -168,3 +168,5 @@ export type AttendanceStats = [
   string[],
   string[]
 ];
+
+export type SlideAnimation = "" | "slide-in" | "slide-out";
