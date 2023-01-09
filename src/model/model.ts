@@ -50,6 +50,7 @@ export type HandleChangeComment = (
 ) => void;
 
 export interface WorkoutDataObject {
+  exId: string;
   index: number;
   name: string;
   repsUnit: string;
@@ -85,6 +86,7 @@ export interface WorkoutDataObjectDetailsAllLevel {
 }
 
 export interface Set {
+  setId: string;
   index: number;
   reps: number;
   weight: number;
