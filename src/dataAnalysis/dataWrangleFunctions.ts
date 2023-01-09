@@ -100,19 +100,33 @@ export const getSetsAllDetails = (userData: UserDataObject[]) => {
 
 export const getStatsFromSets = (arrayOfSets: SetWithAllDetails[]) => {
   return arrayOfSets.map((set, i) => {
-    const lastSet = i === arrayOfSets.length - 1;
-    const SameDay = !lastSet && arrayOfSets[i].date === arrayOfSets[i + 1].date;
-    const SameExercise =
-      !lastSet && arrayOfSets[i].name === arrayOfSets[i + 1].name;
+    const isLastSet = i === arrayOfSets.length - 1;
+    const setExists = set ? true : false;
+    const nextSetExists = arrayOfSets[i + 1] || null;
+
+    const isSameDay =
+      setExists &&
+      nextSetExists &&
+      !isLastSet &&
+      arrayOfSets[i].date === arrayOfSets[i + 1].date;
+
+    const isSameExercise =
+      setExists &&
+      nextSetExists &&
+      !isLastSet &&
+      arrayOfSets[i].name === arrayOfSets[i + 1].name;
+      
     const nextSetStarted =
       arrayOfSets[i + 1] && arrayOfSets[i + 1].timeStart ? true : false;
 
     const restTime =
-      !lastSet && SameDay && SameExercise && nextSetStarted
+      !isLastSet && isSameDay && isSameExercise && nextSetStarted
         ? (arrayOfSets[i + 1].timeStart || 0) - (set.timeComplete || 0)
         : 0;
     const duration =
-      set.timeComplete && set.timeStart ? set.timeComplete - set.timeStart : 0;
+      setExists && set.timeComplete && set.timeStart
+        ? set.timeComplete - set.timeStart
+        : 0;
     return {
       ...set,
       duration,
