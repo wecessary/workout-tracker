@@ -13,16 +13,16 @@ import {
   resetSetTimes,
 } from "../../handlers/handlers";
 import { currentDateAsString } from "../../utilities/date";
-import RepsWeightInput from "../../components/RepsWeightsInput";
-import TrafficLight from "../../components/TrafficLight";
+import RepsWeightInput from "../../components/trackerPage/RepsWeightsInput";
+import TrafficLight from "../../components/trackerPage/TrafficLight";
 import Button from "../../components/Button";
 import StatusIndicator from "../../components/StatusIndicator";
 import NotificationChip from "../../components/NotificationChip";
-import Card from "../../components/Card";
+import Card from "../../components/trackerPage/Card";
 import DraggableWrapper from "../../components/DraggableWrapper";
 import { DragDropContext } from "react-beautiful-dnd";
 import { GripBar2 } from "../../components/Icons";
-import CardRow from "../../components/CardRow";
+import CardRow from "../../components/trackerPage/CardRow";
 import DroppableWrapper from "../../components/DroppableWrapper";
 import useWorkoutData from "../../hooks/useWorkoutData";
 import { UserDataContext } from "../../context/DataContext";
@@ -31,8 +31,8 @@ import { colour } from "../../utilities/colour";
 import RestTimeDisplay from "../../components/timers/RestTimer";
 import Timer from "../../components/timers/Timer";
 import Autofill from "../../components/Autofill";
-import SetHeader from "./SetHeader";
-import PopUpMenu from "./PopUpMenu";
+import SetHeader from "../../components/trackerPage/SetHeader";
+import PopUpMenu from "../../components/trackerPage/PopUpMenu";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);

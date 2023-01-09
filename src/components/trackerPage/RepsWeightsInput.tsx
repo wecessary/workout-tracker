@@ -3,8 +3,8 @@ import {
   HandleChangeReps,
   HandleChangeWeight,
   WorkoutDataObject,
-} from "../model/model";
-import { colour } from "../utilities/colour";
+} from "../../model/model";
+import { colour } from "../../utilities/colour";
 
 interface RepsWeightInput {
   repsOrWeight: string;

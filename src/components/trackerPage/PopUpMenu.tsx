@@ -1,8 +1,8 @@
 import { SetStateAction, useState } from "react";
-import Button from "../../components/Button";
-import FloatingLabel from "../../components/FloatingLabel";
-import { PencilSquare } from "../../components/Icons";
-import Toggle from "../../components/Toggle";
+import Button from "../Button";
+import FloatingLabel from "../FloatingLabel";
+import { PencilSquare } from "../Icons";
+import Toggle from "../Toggle";
 import {
   changeUnit,
   deleteExercise,
