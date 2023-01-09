@@ -1,4 +1,4 @@
-import { SetStateAction } from "react";
+import { ReactNode, SetStateAction } from "react";
 import {
   HandleChangeDone,
   HandleChangeEasy,
@@ -12,8 +12,8 @@ interface TrafficLightProps {
   workoutDataObject: WorkoutDataObject;
   workoutData: WorkoutDataObject[];
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void;
-  green: string;
-  red: string;
+  green: ReactNode;
+  red: ReactNode;
   localStyling?: string;
 }
 

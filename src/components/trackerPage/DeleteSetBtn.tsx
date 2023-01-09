@@ -1,10 +1,12 @@
-import { SetStateAction, useEffect, useState } from "react";
-import { XCircle, ThreeDots } from "../../components/Icons";
+import { MutableRefObject, SetStateAction, useEffect, useState } from "react";
+import { XCircle, ThreeDots } from "../Icons";
 import { deleteSet } from "../../handlers/handlers";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { WorkoutDataObject } from "../../model/model";
+import TrafficLight from "./TrafficLight";
+import { colour } from "../../utilities/colour";
 
-const SetHeader = ({
+const DeleteSetBtn = ({
   workoutData,
   setWorkoutData,
   workoutObjIndex,
@@ -24,11 +26,11 @@ const SetHeader = ({
 
   const DeleteSetBtn = () => (
     <div
-      ref={ref}
+      ref={ref as MutableRefObject<HTMLDivElement>}
       onClick={() =>
         setWorkoutData(deleteSet(workoutObjIndex, setIndex, workoutData))
       }
-      className="flex gap-2"
+      className={`flex gap-1 items-center ${colour.cardColour} w-24 relative z-50`}
     >
       <XCircle />
       <p>Delete set</p>
@@ -58,9 +60,10 @@ const SetHeader = ({
   }, [btnContentIndex]);
 
   return (
+    // <p className="font-extrabold">{`SET ${setIndex + 1}`}</p>
+
     <>
-      <div className="flex gap-6 text-[#D9D9D9]">
-        <p className="font-extrabold">{`SET ${setIndex + 1}`}</p>
+      <div className="flex gap-1 text-[#D9D9D9] text-[12px] col-start-10 col-span-1">
         <button
           className={`${animation}`}
           onClick={(e) => {
@@ -75,4 +78,4 @@ const SetHeader = ({
   );
 };
 
-export default SetHeader;
+export default DeleteSetBtn;
