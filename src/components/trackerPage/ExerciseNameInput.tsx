@@ -1,6 +1,6 @@
 import { SetStateAction } from "react";
-import { HandleChangeName, WorkoutDataObject } from "../model/model";
-import { colour } from "../utilities/colour";
+import { HandleChangeName, WorkoutDataObject } from "../../model/model";
+import { colour } from "../../utilities/colour";
 
 interface ExerciseNameProps {
   value: string;

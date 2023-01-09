@@ -3,7 +3,7 @@ import {
   HandleChangeDone,
   HandleChangeEasy,
   WorkoutDataObject,
-} from "../model/model";
+} from "../../model/model";
 
 interface TrafficLightProps {
   indicator: boolean;

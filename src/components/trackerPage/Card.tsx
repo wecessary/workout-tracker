@@ -1,11 +1,11 @@
 import { ReactNode, SetStateAction, useState } from "react";
-import { changeName } from "../handlers/handlers";
-import { UserDataObject, WorkoutDataObject } from "../model/model";
-import PopUpMenu from "../pages/trackerPage/PopUpMenu";
-import { colour } from "../utilities/colour";
-import Autofill from "./Autofill";
+import { changeName } from "../../handlers/handlers";
+import { UserDataObject, WorkoutDataObject } from "../../model/model";
+import PopUpMenu from "./PopUpMenu";
+import { colour } from "../../utilities/colour";
+import Autofill from "../Autofill";
 import CardRow from "./CardRow";
-import { ChevronDown, ChevronUp, GripBar2 } from "./Icons";
+import { ChevronDown, ChevronUp, GripBar2 } from "../Icons";
 
 const Card = ({
   userData,
