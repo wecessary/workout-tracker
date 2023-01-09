@@ -1,33 +1,21 @@
 import { useContext, useState } from "react";
 import {
   handleAddWorkout,
-  handleChangeReps,
-  handleChangeEasy,
-  handleChangeWeight,
   handleOnDragEnd,
   addSet,
-  startSet,
-  finishSet,
-  resetSetTimes,
 } from "../../handlers/handlers";
 import { currentDateAsString } from "../../utilities/date";
-import RepsWeightInput from "../../components/trackerPage/RepsWeightsInput";
-import TrafficLight from "../../components/trackerPage/TrafficLight";
 import Button from "../../components/Button";
 import StatusIndicator from "../../components/StatusIndicator";
 import NotificationChip from "../../components/NotificationChip";
 import Card from "../../components/trackerPage/Card";
 import DraggableWrapper from "../../components/DraggableWrapper";
 import { DragDropContext } from "react-beautiful-dnd";
-import CardRow from "../../components/trackerPage/CardRow";
 import DroppableWrapper from "../../components/DroppableWrapper";
 import useWorkoutData from "../../hooks/useWorkoutData";
 import { UserDataContext } from "../../context/DataContext";
 import useAutoSave from "../../hooks/useAutoSave";
 import { colour } from "../../utilities/colour";
-import Timer from "../../components/timers/Timer";
-import DeleteSetBtn from "../../components/trackerPage/DeleteSetBtn";
-import { ThumbDown, ThumbUp } from "../../components/Icons";
 import Comment from "../../components/trackerPage/Comment";
 import SetRow from "../../components/trackerPage/SetRow";
 
@@ -69,7 +57,7 @@ const TrackerPage = () => {
                 <DraggableWrapper
                   draggableId={`card${exIndex}`}
                   draggableIndex={exIndex}
-                  key={exIndex}
+                  key={obj.exId}
                 >
                   <Card
                     userData={userData}
@@ -82,7 +70,7 @@ const TrackerPage = () => {
                       obj.sets.map((set, setIndex) => {
                         return (
                           <SetRow
-                            key={setIndex}
+                            key={set.setId}
                             workoutData={workoutData}
                             setWorkoutData={setWorkoutData}
                             obj={obj}

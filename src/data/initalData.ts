@@ -1,13 +1,16 @@
+import { nanoid } from "nanoid";
 import { WorkoutDataObjectDetailsAllLevel } from "../model/model";
 
 export const initialWorkoutData = [
   {
+    exId: nanoid(),
     index: 0,
     name: "",
     repsUnit: "reps",
     intensityUnit: "kg",
     sets: [
       {
+        setId: nanoid(),
         name: "",
         index: 0,
         reps: 0,

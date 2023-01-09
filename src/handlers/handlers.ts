@@ -1,6 +1,7 @@
 import { ChangeEvent, SetStateAction } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { Set, ShowOptions, WorkoutDataObject } from "../model/model";
+import { nanoid } from "nanoid";
 
 export const changeName = (
   newName: string,
@@ -20,12 +21,13 @@ export const handleAddWorkout = (
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
 ) => {
   const initialSets = [
-    { index: 0, reps: 0, weight: 0, easy: true, done: false },
+    { setId: nanoid(), index: 0, reps: 0, weight: 0, easy: true, done: false },
   ];
 
   setWorkoutData([
     ...workoutData,
     {
+      exId: nanoid(),
       index: workoutData.length,
       name: "",
       repsUnit: "reps",
@@ -49,6 +51,7 @@ export const addSet = (
         sets: [
           ...(obj.sets || []),
           {
+            setId: nanoid(),
             index: lastSet ? lastSet.index + 1 : 0,
             reps: lastSet ? lastSet.reps : 0,
             weight: lastSet ? lastSet.weight : 0,
