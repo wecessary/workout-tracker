@@ -1,5 +1,5 @@
 import { useCombobox } from "downshift";
-import { useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import { attendanceStats } from "../dataAnalysis/dataWrangleFunctions";
 import useOutsideClick from "../hooks/useOutsideClick";
 import { UserDataObject } from "../model/model";
@@ -53,10 +53,9 @@ const Autofill = ({
     >
       <input
         className={`${colour.cardColour} ${colour.groupHover} px-2 py-1 border-[#575656]`}
-        {...getInputProps()}
+        {...getInputProps({ ref: ref as MutableRefObject<HTMLInputElement> })}
         data-testid="combobox-input"
         placeholder="Type an exercise name"
-        ref={ref}
       />
 
       <ul className="font-normal" {...getMenuProps()}>
