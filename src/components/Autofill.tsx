@@ -1,6 +1,7 @@
 import { useCombobox } from "downshift";
 import { useEffect, useState } from "react";
 import { attendanceStats } from "../dataAnalysis/dataWrangleFunctions";
+import useOutsideClick from "../hooks/useOutsideClick";
 import { UserDataObject } from "../model/model";
 import { colour } from "../utilities/colour";
 
@@ -44,15 +45,18 @@ const Autofill = ({
     setInputValue(value);
   }, [value]);
 
+  const ref = useOutsideClick(() => ref.current?.blur());
+
   return (
     <div
       className={`${colour.cardColour} ${colour.groupHover} w-full mb-3 font-bold text-lg tracking-tight text-white ${colour.offWhitePlaceholder}`}
     >
       <input
-        className={`${colour.cardColour} ${colour.groupHover} p-2 border-[#575656] border-2 rounded w-full`}
+        className={`${colour.cardColour} ${colour.groupHover} px-2 py-1 border-[#575656]`}
         {...getInputProps()}
         data-testid="combobox-input"
-        placeholder="Exercise name"
+        placeholder="Type an exercise name"
+        ref={ref}
       />
 
       <ul className="font-normal" {...getMenuProps()}>

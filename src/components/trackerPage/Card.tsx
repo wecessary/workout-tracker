@@ -6,6 +6,7 @@ import { colour } from "../../utilities/colour";
 import Autofill from "../Autofill";
 import CardRow from "./CardRow";
 import { ChevronDown, ChevronUp, GripBar2 } from "../Icons";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 const Card = ({
   userData,
@@ -30,26 +31,27 @@ const Card = ({
       className={`group p-3 w-[90vw] my-2 ${colour.cardColour} rounded-lg shadow-lg ${colour.hover}`}
     >
       <CardRow rowStyling="grid grid-cols-12 gap-2">
-        <button onClick={handleShowChildren}>
-          {showChildren ? <ChevronUp /> : <ChevronDown />}
-        </button>
-        <div className="col-start-5">
-          <GripBar2 />
-        </div>
         <PopUpMenu
           workoutData={workoutData}
           setWorkoutData={setWorkoutData}
           exIndex={exIndex}
           workoutDataObject={workoutDataObj}
         />
+        <div className="col-start-5">
+          <GripBar2 />
+        </div>
+        <button className="col-start-12" onClick={handleShowChildren}>
+          {showChildren ? <ChevronUp /> : <ChevronDown />}
+        </button>
       </CardRow>
       <CardRow rowStyling="gap-2">
         <Autofill
           userData={userData}
           value={workoutDataObj.name}
-          onChange={(name) =>
-            setWorkoutData(changeName(name, exIndex, workoutData))
-          }
+          onChange={(name) => {
+            setShowChildren(true);
+            setWorkoutData(changeName(name, exIndex, workoutData));
+          }}
         />
       </CardRow>
       {showChildren ? children : null}

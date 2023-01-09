@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Set } from "../../model/model";
 import { secToMinSec } from "../../utilities/date";
 import { Check, Play, Stop } from "../Icons";
+import RestTimeDisplay from "./RestTimer";
 import {
   currentSetComplete,
   prevSetStarted,
@@ -42,14 +43,14 @@ const Timer = ({
 
   const btnContent = [
     {
-      icon: <Play animatePulse={true} />,
-      text: "Begin Set",
+      icon: <Play animatePulse={!timerDisabled(setIndex, sets)} />,
+      text: "Begin set",
       content: null,
       onClick: beginOnClick, // needs to record start time
     },
     {
       icon: <Stop />,
-      text: "Finish Set",
+      text: "Finish set",
       content: secToMinSec(timeDiff, "00:00") || null, // needs to display time
       onClick: finishOnClick, // needs to record finish time
     },
@@ -84,11 +85,14 @@ const Timer = ({
       onClick={() => {
         btnContent[clickCountLoader()].onClick();
       }}
-      className=" col-span-7 gap-1 flex items-center px-3 py-1 text-[10px] border text-[#575555] bg-[#F4F4F4] font-medium rounded-lg  disabled:bg-[#C8C8C8]"
+      className="col-span-9 justify-between flex items-center px-3 py-1 text-[12px] border text-[#575555] bg-[#F4F4F4] font-medium rounded-lg  disabled:bg-[#C8C8C8]"
     >
-      <div>{btnContent[clickCountLoader() % 3].icon}</div>
-      <div>{btnContent[clickCountLoader() % 3].text}</div>
-      <div>{btnContent[clickCountLoader() % 3].content}</div>
+      <div className="flex gap-1 items-center">
+        <div>{btnContent[clickCountLoader() % 3].icon}</div>
+        <div>{btnContent[clickCountLoader() % 3].text}</div>
+        <div>{btnContent[clickCountLoader() % 3].content}</div>
+      </div>
+      <RestTimeDisplay sets={sets} currentSetIndex={setIndex} />
     </button>
   );
 };

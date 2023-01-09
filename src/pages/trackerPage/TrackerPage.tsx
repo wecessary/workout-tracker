@@ -1,11 +1,9 @@
 import { useContext, useState } from "react";
 import {
-  changeName,
   handleAddWorkout,
   handleChangeReps,
   handleChangeEasy,
   handleChangeWeight,
-  handleChangeComment,
   handleOnDragEnd,
   addSet,
   startSet,
@@ -21,18 +19,16 @@ import NotificationChip from "../../components/NotificationChip";
 import Card from "../../components/trackerPage/Card";
 import DraggableWrapper from "../../components/DraggableWrapper";
 import { DragDropContext } from "react-beautiful-dnd";
-import { GripBar2 } from "../../components/Icons";
 import CardRow from "../../components/trackerPage/CardRow";
 import DroppableWrapper from "../../components/DroppableWrapper";
 import useWorkoutData from "../../hooks/useWorkoutData";
 import { UserDataContext } from "../../context/DataContext";
 import useAutoSave from "../../hooks/useAutoSave";
 import { colour } from "../../utilities/colour";
-import RestTimeDisplay from "../../components/timers/RestTimer";
 import Timer from "../../components/timers/Timer";
-import Autofill from "../../components/Autofill";
-import SetHeader from "../../components/trackerPage/SetHeader";
-import PopUpMenu from "../../components/trackerPage/PopUpMenu";
+import DeleteSetBtn from "../../components/trackerPage/DeleteSetBtn";
+import { ThumbDown, ThumbUp } from "../../components/Icons";
+import Comment from "../../components/trackerPage/Comment";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -85,18 +81,13 @@ const TrackerPage = () => {
                       obj.sets.map((set, setIndex) => {
                         return (
                           <div key={setIndex} className="mb-4">
-                            <CardRow>
-                              <SetHeader
-                                workoutData={workoutData}
-                                setWorkoutData={setWorkoutData}
-                                workoutObjIndex={exIndex}
-                                setIndex={setIndex}
-                              />
-                            </CardRow>
                             <CardRow
                               key={`metricRow${setIndex}`}
-                              rowStyling="text-gray-700 text-sm grid grid-cols-12"
+                              rowStyling="grid grid-cols-12 items-center"
                             >
+                              <p className="col-span-2 text-lg">{`#${
+                                setIndex + 1
+                              }`}</p>
                               <RepsWeightInput
                                 shouldDisplay={
                                   ("displayReps" in obj
@@ -130,7 +121,7 @@ const TrackerPage = () => {
                             </CardRow>
                             <CardRow
                               key={`timerRow${setIndex}`}
-                              rowStyling="gap-4 grid grid-cols-12 items-center justify-between"
+                              rowStyling="gap-1 grid grid-cols-12 items-center border-b pb-3"
                             >
                               <Timer
                                 startTime={set.timeStart || 0}
@@ -153,12 +144,15 @@ const TrackerPage = () => {
                                 setIndex={setIndex}
                                 sets={obj.sets}
                               />
-                              <RestTimeDisplay
-                                sets={obj.sets}
-                                currentSetIndex={setIndex}
+
+                              <DeleteSetBtn
+                                workoutData={workoutData}
+                                setWorkoutData={setWorkoutData}
+                                workoutObjIndex={exIndex}
+                                setIndex={setIndex}
                               />
                               <TrafficLight
-                                localStyling="col-spans-2"
+                                localStyling="col-spans-1 col-start-12 relative z-10"
                                 key={`easy${setIndex}`}
                                 indicator={set.easy}
                                 onChange={handleChangeEasy}
@@ -166,8 +160,8 @@ const TrackerPage = () => {
                                 workoutDataObject={obj}
                                 workoutData={workoutData}
                                 setWorkoutData={setWorkoutData}
-                                green="😊"
-                                red="😔"
+                                green={<ThumbUp />}
+                                red={<ThumbDown />}
                               />
                             </CardRow>
                           </div>
@@ -179,23 +173,12 @@ const TrackerPage = () => {
                         setWorkoutData(addSet(obj.index, workoutData))
                       }
                     >
-                      Add set
+                      +
                     </Button>
-
-                    <textarea
-                      className={`${colour.cardColour} ${colour.groupHover} mt-4 text-base w-full text-white ${colour.offWhitePlaceholder}`}
-                      value={obj.comment}
-                      onChange={(e) => {
-                        handleChangeComment(
-                          e,
-                          obj.index,
-                          workoutData,
-                          setWorkoutData
-                        );
-                        e.target.style.height = "inherit";
-                        e.target.style.height = `${e.target.scrollHeight}px`;
-                      }}
-                      placeholder="How was it?"
+                    <Comment
+                      workoutDataObj={obj}
+                      workoutData={workoutData}
+                      setWorkoutData={setWorkoutData}
                     />
                   </Card>
                 </DraggableWrapper>

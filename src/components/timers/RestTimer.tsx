@@ -49,7 +49,7 @@ export const RestTimeDisplay = ({
   }, [sets]);
 
   return (
-    <p className=" text-[#D9D9D9] text-[10px] col-span-3">
+    <p className="text-[12px] pl-2">
       {timeAgo ? `${secToMinSec(timeAgo / 1000, "ms")} rest` : null}
     </p>
   );

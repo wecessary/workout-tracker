@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from "react";
+import { MutableRefObject, SetStateAction, useState } from "react";
 import Button from "../Button";
 import FloatingLabel from "../FloatingLabel";
 import { PencilSquare } from "../Icons";
@@ -29,12 +29,15 @@ const PopUpMenu = ({
 
   return (
     <>
-      <div ref={ref} className="relative col-start-12 col-span-1">
+      <div
+        ref={ref as MutableRefObject<HTMLDivElement>}
+        className="relative col-span-1"
+      >
         <Button ariaLabel="show edit options" onClick={handleShowMenu}>
           <PencilSquare colour="white" />
         </Button>
         {showMenu ? (
-          <div className="absolute w-48 top-5 right-4 bg-white z-50 rounded-lg border border-gray-200">
+          <div className="absolute w-48 top-5 left-4 bg-white z-50 rounded-lg border border-gray-200">
             <Button
               variant="listGroup"
               onClick={() => {
