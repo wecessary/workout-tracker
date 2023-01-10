@@ -10,6 +10,10 @@ import { colour } from "../../utilities/colour";
 import Autofill from "../Autofill";
 import CardRow from "./CardRow";
 import { ChevronDown, ChevronUp, GripBar2 } from "../Icons";
+import {
+  getCompletedSets,
+} from "./cardSummaryCalculations";
+import CardSummary from "./CardSummary";
 
 const Card = ({
   userData,
@@ -37,6 +41,8 @@ const Card = ({
       setWorkoutData(deleteExercise(exIndex, workoutData));
     }, 500);
   };
+
+  const completedSets = getCompletedSets(workoutDataObj);
 
   return (
     <div
@@ -67,7 +73,14 @@ const Card = ({
           }}
         />
       </CardRow>
-      {showChildren ? children : null}
+      {showChildren ? (
+        children
+      ) : (
+        <CardSummary
+          completedSets={getCompletedSets(workoutDataObj)}
+          intensityUnit={workoutDataObj.intensityUnit}
+        />
+      )}
     </div>
   );
 };
