@@ -55,7 +55,7 @@ const TrackerPage = () => {
             {workoutData.map((obj, exIndex) => {
               return (
                 <DraggableWrapper
-                  draggableId={`card${exIndex}`}
+                  draggableId={obj.exId}
                   draggableIndex={exIndex}
                   key={obj.exId}
                 >

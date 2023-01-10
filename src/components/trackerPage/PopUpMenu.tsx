@@ -5,7 +5,6 @@ import { PencilSquare } from "../Icons";
 import Toggle from "../Toggle";
 import {
   changeUnit,
-  deleteExercise,
   toggleDisplayUnit,
 } from "../../handlers/handlers";
 import useOutsideClick from "../../hooks/useOutsideClick";
@@ -16,11 +15,13 @@ const PopUpMenu = ({
   setWorkoutData,
   exIndex,
   workoutDataObject,
+  handleDeleteExercise,
 }: {
   workoutData: WorkoutDataObject[];
   setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void;
   exIndex: number;
   workoutDataObject: WorkoutDataObject;
+  handleDeleteExercise: () => void;
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const handleShowMenu = () => setShowMenu(!showMenu);
@@ -42,7 +43,7 @@ const PopUpMenu = ({
               variant="listGroup"
               onClick={() => {
                 handleShowMenu();
-                setWorkoutData(deleteExercise(exIndex, workoutData));
+                handleDeleteExercise();
               }}
             >
               Delete Exercise

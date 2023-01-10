@@ -1,12 +1,15 @@
 import { ReactNode, SetStateAction, useState } from "react";
-import { changeName } from "../../handlers/handlers";
-import { UserDataObject, WorkoutDataObject } from "../../model/model";
+import { changeName, deleteExercise } from "../../handlers/handlers";
+import {
+  SlideAnimation,
+  UserDataObject,
+  WorkoutDataObject,
+} from "../../model/model";
 import PopUpMenu from "./PopUpMenu";
 import { colour } from "../../utilities/colour";
 import Autofill from "../Autofill";
 import CardRow from "./CardRow";
 import { ChevronDown, ChevronUp, GripBar2 } from "../Icons";
-import useOutsideClick from "../../hooks/useOutsideClick";
 
 const Card = ({
   userData,
@@ -25,10 +28,19 @@ const Card = ({
 }) => {
   const [showChildren, setShowChildren] = useState(false);
   const handleShowChildren = () => setShowChildren(!showChildren);
+  const [cardAnimation, setCardAnimation] =
+    useState<SlideAnimation>("slide-out");
+
+  const handleDeleteExercise = () => {
+    setCardAnimation("slide-in");
+    setTimeout(() => {
+      setWorkoutData(deleteExercise(exIndex, workoutData));
+    }, 500);
+  };
 
   return (
     <div
-      className={`group p-3 w-[90vw] my-2 ${colour.cardColour} rounded-lg shadow-lg ${colour.hover}`}
+      className={`${cardAnimation} group p-3 w-[90vw] my-2 ${colour.cardColour} rounded-lg shadow-lg ${colour.hover}`}
     >
       <CardRow rowStyling="grid grid-cols-12 gap-2">
         <PopUpMenu
@@ -36,6 +48,7 @@ const Card = ({
           setWorkoutData={setWorkoutData}
           exIndex={exIndex}
           workoutDataObject={workoutDataObj}
+          handleDeleteExercise={handleDeleteExercise}
         />
         <div className="col-start-5">
           <GripBar2 />
