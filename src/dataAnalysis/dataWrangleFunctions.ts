@@ -115,7 +115,7 @@ export const getStatsFromSets = (arrayOfSets: SetWithAllDetails[]) => {
       nextSetExists &&
       !isLastSet &&
       arrayOfSets[i].name === arrayOfSets[i + 1].name;
-      
+
     const nextSetStarted =
       arrayOfSets[i + 1] && arrayOfSets[i + 1].timeStart ? true : false;
 
@@ -272,11 +272,11 @@ export const getMean = (array: number[]) => {
 };
 
 export const getMax = (array: number[]) => {
-  return array.reduce((a, b) => Math.max(a, b), 0);
+  return array.length ? Math.max.apply(null, array) : 0;
 };
 
 export const getMin = (array: number[]) => {
-  return array.reduce((a, b) => Math.min(a, b), 0);
+  return array.length ? Math.min.apply(null, array) : 0;
 };
 
 interface GroupedSetsWithStats {
