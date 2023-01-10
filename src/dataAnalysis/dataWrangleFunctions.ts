@@ -190,11 +190,8 @@ export const getExerciseSets = (
   userData: UserDataObject[],
   exercise: string
 ) => {
-  const userDataDatesAllLevels = addDateToWorkoutData(
-    sortByDateNewToOld(userData)
-  );
   const setsWithStats = getStatsFromSets(
-    getSetsAllDetails(userDataDatesAllLevels)
+    getSetsAllDetails(sortByDateNewToOld(userData))
   );
 
   return setsWithStats.filter((set) => {
@@ -253,10 +250,7 @@ export const getExerciseBestIn = (
   metric: "reps" | "weight" | "restTime" | "duration"
 ) => {
   const pastWorkout = getPastWorkoutOnly(userData);
-  const userDataDetailsAllLevel = addDateToWorkoutData(pastWorkout);
-  const setsWithStats = getStatsFromSets(
-    getSetsAllDetails(userDataDetailsAllLevel)
-  );
+  const setsWithStats = getStatsFromSets(getSetsAllDetails(pastWorkout));
 
   return setsWithStats.reduce((prev, curr) =>
     prev[metric] > curr[metric] ? prev : curr
