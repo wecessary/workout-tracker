@@ -11,59 +11,88 @@ import {
 import { WorkoutDataObject } from "../model/model";
 import { ChangeEvent } from "react";
 
+jest.mock("nanoid", () => {
+  return { nanoid: () => "1234" };
+});
+
 const baselineWorkoutData = [
   {
+    exId: "123",
     index: 0,
     name: "",
     repsUnit: "reps",
     intensityUnit: "kg",
-    sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+    sets: [
+      { setId: "235", index: 0, reps: 0, weight: 0, easy: true, done: false },
+    ],
     comment: "",
   },
 ];
 
 const twoExcercisesWorkoutData = [
   {
+    exId: "990",
     index: 0,
     name: "exercise1",
     repsUnit: "reps",
     intensityUnit: "kg",
-    sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+    sets: [
+      { setId: "231", index: 0, reps: 0, weight: 0, easy: true, done: false },
+    ],
     comment: "",
   },
   {
+    exId: "992",
     index: 1,
     name: "exercise2",
     repsUnit: "reps",
     intensityUnit: "kg",
-    sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+    sets: [
+      { setId: "235", index: 0, reps: 0, weight: 0, easy: true, done: false },
+    ],
     comment: "",
   },
 ];
 
 const threeExcercisesWorkoutData = [
   {
+    exId: "111",
     index: 0,
     name: "exercise1",
     repsUnit: "reps",
     intensityUnit: "kg",
-    sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+    sets: [
+      { setId: "109", index: 0, reps: 0, weight: 0, easy: true, done: false },
+    ],
     comment: "",
   },
   {
+    exId: "11122",
     index: 1,
     name: "exercise2",
     repsUnit: "reps",
     intensityUnit: "kg",
-    sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+    sets: [
+      { setId: "1s39", index: 0, reps: 0, weight: 0, easy: true, done: false },
+    ],
     comment: "",
   },
   {
+    exId: "11144",
     index: 2,
     name: "exercise3",
     repsUnit: "reps",
     intensityUnit: "kg",
-    sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+    sets: [
+      {
+        setId: "wers39",
+        index: 0,
+        reps: 0,
+        weight: 0,
+        easy: true,
+        done: false,
+      },
+    ],
     comment: "",
   },
 ];
@@ -94,6 +123,7 @@ describe("addSet function: test can add set", () => {
   test("when there is an empty set", () => {
     const receivedWorkoutData = [
       {
+        exId: "1234r",
         index: 0,
         name: "",
         repsUnit: "reps",
@@ -167,11 +197,21 @@ describe("changeUnit(): test can change units ", () => {
 describe("toggleDisplayUnit function: test can toggle display unit", () => {
   const workoutDataWithDisplayBooleans = [
     {
+      exId: "3333",
       index: 0,
       name: "",
       repsUnit: "reps",
       intensityUnit: "kg",
-      sets: [{ index: 0, reps: 0, weight: 0, easy: true, done: false }],
+      sets: [
+        {
+          setId: "jh12",
+          index: 0,
+          reps: 0,
+          weight: 0,
+          easy: true,
+          done: false,
+        },
+      ],
       comment: "",
       displayReps: true,
       displayIntensity: true,
