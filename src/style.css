@@ -5,7 +5,7 @@
 .slide-out {
   animation: slide-out;
   animation-duration: 0.5s;
-  animation-timing-function: linear;
+  animation-timing-function: ease-out;
   animation-delay: 0s;
   animation-iteration-count: 1;
   animation-direction: both;
@@ -26,7 +26,7 @@
 .slide-in {
   animation: slide-in;
   animation-duration: 0.5s;
-  animation-timing-function: linear;
+  animation-timing-function: ease-out;
   animation-delay: 0s;
   animation-iteration-count: 1;
   animation-direction: forwards;
