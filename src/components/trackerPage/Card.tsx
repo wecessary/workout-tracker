@@ -1,18 +1,16 @@
 import { ReactNode, SetStateAction, useState } from "react";
-import { changeName, deleteExercise } from "../../handlers/handlers";
+import { changeName, deleteExercise } from "../../lib/workoutDataUtils";
 import {
   SlideAnimation,
   UserDataObject,
   WorkoutDataObject,
 } from "../../model/model";
 import PopUpMenu from "./PopUpMenu";
-import { colour } from "../../utilities/colour";
-import Autofill from "../Autofill";
+import { colour } from "../../const/colour";
+import Autofill from "../ui/Autofill";
 import CardRow from "./CardRow";
-import { ChevronDown, ChevronUp, GripBar2 } from "../Icons";
-import {
-  getCompletedSets,
-} from "./cardSummaryCalculations";
+import { ChevronDown, ChevronUp, GripBar2 } from "../ui/Icons";
+import { getCompletedSets } from "./cardSummaryCalculations";
 import CardSummary from "./CardSummary";
 
 const Card = ({
@@ -41,8 +39,6 @@ const Card = ({
       setWorkoutData(deleteExercise(exIndex, workoutData));
     }, 500);
   };
-
-  const completedSets = getCompletedSets(workoutDataObj);
 
   return (
     <div

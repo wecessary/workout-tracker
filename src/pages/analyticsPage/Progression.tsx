@@ -8,12 +8,9 @@ import {
   Legend,
   Tooltip,
 } from "recharts";
-import {
-  attendanceStats,
-  getExerciseStatsObj,
-} from "../../dataAnalysis/dataWrangleFunctions";
+import { attendanceStats, getExerciseStatsObj } from "../../lib/analyticsUtils";
 import { UserDataObject } from "../../model/model";
-import { colour } from "../../utilities/colour";
+import { colour } from "../../const/colour";
 import { Header } from "./Header";
 
 const Progression = ({

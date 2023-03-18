@@ -1,6 +1,6 @@
 import { SetStateAction, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { writeUserData } from "../firebae/firebase";
+import { writeUserData } from "../lib/firebase";
 import { UserDataObject, WorkoutDataObject } from "../model/model";
 
 const useAutoSave = (

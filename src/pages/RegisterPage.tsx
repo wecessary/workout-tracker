@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
-import { registerEmailPassword } from "../firebae/firebase";
+import Button from "../components/ui/Button";
+import { registerEmailPassword } from "../lib/firebase";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");

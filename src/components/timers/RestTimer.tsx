@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Set } from "../../model/model";
-import { secToMinSec } from "../../utilities/date";
+import { secToMinSec } from "../../lib/date";
 import {
   currentSetComplete,
   currentSetStarted,

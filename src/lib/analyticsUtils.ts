@@ -7,7 +7,7 @@ import {
   WorkoutDataObjectWithDate,
   AttendanceStats,
 } from "../model/model";
-import { currentDateAsString } from "../utilities/date";
+import { currentDateAsString } from "./date";
 
 export const addDetailsToSets = (workoutData: WorkoutDataObjectWithDate[]) => {
   return workoutData?.map((workoutDataObj) => {

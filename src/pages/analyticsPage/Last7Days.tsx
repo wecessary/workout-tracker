@@ -1,4 +1,4 @@
-import { milSecToMin } from "../../utilities/date";
+import { milSecToMin } from "../../lib/date";
 import { Header } from "./Header";
 
 const Last7Days = ({

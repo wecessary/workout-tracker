@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { colour } from "../utilities/colour";
-import { ArrowUp, Cog, PencilSquare } from "./Icons";
+import { colour } from "../../const/colour";
+import { ArrowUp, Cog, PencilSquare } from "../ui/Icons";
 
 const NavBar = () => {
   return (

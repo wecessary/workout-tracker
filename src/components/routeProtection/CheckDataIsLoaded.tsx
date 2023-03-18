@@ -1,5 +1,5 @@
 import { ReactNode, useContext } from "react";
-import { UserDataContext } from "../context/DataContext";
+import { UserDataContext } from "../../context/DataContext";
 
 const CheckDataIsLoaded = ({ children }: { children: ReactNode }) => {
   const { dbLoading, dbError } = useContext(UserDataContext);

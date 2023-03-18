@@ -1,9 +1,4 @@
-import {
-  getMax,
-  getMean,
-  getMin,
-  getSum,
-} from "../../dataAnalysis/dataWrangleFunctions";
+import { getMax, getMean, getMin, getSum } from "../../lib/analyticsUtils";
 import { Set, WorkoutDataObject } from "../../model/model";
 
 export const getCompletedSets = (workoutDataObj: WorkoutDataObject) => {

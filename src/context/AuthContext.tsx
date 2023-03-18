@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
 import { createContext, ReactNode } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebae/firebase";
+import { auth } from "../lib/firebase";
 
 interface IAuthContext {
   user: User | null | undefined;

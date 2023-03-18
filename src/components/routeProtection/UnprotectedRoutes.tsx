@@ -1,9 +1,9 @@
 import { User } from "firebase/auth";
 import { ReactElement, useContext } from "react";
-import { Navigate, NavigateProps, Outlet } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { Navigate, Outlet } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
-export const unProtectedLogic = (
+export const getUnprotectedRoutes = (
   user: User | null | undefined,
   loading: boolean,
   redirectedRoute: ReactElement | null,
@@ -16,7 +16,7 @@ export const unProtectedLogic = (
 const UnprotectedRoutes = () => {
   const { user, loading } = useContext(AuthContext);
 
-  return unProtectedLogic(
+  return getUnprotectedRoutes(
     user,
     loading,
     <Navigate to="/tracker" />,

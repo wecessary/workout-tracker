@@ -1,9 +1,5 @@
 import { SetStateAction } from "react";
-import {
-  getMax,
-  getMean,
-  getMin,
-} from "../../dataAnalysis/dataWrangleFunctions";
+import { getMax, getMean, getMin } from "../../lib/analyticsUtils";
 import { Header } from "./Header";
 
 const ThisWeekVsAllTime = ({

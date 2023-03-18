@@ -1,8 +1,8 @@
 import { MutableRefObject, SetStateAction } from "react";
-import { handleChangeComment } from "../../handlers/handlers";
+import { changeComment } from "../../lib/workoutDataUtils";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { WorkoutDataObject } from "../../model/model";
-import { colour } from "../../utilities/colour";
+import { colour } from "../../const/colour";
 
 const Comment = ({
   workoutDataObj,
@@ -21,12 +21,7 @@ const Comment = ({
       className={`${colour.cardColour} ${colour.groupHover} rounded-xl p-2 border border-zinc-500 mt-4 text-base w-full text-white ${colour.offWhitePlaceholder}`}
       value={workoutDataObj.comment}
       onChange={(e) => {
-        handleChangeComment(
-          e,
-          workoutDataObj.index,
-          workoutData,
-          setWorkoutData
-        );
+        setWorkoutData(changeComment(e, workoutDataObj.index, workoutData));
         e.target.style.height = "inherit";
         e.target.style.height = `${e.target.scrollHeight}px`;
       }}

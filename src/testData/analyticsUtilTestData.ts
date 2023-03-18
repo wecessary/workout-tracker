@@ -1,4 +1,4 @@
-import { getDateOfXDaysFromToday } from "../utilities/date";
+import { getDateOfXDaysFromToday } from "../lib/date";
 
 export const testName1 = "exercise1";
 export const testDate1 = "2022-12-07";
@@ -14,6 +14,7 @@ export const tomorrow = getDateOfXDaysFromToday(1);
 
 export const workoutData1 = [
   {
+    exId: "ex1",
     date: testDate1,
     index: 0,
     name: testName1,
@@ -21,6 +22,7 @@ export const workoutData1 = [
     intensityUnit: "kg",
     sets: [
       {
+        setId: "set1",
         index: 0,
         reps: 0,
         weight: 0,
@@ -30,6 +32,7 @@ export const workoutData1 = [
         timeComplete: 0,
       },
       {
+        setId: "set2",
         index: 1,
         reps: 0,
         weight: 0,
@@ -47,6 +50,7 @@ export const workoutData1 = [
 
 export const workoutData2 = [
   {
+    exId: "ex1",
     date: testDate1,
     index: 0,
     name: testName1,
@@ -54,6 +58,7 @@ export const workoutData2 = [
     intensityUnit: "kg",
     sets: [
       {
+        setId: "set1",
         index: 0,
         reps: 0,
         weight: 0,
@@ -63,6 +68,7 @@ export const workoutData2 = [
         timeComplete: 0,
       },
       {
+        setId: "set2",
         index: 1,
         reps: 0,
         weight: 0,
@@ -77,6 +83,7 @@ export const workoutData2 = [
     displayIntensity: true,
   },
   {
+    exId: "ex2",
     date: testDate2,
     index: 0,
     name: testName2,
@@ -84,6 +91,7 @@ export const workoutData2 = [
     intensityUnit: "kg",
     sets: [
       {
+        setId: "set3",
         index: 0,
         reps: 0,
         weight: 0,
@@ -93,6 +101,7 @@ export const workoutData2 = [
         timeComplete: 0,
       },
       {
+        setId: "set4",
         index: 1,
         reps: 0,
         weight: 0,
@@ -110,12 +119,14 @@ export const workoutData2 = [
 
 export const workoutData1NoDate = [
   {
+    exId: "ex1",
     index: 0,
     name: testName1,
     repsUnit: "reps",
     intensityUnit: "kg",
     sets: [
       {
+        setId: "set1",
         index: 0,
         reps: 0,
         weight: 0,
@@ -125,6 +136,7 @@ export const workoutData1NoDate = [
         timeComplete: 0,
       },
       {
+        setId: "set2",
         index: 1,
         reps: 0,
         weight: 0,
@@ -142,12 +154,14 @@ export const workoutData1NoDate = [
 
 export const workoutData2NoDate = [
   {
+    exId: "ex1",
     index: 0,
     name: testName1,
     repsUnit: "reps",
     intensityUnit: "kg",
     sets: [
       {
+        setId: "set1",
         index: 0,
         reps: 0,
         weight: 0,
@@ -157,6 +171,7 @@ export const workoutData2NoDate = [
         timeComplete: 0,
       },
       {
+        setId: "set2",
         index: 1,
         reps: 0,
         weight: 0,
@@ -171,12 +186,14 @@ export const workoutData2NoDate = [
     displayIntensity: true,
   },
   {
+    exId: "ex2",
     index: 1,
     name: testName2,
     repsUnit: "reps",
     intensityUnit: "kg",
     sets: [
       {
+        setId: "set3",
         index: 0,
         reps: 0,
         weight: 0,
@@ -186,6 +203,7 @@ export const workoutData2NoDate = [
         timeComplete: 0,
       },
       {
+        setId: "set4",
         index: 1,
         reps: 0,
         weight: 0,
@@ -203,12 +221,14 @@ export const workoutData2NoDate = [
 
 export const workoutData3NoDate = [
   {
+    exId: "ex3",
     index: 0,
     name: testName3,
     repsUnit: "reps",
     intensityUnit: "kg",
     sets: [
       {
+        setId: "set5",
         index: 0,
         reps: 0,
         weight: 0,
@@ -218,6 +238,7 @@ export const workoutData3NoDate = [
         timeComplete: 0,
       },
       {
+        setId: "set6",
         index: 1,
         reps: 0,
         weight: 0,
@@ -232,12 +253,14 @@ export const workoutData3NoDate = [
     displayIntensity: true,
   },
   {
+    exId: "ex4",
     index: 1,
     name: testName4,
     repsUnit: "reps",
     intensityUnit: "kg",
     sets: [
       {
+        setId: "set7",
         index: 0,
         reps: 0,
         weight: 0,
@@ -247,6 +270,7 @@ export const workoutData3NoDate = [
         timeComplete: 0,
       },
       {
+        setId: "set8",
         index: 1,
         reps: 0,
         weight: 0,
@@ -264,6 +288,8 @@ export const workoutData3NoDate = [
 
 export const setsWithDetails1 = [
   {
+    setId: "set1",
+    exId: "ex1",
     name: "bicep",
     date: "2022-12-08",
     index: 0,
@@ -277,6 +303,8 @@ export const setsWithDetails1 = [
     intensityUnit: "W",
   },
   {
+    setId: "set2",
+    exId: "ex1",
     name: "bicep",
     date: "2022-12-08",
     index: 1,
@@ -290,6 +318,8 @@ export const setsWithDetails1 = [
     intensityUnit: "kcal",
   },
   {
+    setId: "set3",
+    exId: "ex1",
     name: "bicep",
     date: "2022-12-08",
     index: 2,
@@ -303,6 +333,8 @@ export const setsWithDetails1 = [
     intensityUnit: "kcal",
   },
   {
+    setId: "set4",
+    exId: "ex2",
     name: "squats",
     date: "2022-12-10",
     index: 0,
@@ -316,6 +348,8 @@ export const setsWithDetails1 = [
     timeComplete: 1000,
   },
   {
+    setId: "set5",
+    exId: "ex2",
     name: "squats",
     date: "2022-12-10",
     index: 1,

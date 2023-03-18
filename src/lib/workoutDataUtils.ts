@@ -16,15 +16,12 @@ export const changeName = (
   });
 };
 
-export const handleAddWorkout = (
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
-) => {
+export const addWorkout = (workoutData: WorkoutDataObject[]) => {
   const initialSets = [
     { setId: nanoid(), index: 0, reps: 0, weight: 0, easy: true, done: false },
   ];
 
-  setWorkoutData([
+  return [
     ...workoutData,
     {
       exId: nanoid(),
@@ -35,7 +32,7 @@ export const handleAddWorkout = (
       sets: initialSets,
       comment: "",
     },
-  ]);
+  ];
 };
 
 export const addSet = (
@@ -67,12 +64,11 @@ export const addSet = (
   return newWorkoutData;
 };
 
-export const handleChangeReps = (
+export const changeReps = (
   e: ChangeEvent<HTMLInputElement>,
   setIndex: number,
   workoutDataObject: WorkoutDataObject,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+  workoutData: WorkoutDataObject[]
 ) => {
   const newSets = workoutDataObject.sets.map((setObj) => {
     //setObj as in the object representing the set e.g. {reps: 5, weight: 10}
@@ -91,15 +87,14 @@ export const handleChangeReps = (
     }
     return obj;
   });
-  setWorkoutData(newWorkoutData);
+  return newWorkoutData;
 };
 
-export const handleChangeWeight = (
+export const changeWeight = (
   e: ChangeEvent<HTMLInputElement>,
   setIndex: number,
   workoutDataObject: WorkoutDataObject,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+  workoutData: WorkoutDataObject[]
 ) => {
   const newSets = workoutDataObject.sets.map((setObj) => {
     //setObj as in the object representing the set e.g. {reps: 5, weight: 10}
@@ -118,30 +113,7 @@ export const handleChangeWeight = (
     }
     return obj;
   });
-  setWorkoutData(newWorkoutData);
-};
-
-export const handleChangeEasy = (
-  setIndex: number,
-  workoutDataObject: WorkoutDataObject,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
-) => {
-  const newSets = workoutDataObject.sets.map((setObj) => {
-    if (setObj.index === setIndex) {
-      return { ...setObj, easy: !setObj.easy };
-    }
-    return setObj;
-  });
-
-  const newWorkoutData = workoutData.map((obj) => {
-    if (workoutDataObject.index === obj.index) {
-      return { ...obj, sets: newSets };
-    }
-    return obj;
-  });
-
-  setWorkoutData(newWorkoutData);
+  return newWorkoutData;
 };
 
 export const startSet = (
@@ -204,11 +176,10 @@ export const resetSetTimes = (
   });
 };
 
-export const handleChangeComment = (
+export const changeComment = (
   e: ChangeEvent<HTMLTextAreaElement>,
   workoutDataObjectIndex: number,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
+  workoutData: WorkoutDataObject[]
 ) => {
   const newWorkoutData = workoutData.map((obj) => {
     if (obj.index === workoutDataObjectIndex) {
@@ -216,46 +187,10 @@ export const handleChangeComment = (
     }
     return obj;
   });
-  setWorkoutData(newWorkoutData);
+  return newWorkoutData;
 };
 
-export const resetShowOptions = (
-  setShowOptions: (value: SetStateAction<ShowOptions>) => void
-) => {
-  setShowOptions({
-    exerciseIndex: NaN,
-    showMenu: false,
-    editCard: false,
-  });
-};
-
-export const handleShowPopup = (
-  exerciseIndex: number,
-  showOptions: ShowOptions,
-  setShowOptions: (value: SetStateAction<ShowOptions>) => void
-) => {
-  if (showOptions.exerciseIndex === exerciseIndex) {
-    resetShowOptions(setShowOptions);
-  } else {
-    setShowOptions({
-      exerciseIndex,
-      showMenu: true,
-      editCard: false,
-    });
-  }
-};
-
-export const handleEditCard = (
-  exerciseIndex: number,
-  showOptions: ShowOptions,
-  setShowOptions: (value: SetStateAction<ShowOptions>) => void
-) => {
-  if (showOptions.exerciseIndex === exerciseIndex) {
-    setShowOptions({ ...showOptions, editCard: !showOptions.editCard });
-  }
-};
-
-const reorderWorkoutObjects = (workoutData: WorkoutDataObject[]) => {
+export const reorderWorkoutObjects = (workoutData: WorkoutDataObject[]) => {
   return workoutData.map((workoutDataObject, i) => ({
     ...workoutDataObject,
     index: i,
@@ -293,23 +228,6 @@ export const deleteSet = (
   });
 
   return reorderWorkoutObjects(newWorkoutData);
-};
-
-export const handleOnDragEnd = (
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void,
-  result: DropResult
-) => {
-  if (!result.destination) {
-    return;
-  }
-
-  if (result.destination.droppableId === "cards") {
-    const newWorkoutData = workoutData;
-    const [draggedCard] = newWorkoutData.splice(result.source.index, 1);
-    newWorkoutData.splice(result.destination.index, 0, draggedCard);
-    setWorkoutData(reorderWorkoutObjects(newWorkoutData));
-  }
 };
 
 export const changeUnit = (

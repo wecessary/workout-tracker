@@ -4,7 +4,7 @@ import { UserDataContext } from "../context/DataContext";
 import {
   attendanceStats,
   getUserDataSinceXDaysAgo,
-} from "../dataAnalysis/dataWrangleFunctions";
+} from "../lib/analyticsUtils";
 
 const MuscleWrapped = () => {
   const { datafromDB } = useContext(UserDataContext);

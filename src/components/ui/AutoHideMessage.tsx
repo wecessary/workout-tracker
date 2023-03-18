@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 
-const NotificationChip = ({
+const AutoHideMessage = ({
   children,
   resetStatus,
   statuses,
@@ -35,4 +35,4 @@ const NotificationChip = ({
   );
 };
 
-export default NotificationChip;
+export default AutoHideMessage;

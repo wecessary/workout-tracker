@@ -1,9 +1,9 @@
 import { useCombobox } from "downshift";
 import { MutableRefObject, useEffect, useState } from "react";
-import { attendanceStats } from "../dataAnalysis/dataWrangleFunctions";
-import useOutsideClick from "../hooks/useOutsideClick";
-import { UserDataObject } from "../model/model";
-import { colour } from "../utilities/colour";
+import { attendanceStats } from "../../lib/analyticsUtils";
+import useOutsideClick from "../../hooks/useOutsideClick";
+import { UserDataObject } from "../../model/model";
+import { colour } from "../../const/colour";
 
 const Autofill = ({
   userData,
