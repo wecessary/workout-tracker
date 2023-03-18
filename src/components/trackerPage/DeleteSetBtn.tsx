@@ -1,6 +1,6 @@
 import { MutableRefObject, SetStateAction, useEffect, useState } from "react";
-import { XCircle, ThreeDots } from "../Icons";
-import { deleteSet } from "../../handlers/handlers";
+import { XCircle, ThreeDots } from "../ui/Icons";
+import { deleteSet } from "../../lib/handlers";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { SlideAnimation, WorkoutDataObject } from "../../model/model";
 import TrafficLight from "./TrafficLight";

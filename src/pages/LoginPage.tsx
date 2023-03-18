@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "../components/Button";
-import { Google } from "../components/Icons";
+import Button from "../components/ui/Button";
+import { Google } from "../components/ui/Icons";
 import { loginEmailPassword } from "../firebae/firebase";
 
 const LoginPage = () => {

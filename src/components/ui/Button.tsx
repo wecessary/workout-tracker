@@ -1,5 +1,4 @@
 import { ComponentPropsWithoutRef, ForwardedRef, forwardRef } from "react";
-import { colour } from "../utilities/colour";
 
 interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   variant?: "primary" | "secondary" | "transparent" | "listGroup" | "outline";
@@ -45,5 +44,7 @@ const Button = forwardRef(
     );
   }
 );
+
+Button.displayName = "Button";
 
 export default Button;

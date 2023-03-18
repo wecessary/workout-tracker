@@ -1,23 +1,20 @@
 import { useContext, useState } from "react";
-import {
-  handleAddWorkout,
-  handleOnDragEnd,
-  addSet,
-} from "../../handlers/handlers";
-import { currentDateAsString } from "../../utilities/date";
-import Button from "../../components/Button";
-import StatusIndicator from "../../components/StatusIndicator";
-import NotificationChip from "../../components/NotificationChip";
-import Card from "../../components/trackerPage/Card";
-import DraggableWrapper from "../../components/DraggableWrapper";
+import { handleAddWorkout, handleOnDragEnd, addSet } from "../lib/handlers";
+import { currentDateAsString } from "../utilities/date";
+import Button from "../components/ui/Button";
+import AutoHideMessage from "../components/ui/AutoHideMessage";
+import Card from "../components/trackerPage/Card";
+import DraggableWrapper from "../components/dragDrop/DraggableWrapper";
 import { DragDropContext } from "react-beautiful-dnd";
-import DroppableWrapper from "../../components/DroppableWrapper";
-import useWorkoutData from "../../hooks/useWorkoutData";
-import { UserDataContext } from "../../context/DataContext";
-import useAutoSave from "../../hooks/useAutoSave";
-import { colour } from "../../utilities/colour";
-import Comment from "../../components/trackerPage/Comment";
-import SetRow from "../../components/trackerPage/SetRow";
+import DroppableWrapper from "../components/dragDrop/DroppableWrapper";
+import useWorkoutData from "../hooks/useWorkoutData";
+import { UserDataContext } from "../context/DataContext";
+import useAutoSave from "../hooks/useAutoSave";
+import { colour } from "../utilities/colour";
+import Comment from "../components/trackerPage/Comment";
+import SetRow from "../components/trackerPage/SetRow";
+import getStatusMessage from "../lib/statusMessage";
+import { saveStatusMsg } from "../const/saveStatusMsg";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -66,20 +63,19 @@ const TrackerPage = () => {
                     setWorkoutData={setWorkoutData}
                     workoutDataObj={obj}
                   >
-                    {obj.sets &&
-                      obj.sets.map((set, setIndex) => {
-                        return (
-                          <SetRow
-                            key={set.setId}
-                            workoutData={workoutData}
-                            setWorkoutData={setWorkoutData}
-                            obj={obj}
-                            set={set}
-                            exIndex={exIndex}
-                            setIndex={setIndex}
-                          />
-                        );
-                      })}
+                    {obj?.sets?.map((set, setIndex) => {
+                      return (
+                        <SetRow
+                          key={set.setId}
+                          workoutData={workoutData}
+                          setWorkoutData={setWorkoutData}
+                          obj={obj}
+                          set={set}
+                          exIndex={exIndex}
+                          setIndex={setIndex}
+                        />
+                      );
+                    })}
                     <Button
                       variant="outline"
                       onClick={() =>
@@ -106,22 +102,19 @@ const TrackerPage = () => {
             Add Exercise
           </Button>
           {(isSavingUserData || hasSavedUserData) && (
-            <NotificationChip
+            <AutoHideMessage
               statuses={[isSavingUserData, hasSavedUserData]}
               resetStatus={() => {
                 setIsSavingUserData(false);
                 setHasSavedUserData(false);
               }}
             >
-              <StatusIndicator
-                statusMessages={{
-                  loading: "Saving data...",
-                  complete: "Data has been saved",
-                }}
-                loadingStatus={isSavingUserData}
-                completeStatus={hasSavedUserData}
-              />
-            </NotificationChip>
+              {getStatusMessage(
+                saveStatusMsg,
+                isSavingUserData,
+                hasSavedUserData
+              )}
+            </AutoHideMessage>
           )}
         </DragDropContext>
       </div>

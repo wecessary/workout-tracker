@@ -6,7 +6,7 @@ import {
   getUserDataSinceXDaysAgo,
   getSum,
 } from "../../dataAnalysis/dataWrangleFunctions";
-import { Play } from "../../components/Icons";
+import { Play } from "../../components/ui/Icons";
 import ThisWeekVsAllTime from "./ThisWeekVAllTime";
 import Last7Days from "./Last7Days";
 import Progression from "./Progression";

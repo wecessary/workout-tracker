@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Set } from "../../model/model";
 import { secToMinSec } from "../../utilities/date";
-import { Check, Play, Stop } from "../Icons";
+import { Check, Play, Stop } from "../ui/Icons";
 import RestTimeDisplay from "./RestTimer";
 import {
   currentSetComplete,

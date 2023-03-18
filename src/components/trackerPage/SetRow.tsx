@@ -8,9 +8,9 @@ import {
   handleChangeEasy,
   deleteExercise,
   deleteSet,
-} from "../../handlers/handlers";
+} from "../../lib/handlers";
 import { SlideAnimation, Set, WorkoutDataObject } from "../../model/model";
-import { ThumbUp, ThumbDown } from "../Icons";
+import { ThumbUp, ThumbDown } from "../ui/Icons";
 import Timer from "../timers/Timer";
 import CardRow from "./CardRow";
 import DeleteSetBtn from "./DeleteSetBtn";

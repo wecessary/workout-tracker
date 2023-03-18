@@ -1,12 +1,9 @@
 import { MutableRefObject, SetStateAction, useState } from "react";
-import Button from "../Button";
-import FloatingLabel from "../FloatingLabel";
-import { PencilSquare } from "../Icons";
-import Toggle from "../Toggle";
-import {
-  changeUnit,
-  toggleDisplayUnit,
-} from "../../handlers/handlers";
+import Button from "../ui/Button";
+import FloatingLabel from "../ui/FloatingLabel";
+import { PencilSquare } from "../ui/Icons";
+import Toggle from "../ui/Toggle";
+import { changeUnit, toggleDisplayUnit } from "../../lib/handlers";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { WorkoutDataObject } from "../../model/model";
 

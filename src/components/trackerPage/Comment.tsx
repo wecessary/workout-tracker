@@ -1,5 +1,5 @@
 import { MutableRefObject, SetStateAction } from "react";
-import { handleChangeComment } from "../../handlers/handlers";
+import { handleChangeComment } from "../../lib/handlers";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { WorkoutDataObject } from "../../model/model";
 import { colour } from "../../utilities/colour";

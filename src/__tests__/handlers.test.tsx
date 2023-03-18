@@ -7,7 +7,7 @@ import {
   changeUnit,
   deleteExercise,
   toggleDisplayUnit,
-} from "./handlers";
+} from "../lib/handlers";
 import { WorkoutDataObject } from "../model/model";
 import { ChangeEvent } from "react";
 
