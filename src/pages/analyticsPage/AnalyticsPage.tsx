@@ -5,12 +5,12 @@ import {
   getExerciseStats,
   getUserDataSinceXDaysAgo,
   getSum,
-} from "../../dataAnalysis/dataWrangleFunctions";
+} from "../../lib/analyticsUtils";
 import { Play } from "../../components/ui/Icons";
 import ThisWeekVsAllTime from "./ThisWeekVAllTime";
 import Last7Days from "./Last7Days";
 import Progression from "./Progression";
-import { colour } from "../../utilities/colour";
+import { colour } from "../../const/colour";
 
 const cardsWidth = "w-[95vw]";
 

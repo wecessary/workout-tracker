@@ -8,6 +8,7 @@ describe("isBtnDisabled function", () => {
   test("first and only set that has not started should not be disabled", () => {
     const sets = [
       {
+        setId: "someId",
         index: 0,
         reps: 0,
         weight: 0,
@@ -21,6 +22,7 @@ describe("isBtnDisabled function", () => {
   test("first and only set that is complete should be disabled", () => {
     const sets1 = [
       {
+        setId: "someId",
         index: 0,
         reps: 0,
         weight: 0,
@@ -36,6 +38,7 @@ describe("isBtnDisabled function", () => {
   test("when all sets are complete, should all be disabled", () => {
     const sets2 = [
       {
+        setId: "someId0",
         index: 0,
         reps: 0,
         weight: 0,
@@ -45,6 +48,7 @@ describe("isBtnDisabled function", () => {
         timeComplete: Date.now() + 1000,
       },
       {
+        setId: "someId1",
         index: 1,
         reps: 0,
         weight: 0,
@@ -54,6 +58,7 @@ describe("isBtnDisabled function", () => {
         timeComplete: Date.now() + 3000,
       },
       {
+        setId: "someId2",
         index: 2,
         reps: 0,
         weight: 0,
@@ -64,7 +69,7 @@ describe("isBtnDisabled function", () => {
       },
     ];
     for (let i = 0; i < sets2.length; i++) {
-      let isTimerDisabled = timerDisabled(i, sets2);
+      const isTimerDisabled = timerDisabled(i, sets2);
       expect(isTimerDisabled).toBe(true);
     }
   });
@@ -72,6 +77,7 @@ describe("isBtnDisabled function", () => {
   test("when set 1 is complete, set 2 hasn't begun, set 3 (and 1) should be disabled, and set 2 should not be disabled", () => {
     const sets3 = [
       {
+        setId: "someId0",
         index: 0,
         reps: 0,
         weight: 0,
@@ -81,6 +87,7 @@ describe("isBtnDisabled function", () => {
         timeComplete: Date.now() + 1000,
       },
       {
+        setId: "someId1",
         index: 1,
         reps: 0,
         weight: 0,
@@ -88,6 +95,7 @@ describe("isBtnDisabled function", () => {
         done: false,
       },
       {
+        setId: "someId2",
         index: 2,
         reps: 0,
         weight: 0,
@@ -103,6 +111,7 @@ describe("isBtnDisabled function", () => {
   test("when first two sets are complete and third set has not started, third set should not be disabled", () => {
     const sets4 = [
       {
+        setId: "someId0",
         index: 0,
         reps: 0,
         weight: 0,
@@ -112,6 +121,7 @@ describe("isBtnDisabled function", () => {
         timeComplete: Date.now() + 1000,
       },
       {
+        setId: "someId1",
         index: 1,
         reps: 0,
         weight: 0,
@@ -121,6 +131,7 @@ describe("isBtnDisabled function", () => {
         timeComplete: Date.now() + 3000,
       },
       {
+        setId: "someId2",
         index: 2,
         reps: 0,
         weight: 0,
@@ -136,6 +147,7 @@ describe("isBtnDisabled function", () => {
   test("when first two sets are complete and third set has not started, fourth set should be disabled", () => {
     const sets5 = [
       {
+        setId: "someId0",
         index: 0,
         reps: 0,
         weight: 0,
@@ -145,6 +157,7 @@ describe("isBtnDisabled function", () => {
         timeComplete: Date.now() + 1000,
       },
       {
+        setId: "someId1",
         index: 1,
         reps: 0,
         weight: 0,
@@ -154,6 +167,7 @@ describe("isBtnDisabled function", () => {
         timeComplete: Date.now() + 3000,
       },
       {
+        setId: "someId2",
         index: 2,
         reps: 0,
         weight: 0,
@@ -161,6 +175,7 @@ describe("isBtnDisabled function", () => {
         done: false,
       },
       {
+        setId: "someId3",
         index: 3,
         reps: 0,
         weight: 0,
@@ -177,6 +192,7 @@ describe("isBtnDisabled function", () => {
   test("an ongoing set should not be disabled", () => {
     const sets6 = [
       {
+        setId: "someId0",
         index: 0,
         reps: 0,
         weight: 0,
@@ -191,6 +207,7 @@ describe("isBtnDisabled function", () => {
   test("if prev set is ongoing, next sets should be disabled", () => {
     const sets7 = [
       {
+        setId: "someId0",
         index: 0,
         reps: 0,
         weight: 0,
@@ -199,6 +216,7 @@ describe("isBtnDisabled function", () => {
         timeStart: Date.now(),
       },
       {
+        setId: "someId1",
         index: 1,
         reps: 0,
         weight: 0,
@@ -206,6 +224,7 @@ describe("isBtnDisabled function", () => {
         done: true,
       },
       {
+        setId: "someId2",
         index: 2,
         reps: 0,
         weight: 0,

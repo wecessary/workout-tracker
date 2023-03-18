@@ -2,7 +2,7 @@ import { MutableRefObject, SetStateAction } from "react";
 import { changeComment } from "../../lib/workoutDataUtils";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { WorkoutDataObject } from "../../model/model";
-import { colour } from "../../utilities/colour";
+import { colour } from "../../const/colour";
 
 const Comment = ({
   workoutDataObj,

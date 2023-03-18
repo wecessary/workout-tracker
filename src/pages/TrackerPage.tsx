@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { addWorkout, addSet } from "../lib/workoutDataUtils";
-import { currentDateAsString } from "../utilities/date";
+import { currentDateAsString } from "../lib/date";
 import Button from "../components/ui/Button";
 import AutoHideMessage from "../components/ui/AutoHideMessage";
 import Card from "../components/trackerPage/Card";
@@ -10,7 +10,7 @@ import DroppableWrapper from "../components/dnd/DroppableWrapper";
 import useWorkoutData from "../hooks/useWorkoutData";
 import { UserDataContext } from "../context/DataContext";
 import useAutoSave from "../hooks/useAutoSave";
-import { colour } from "../utilities/colour";
+import { colour } from "../const/colour";
 import Comment from "../components/trackerPage/Comment";
 import SetRow from "../components/trackerPage/SetRow";
 import getStatusMessage from "../lib/statusMessage";

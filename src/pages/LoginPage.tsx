@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
 import { Google } from "../components/ui/Icons";
-import { loginEmailPassword } from "../firebae/firebase";
+import { loginEmailPassword } from "../lib/firebase";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ const LoginPage = () => {
       <div className="h-screen flex flex-col justify-center items-center">
         <div className="w-[280px] flex flex-col">
           <h1 className="text-3xl">Muscle Department</h1>
-          <p className="opacity-50 ">The all in one workout tracker</p>
+          <p className="opacity-50">The all in one workout tracker</p>
           <Button
             variant="outline"
             localStyling="flex items-center px-2"
@@ -55,12 +55,12 @@ const LoginPage = () => {
           <Button
             type="submit"
             variant="outline"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
           >
             Login
           </Button>
           <div>
-            Don't have an account?
+            {"Don't have an account?"}
             <Link to="/register" className="ml-2 hover:underline">
               Register
             </Link>

@@ -1,7 +1,7 @@
 import { ref } from "firebase/database";
 import { createContext, ReactNode, useContext } from "react";
 import { useList } from "react-firebase-hooks/database";
-import { db } from "../firebae/firebase";
+import { db } from "../lib/firebase";
 import { UserDataObject } from "../model/model";
 import { AuthContext } from "./AuthContext";
 

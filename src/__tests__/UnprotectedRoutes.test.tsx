@@ -3,7 +3,7 @@
  */
 
 import { User } from "firebase/auth";
-import { unProtectedLogic } from "./UnprotectedRoutes";
+import { getUnprotectedRoutes } from "../components/routeProtection/UnprotectedRoutes";
 
 describe("Unprotected routes", () => {
   const RedirectRoute = () => {
@@ -15,7 +15,7 @@ describe("Unprotected routes", () => {
   };
 
   test("logged in user should not see unprotectedRoute", () => {
-    const outcome = unProtectedLogic(
+    const outcome = getUnprotectedRoutes(
       {} as User,
       false,
       <RedirectRoute />,
@@ -26,7 +26,7 @@ describe("Unprotected routes", () => {
   });
 
   test("unlogged in user should see unprotectedRoute", () => {
-    const outcome = unProtectedLogic(
+    const outcome = getUnprotectedRoutes(
       null,
       false,
       <RedirectRoute />,

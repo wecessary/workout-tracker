@@ -1,5 +1,5 @@
 import Button from "../components/ui/Button";
-import { logOut } from "../firebae/firebase";
+import { logOut } from "../lib/firebase";
 
 const Settings = () => {
   return (

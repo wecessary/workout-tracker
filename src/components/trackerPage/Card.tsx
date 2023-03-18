@@ -6,7 +6,7 @@ import {
   WorkoutDataObject,
 } from "../../model/model";
 import PopUpMenu from "./PopUpMenu";
-import { colour } from "../../utilities/colour";
+import { colour } from "../../const/colour";
 import Autofill from "../ui/Autofill";
 import CardRow from "./CardRow";
 import { ChevronDown, ChevronUp, GripBar2 } from "../ui/Icons";

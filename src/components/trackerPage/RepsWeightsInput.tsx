@@ -5,7 +5,7 @@ import {
   HandleChangeWeight,
   WorkoutDataObject,
 } from "../../model/model";
-import { colour } from "../../utilities/colour";
+import { colour } from "../../const/colour";
 
 interface RepsWeightInput {
   repsOrWeight: string;

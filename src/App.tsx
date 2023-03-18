@@ -10,7 +10,7 @@ import MuscleWrapped from "./pages/MuscleWrapped";
 import RegisterPage from "./pages/RegisterPage";
 import Settings from "./pages/SettingsPage";
 import TrackerPage from "./pages/TrackerPage";
-import UnprotectedRoutes from "./routeProtection/UnprotectedRoutes";
+import UnprotectedRoutes from "./components/routeProtection/UnprotectedRoutes";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);

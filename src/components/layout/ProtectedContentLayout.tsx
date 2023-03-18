@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import UserDataContextProvider from "../../context/DataContext";
-import CheckDataIsLoaded from "../../routeProtection/CheckDataIsLoaded";
-import ProtectedRoutes from "../../routeProtection/ProtectedRoutes";
+import CheckDataIsLoaded from "../routeProtection/CheckDataIsLoaded";
+import ProtectedRoutes from "../routeProtection/ProtectedRoutes";
 import NavBar from "./Navbar";
 
 const Layout = () => {

@@ -3,7 +3,7 @@
  */
 
 import "@testing-library/jest-dom";
-import { dateToString } from "./date";
+import { dateToString } from "../lib/date";
 
 describe("dateToString", () => {
   test("will work on new Date()", () => {

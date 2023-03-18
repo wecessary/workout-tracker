@@ -11,7 +11,7 @@ import {
   getStatsFromSets,
   getUserDataSinceXDaysAgo,
   sortByDateOldToNew,
-} from "./dataWrangleFunctions";
+} from "../lib/analyticsUtils";
 import {
   workoutData1,
   testName1,
@@ -30,7 +30,7 @@ import {
   userData6,
   twoDaysAgo,
   yesterday,
-} from "./testData";
+} from "../testData/analyticsUtilTestData";
 
 describe("can add date and name to sets ", () => {
   test("when there is only one exercise", () => {
@@ -198,5 +198,4 @@ describe("getUserDataSinceXDaysAgo", () => {
   expect(getUserDataSinceXDaysAgo(userData6, 2)).toHaveLength(2);
   expect(getUserDataSinceXDaysAgo(userData6, 2)[0].date).toEqual(yesterday);
   expect(getUserDataSinceXDaysAgo(userData6, 2)[1].date).toEqual(twoDaysAgo);
-  
 });

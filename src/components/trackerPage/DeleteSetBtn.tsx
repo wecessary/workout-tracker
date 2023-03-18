@@ -1,7 +1,7 @@
 import { MutableRefObject, SetStateAction, useEffect, useState } from "react";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { SlideAnimation, WorkoutDataObject } from "../../model/model";
-import { colour } from "../../utilities/colour";
+import { colour } from "../../const/colour";
 import { XCircle, ThreeDots } from "../ui/Icons";
 
 const DeleteSetBtn = ({
