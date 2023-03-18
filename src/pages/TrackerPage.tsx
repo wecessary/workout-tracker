@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
-import { handleAddWorkout, handleOnDragEnd, addSet } from "../lib/handlers";
+import { addWorkout, addSet } from "../lib/workoutDataUtils";
 import { currentDateAsString } from "../utilities/date";
 import Button from "../components/ui/Button";
 import AutoHideMessage from "../components/ui/AutoHideMessage";
 import Card from "../components/trackerPage/Card";
-import DraggableWrapper from "../components/dragDrop/DraggableWrapper";
+import DraggableWrapper from "../components/dnd/DraggableWrapper";
 import { DragDropContext } from "react-beautiful-dnd";
-import DroppableWrapper from "../components/dragDrop/DroppableWrapper";
+import DroppableWrapper from "../components/dnd/DroppableWrapper";
 import useWorkoutData from "../hooks/useWorkoutData";
 import { UserDataContext } from "../context/DataContext";
 import useAutoSave from "../hooks/useAutoSave";
@@ -15,6 +15,7 @@ import Comment from "../components/trackerPage/Comment";
 import SetRow from "../components/trackerPage/SetRow";
 import getStatusMessage from "../lib/statusMessage";
 import { saveStatusMsg } from "../const/saveStatusMsg";
+import { getDnDReordered } from "../lib/dndUtils";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -38,7 +39,7 @@ const TrackerPage = () => {
         </h1>
         <DragDropContext
           onDragEnd={(result) =>
-            handleOnDragEnd(workoutData, setWorkoutData, result)
+            setWorkoutData(getDnDReordered(workoutData, result))
           }
         >
           <input
@@ -96,7 +97,7 @@ const TrackerPage = () => {
           </DroppableWrapper>
 
           <Button
-            onClick={() => handleAddWorkout(workoutData, setWorkoutData)}
+            onClick={() => setWorkoutData(addWorkout(workoutData))}
             variant="outline"
           >
             Add Exercise

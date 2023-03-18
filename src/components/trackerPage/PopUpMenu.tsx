@@ -3,7 +3,7 @@ import Button from "../ui/Button";
 import FloatingLabel from "../ui/FloatingLabel";
 import { PencilSquare } from "../ui/Icons";
 import Toggle from "../ui/Toggle";
-import { changeUnit, toggleDisplayUnit } from "../../lib/handlers";
+import { changeUnit, toggleDisplayUnit } from "../../lib/workoutDataUtils";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { WorkoutDataObject } from "../../model/model";
 

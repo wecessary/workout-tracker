@@ -1,16 +1,10 @@
 import { MutableRefObject, SetStateAction, useEffect, useState } from "react";
-import { XCircle, ThreeDots } from "../ui/Icons";
-import { deleteSet } from "../../lib/handlers";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { SlideAnimation, WorkoutDataObject } from "../../model/model";
-import TrafficLight from "./TrafficLight";
 import { colour } from "../../utilities/colour";
+import { XCircle, ThreeDots } from "../ui/Icons";
 
 const DeleteSetBtn = ({
-  workoutData,
-  setWorkoutData,
-  workoutObjIndex,
-  setIndex,
   handleDeleteSet,
 }: {
   workoutData: WorkoutDataObject[];
@@ -27,17 +21,17 @@ const DeleteSetBtn = ({
   const ref = useOutsideClick(() => leaveDeleteState());
 
   const DeleteSetBtn = () => (
-    <div
-      ref={ref as MutableRefObject<HTMLDivElement>}
+    <button
+      ref={ref as MutableRefObject<HTMLButtonElement>}
       onClick={handleDeleteSet}
       className={`flex gap-1 items-center ${colour.cardColour} w-24 relative z-50`}
     >
       <XCircle />
       <p>Delete set</p>
-    </div>
+    </button>
   );
 
-  const btnContent = [<ThreeDots />, <DeleteSetBtn />];
+  const btnContent = [<ThreeDots key={1} />, <DeleteSetBtn key={2} />];
 
   const isInDeleteState = () => btnContentIndex % 2 === 1;
 

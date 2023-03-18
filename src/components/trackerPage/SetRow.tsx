@@ -1,21 +1,17 @@
 import { SetStateAction, useState } from "react";
 import {
-  handleChangeReps,
-  handleChangeWeight,
+  changeReps,
+  changeWeight,
   startSet,
   finishSet,
   resetSetTimes,
-  handleChangeEasy,
-  deleteExercise,
   deleteSet,
-} from "../../lib/handlers";
+} from "../../lib/workoutDataUtils";
 import { SlideAnimation, Set, WorkoutDataObject } from "../../model/model";
-import { ThumbUp, ThumbDown } from "../ui/Icons";
 import Timer from "../timers/Timer";
 import CardRow from "./CardRow";
 import DeleteSetBtn from "./DeleteSetBtn";
 import RepsWeightInput from "./RepsWeightsInput";
-import TrafficLight from "./TrafficLight";
 
 const SetRow = ({
   setIndex,
@@ -53,7 +49,11 @@ const SetRow = ({
             key={`reps${setIndex}`}
             repsOrWeight={obj.repsUnit}
             value={set.reps}
-            onChange={handleChangeReps}
+            onChange={(e, setIndex, workoutDataObject, workoutData) => {
+              setWorkoutData(
+                changeReps(e, setIndex, workoutDataObject, workoutData)
+              );
+            }}
             setIndex={setIndex}
             workoutDataObject={obj}
             workoutData={workoutData}
@@ -68,7 +68,11 @@ const SetRow = ({
             key={`weight${setIndex}`}
             repsOrWeight={obj.intensityUnit}
             value={set.weight}
-            onChange={handleChangeWeight}
+            onChange={(e, setIndex, workoutDataObject, workoutData) => {
+              setWorkoutData(
+                changeWeight(e, setIndex, workoutDataObject, workoutData)
+              );
+            }}
             setIndex={setIndex}
             workoutDataObject={obj}
             workoutData={workoutData}
@@ -101,18 +105,6 @@ const SetRow = ({
             setWorkoutData={setWorkoutData}
             workoutObjIndex={exIndex}
             setIndex={setIndex}
-          />
-          <TrafficLight
-            localStyling="col-spans-1 col-start-12 relative z-10"
-            key={`easy${setIndex}`}
-            indicator={set.easy}
-            onChange={handleChangeEasy}
-            setIndex={setIndex}
-            workoutDataObject={obj}
-            workoutData={workoutData}
-            setWorkoutData={setWorkoutData}
-            green={<ThumbUp />}
-            red={<ThumbDown />}
           />
         </CardRow>
       </div>

@@ -1,5 +1,5 @@
 import { ReactNode, SetStateAction, useState } from "react";
-import { changeName, deleteExercise } from "../../lib/handlers";
+import { changeName, deleteExercise } from "../../lib/workoutDataUtils";
 import {
   SlideAnimation,
   UserDataObject,
