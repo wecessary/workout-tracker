@@ -1,6 +1,6 @@
 import { Set } from "../../model/model";
 import { colour } from "../../const/colour";
-import { getRepsTotal, getMaxMeanMinWeight } from "./cardSummaryCalculations";
+import { getRepsTotal, getMaxMeanMinWeight } from "../../lib/cardSummaryUtils";
 
 const CardSummary = ({
   completedSets,

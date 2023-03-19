@@ -63,34 +63,7 @@ const TrackerPage = () => {
                     exIndex={exIndex}
                     setWorkoutData={setWorkoutData}
                     workoutDataObj={obj}
-                  >
-                    {obj?.sets?.map((set, setIndex) => {
-                      return (
-                        <SetRow
-                          key={set.setId}
-                          workoutData={workoutData}
-                          setWorkoutData={setWorkoutData}
-                          obj={obj}
-                          set={set}
-                          exIndex={exIndex}
-                          setIndex={setIndex}
-                        />
-                      );
-                    })}
-                    <Button
-                      variant="outline"
-                      onClick={() =>
-                        setWorkoutData(addSet(obj.index, workoutData))
-                      }
-                    >
-                      +
-                    </Button>
-                    <Comment
-                      workoutDataObj={obj}
-                      workoutData={workoutData}
-                      setWorkoutData={setWorkoutData}
-                    />
-                  </Card>
+                  />
                 </DraggableWrapper>
               );
             })}

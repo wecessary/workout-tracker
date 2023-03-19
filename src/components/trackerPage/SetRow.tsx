@@ -9,7 +9,7 @@ import {
 } from "../../lib/workoutDataUtils";
 import { SlideAnimation, Set, WorkoutDataObject } from "../../model/model";
 import Timer from "../timers/Timer";
-import CardRow from "./CardRow";
+import { Grid } from "../ui/Grid";
 import DeleteSetBtn from "./DeleteSetBtn";
 import RepsWeightInput from "./RepsWeightsInput";
 
@@ -40,13 +40,12 @@ const SetRow = ({
   return (
     <>
       <div className={`mb-4 ${setAnimation}`}>
-        <CardRow rowStyling="grid grid-cols-12 items-center">
-          <p className="col-span-2 text-lg">{`#${setIndex + 1}`}</p>
+        <Grid alignItem="items-center" colGap="gap-1" p="pb-4">
+          <p className="col-span-2 text-lg text-white">{`#${setIndex + 1}`}</p>
           <RepsWeightInput
             shouldDisplay={
               ("displayReps" in obj ? obj.displayReps : true) as boolean
             }
-            key={`reps${setIndex}`}
             repsOrWeight={obj.repsUnit}
             value={set.reps}
             onChange={(e, setIndex, workoutDataObject, workoutData) => {
@@ -65,7 +64,6 @@ const SetRow = ({
                 ? obj.displayIntensity
                 : true) as boolean
             }
-            key={`weight${setIndex}`}
             repsOrWeight={obj.intensityUnit}
             value={set.weight}
             onChange={(e, setIndex, workoutDataObject, workoutData) => {
@@ -78,10 +76,12 @@ const SetRow = ({
             workoutData={workoutData}
             setWorkoutData={setWorkoutData}
           />
-        </CardRow>
-        <CardRow
-          key={`timerRow${setIndex}`}
-          rowStyling="gap-1 grid grid-cols-12 items-center border-b pb-3"
+        </Grid>
+        <Grid
+          alignItem="items-center"
+          colGap="gap-1"
+          p="pb-2"
+          border="border-b-2"
         >
           <Timer
             startTime={set.timeStart || 0}
@@ -98,7 +98,6 @@ const SetRow = ({
             setIndex={setIndex}
             sets={obj.sets}
           />
-
           <DeleteSetBtn
             handleDeleteSet={handleDeleteSet}
             workoutData={workoutData}
@@ -106,7 +105,7 @@ const SetRow = ({
             workoutObjIndex={exIndex}
             setIndex={setIndex}
           />
-        </CardRow>
+        </Grid>
       </div>
     </>
   );
