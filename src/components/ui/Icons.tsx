@@ -53,13 +53,13 @@ export const Minus = () => {
   );
 };
 
-export const GripBar2 = () => {
+export const GripBar2 = ({ styling }: { styling?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       fill="currentColor"
-      className="w-24 h-4 text-slate-500"
+      className={`w-24 h-4 text-slate-500 ${styling}`}
     >
       <path
         fillRule="evenodd"

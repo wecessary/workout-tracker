@@ -48,17 +48,15 @@ const Autofill = ({
   const ref = useOutsideClick(() => ref.current?.blur());
 
   return (
-    <div
-      className={`${colour.cardColour} ${colour.groupHover} w-full mb-3 font-bold text-lg tracking-tight text-white ${colour.offWhitePlaceholder}`}
-    >
+    <>
       <input
-        className={`${colour.cardColour} ${colour.groupHover} px-2 py-1 border-[#575656]`}
+        className={`${colour.cardColour} ${colour.groupHover} font-bold px-2 py-1 text-white text-lg w-full`}
         {...getInputProps({ ref: ref as MutableRefObject<HTMLInputElement> })}
         data-testid="combobox-input"
         placeholder="Type an exercise name"
       />
 
-      <ul className="font-normal" {...getMenuProps()}>
+      <ul className="text-white text-lg" {...getMenuProps()}>
         {isOpen &&
           inputValue &&
           inputItems.map((item, index) => {
@@ -80,7 +78,7 @@ const Autofill = ({
             }
           })}
       </ul>
-    </div>
+    </>
   );
 };
 

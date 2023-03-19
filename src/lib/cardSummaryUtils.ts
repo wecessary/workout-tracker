@@ -1,5 +1,5 @@
-import { getMax, getMean, getMin, getSum } from "../../lib/analyticsUtils";
-import { Set, WorkoutDataObject } from "../../model/model";
+import { getMax, getMean, getMin, getSum } from "./analyticsUtils";
+import { Set, WorkoutDataObject } from "../model/model";
 
 export const getCompletedSets = (workoutDataObj: WorkoutDataObject) => {
   return workoutDataObj.sets
