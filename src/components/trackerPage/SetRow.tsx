@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from "react";
+import { SetStateAction } from "react";
 import {
   changeReps,
   changeWeight,
@@ -6,12 +6,15 @@ import {
   finishSet,
   resetSetTimes,
   deleteSet,
+  shouldDisplayUnit,
 } from "../../lib/workoutDataUtils";
-import { SlideAnimation, Set, WorkoutDataObject } from "../../model/model";
+import { Set, WorkoutDataObject } from "../../model/model";
 import Timer from "../timers/Timer";
 import { Grid } from "../ui/Grid";
-import DeleteSetBtn from "./DeleteSetBtn";
-import RepsWeightInput from "./RepsWeightsInput";
+import DeleteSetBtn from "../ui/DeleteSetBtn";
+import InputNumber from "../ui/InputNumber";
+import { animated, useSpring } from "@react-spring/web";
+import { xEnter, xExit } from "../../const/springs";
 
 const SetRow = ({
   setIndex,
@@ -28,60 +31,54 @@ const SetRow = ({
   exIndex: number;
   setIndex: number;
 }) => {
-  const [setAnimation, setSetAnimation] = useState<SlideAnimation>("slide-out");
+  const [spring, api] = useSpring(() => ({
+    from: { opacity: 0, x: xEnter },
+    to: { opacity: 1, x: 0 },
+  }));
 
   const handleDeleteSet = () => {
-    setSetAnimation("slide-in");
-    setTimeout(() => {
-      setWorkoutData(deleteSet(exIndex, setIndex, workoutData));
-    }, 500);
+    api.start(() => ({
+      opacity: 0,
+      x: xExit,
+      onRest: () => setWorkoutData(deleteSet(exIndex, setIndex, workoutData)),
+    }));
   };
 
   return (
     <>
-      <div className={`mb-4 ${setAnimation}`}>
-        <Grid alignItem="items-center" colGap="gap-1" p="pb-4">
+      <animated.div style={{ ...spring }}>
+        <Grid alignItem="items-center" colGap="gap-1" p="py-2">
           <p className="col-span-2 text-lg text-white">{`#${setIndex + 1}`}</p>
-          <RepsWeightInput
-            shouldDisplay={
-              ("displayReps" in obj ? obj.displayReps : true) as boolean
-            }
-            repsOrWeight={obj.repsUnit}
-            value={set.reps}
-            onChange={(e, setIndex, workoutDataObject, workoutData) => {
-              setWorkoutData(
-                changeReps(e, setIndex, workoutDataObject, workoutData)
-              );
-            }}
-            setIndex={setIndex}
-            workoutDataObject={obj}
-            workoutData={workoutData}
-            setWorkoutData={setWorkoutData}
-          />
-          <RepsWeightInput
-            shouldDisplay={
-              ("displayIntensity" in obj
-                ? obj.displayIntensity
-                : true) as boolean
-            }
-            repsOrWeight={obj.intensityUnit}
-            value={set.weight}
-            onChange={(e, setIndex, workoutDataObject, workoutData) => {
-              setWorkoutData(
-                changeWeight(e, setIndex, workoutDataObject, workoutData)
-              );
-            }}
-            setIndex={setIndex}
-            workoutDataObject={obj}
-            workoutData={workoutData}
-            setWorkoutData={setWorkoutData}
-          />
+          {shouldDisplayUnit(obj.displayReps) && (
+            <label className="flex items-center col-span-5 text-white">
+              <InputNumber
+                repsOrWeight={obj.repsUnit}
+                value={set.reps}
+                onChange={(e) => {
+                  setWorkoutData(changeReps(e, setIndex, obj, workoutData));
+                }}
+              />
+              {obj.repsUnit.toUpperCase()}
+            </label>
+          )}
+          {shouldDisplayUnit(obj.displayIntensity) && (
+            <label className="flex items-center col-span-5 text-white">
+              <InputNumber
+                repsOrWeight={obj.intensityUnit}
+                value={set.weight}
+                onChange={(e) => {
+                  setWorkoutData(changeWeight(e, setIndex, obj, workoutData));
+                }}
+              />
+              {obj.intensityUnit.toUpperCase()}
+            </label>
+          )}
         </Grid>
         <Grid
           alignItem="items-center"
           colGap="gap-1"
-          p="pb-2"
           border="border-b-2"
+          p="pb-2"
         >
           <Timer
             startTime={set.timeStart || 0}
@@ -92,21 +89,14 @@ const SetRow = ({
             finishOnClick={() =>
               setWorkoutData(finishSet(setIndex, obj, workoutData))
             }
-            resetOnClick={() =>
-              setWorkoutData(resetSetTimes(setIndex, obj, workoutData))
-            }
             setIndex={setIndex}
             sets={obj.sets}
           />
-          <DeleteSetBtn
-            handleDeleteSet={handleDeleteSet}
-            workoutData={workoutData}
-            setWorkoutData={setWorkoutData}
-            workoutObjIndex={exIndex}
-            setIndex={setIndex}
-          />
+          <div className="col-start-11 col-span-2">
+            <DeleteSetBtn handleDeleteSet={handleDeleteSet} />
+          </div>
         </Grid>
-      </div>
+      </animated.div>
     </>
   );
 };

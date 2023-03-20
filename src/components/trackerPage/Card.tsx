@@ -91,6 +91,7 @@ const Card = ({
           })}
           <Button
             variant="outline"
+            localStyling="mt-2"
             onClick={() =>
               setWorkoutData(addSet(workoutDataObj.index, workoutData))
             }
