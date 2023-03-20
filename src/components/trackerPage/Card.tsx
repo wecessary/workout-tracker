@@ -1,7 +1,6 @@
-import { ReactNode, SetStateAction, useState } from "react";
+import { SetStateAction, useState } from "react";
 import { addSet, changeName, deleteExercise } from "../../lib/workoutDataUtils";
 import {
-  SlideAnimation,
   UserDataObject,
   WorkoutDataObject,
 } from "../../model/model";

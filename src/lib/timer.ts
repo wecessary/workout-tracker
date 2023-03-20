@@ -3,7 +3,6 @@ import {
   prevSetStarted,
   prevSetComplete,
   prevSetExists,
-  currentSetStarted,
   nextSetExists,
   nextSetStarted,
 } from "./setCheckers";

@@ -3,12 +3,6 @@ import { Set } from "../../model/model";
 import { secToMinSec } from "../../lib/date";
 import { Check, Play, Stop } from "../ui/Icons";
 import RestTimeDisplay from "./RestTimer";
-import {
-  currentSetComplete,
-  prevSetStarted,
-  prevSetComplete,
-  prevSetExists,
-} from "../../lib/setCheckers";
 import { calTimeDiff, timerDisabled } from "../../lib/timer";
 
 
