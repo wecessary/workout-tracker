@@ -4,7 +4,6 @@ import {
   changeWeight,
   startSet,
   finishSet,
-  resetSetTimes,
   deleteSet,
   shouldDisplayUnit,
 } from "../../lib/workoutDataUtils";
