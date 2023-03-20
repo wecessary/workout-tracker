@@ -8,21 +8,13 @@ import {
   prevSetStarted,
   prevSetComplete,
   prevSetExists,
-} from "./setCheckers";
+} from "../../lib/setCheckers";
+import { calTimeDiff, timerDisabled } from "../../lib/timer";
 
-export const timerDisabled = (setIndex: number, sets: Set[]) => {
-  const shouldDisable =
-    currentSetComplete(setIndex, sets) || //current set is complete, disable it, regardless
-    (prevSetStarted(setIndex, sets) && !prevSetComplete(setIndex, sets)) || //prev set ongoing, disable current set
-    (prevSetExists(setIndex, sets) && !prevSetStarted(setIndex, sets)); //prev set exists and hasn't started, disable current set
-
-  return shouldDisable;
-};
 
 const Timer = ({
   beginOnClick,
   finishOnClick,
-  resetOnClick,
   startTime,
   endTime,
   sets,
@@ -30,16 +22,12 @@ const Timer = ({
 }: {
   beginOnClick: () => void;
   finishOnClick: () => void;
-  resetOnClick: () => void;
   startTime: number;
   endTime: number;
   sets: Set[];
   setIndex: number;
 }) => {
   const [timeDiff, setTimeDiff] = useState(0);
-
-  const calTimeDiff = (newTimeInMs: number, oldTimeInMs: number) =>
-    Math.floor((newTimeInMs - oldTimeInMs) / 1000);
 
   const btnContent = [
     {
@@ -58,39 +46,32 @@ const Timer = ({
       icon: <Check />,
       text: "Set complete",
       content: secToMinSec(calTimeDiff(endTime, startTime), "00:00"), // display length
-      onClick: resetOnClick,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      onClick: () => {},
     },
   ];
 
-  const clickCountLoader = () => {
-    if (startTime && endTime) {
-      return 2;
-    }
-    if (startTime) {
-      return 1;
-    }
-    return 0;
-  };
+  const clickCount = startTime && endTime ? 2 : startTime ? 1 : 0;
 
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeDiff(startTime ? calTimeDiff(Date.now(), startTime) : 0);
     }, 1000);
     return () => clearInterval(interval);
-  }, [clickCountLoader()]);
+  }, [startTime, endTime]);
 
   return (
     <button
       disabled={timerDisabled(setIndex, sets)}
       onClick={() => {
-        btnContent[clickCountLoader()].onClick();
+        btnContent[clickCount].onClick();
       }}
       className="col-span-9 justify-between flex items-center px-3 py-1 text-[12px] border text-[#575555] bg-[#F4F4F4] font-medium rounded-lg  disabled:bg-[#C8C8C8]"
     >
       <div className="flex gap-1 items-center">
-        <div>{btnContent[clickCountLoader() % 3].icon}</div>
-        <div>{btnContent[clickCountLoader() % 3].text}</div>
-        <div>{btnContent[clickCountLoader() % 3].content}</div>
+        <div>{btnContent[clickCount].icon}</div>
+        <div>{btnContent[clickCount].text}</div>
+        <div>{btnContent[clickCount].content}</div>
       </div>
       <RestTimeDisplay sets={sets} currentSetIndex={setIndex} />
     </button>

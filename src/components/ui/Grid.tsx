@@ -15,9 +15,10 @@ export const Grid = ({
   border?: Border;
 }) => {
   return (
-    <div className={`grid grid-cols-12 ${colGap} ${alignItem} ${border} ${p}`}>
+    <div
+      className={`grid grid-cols-12 ${colGap} ${alignItem} ${border} ${p}`}
+    >
       {children}
     </div>
   );
 };
-

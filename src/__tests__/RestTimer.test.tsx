@@ -2,7 +2,9 @@
  * @jest-environment jsdom
  */
 
-import { restTimer } from "./RestTimer";
+import { restTimer } from "../lib/timer";
+
+
 
 describe("test RestTime function", () => {
   test("when set 1 and 2 are complete, will only calculate time diff between 2's start and 1's complete", () => {

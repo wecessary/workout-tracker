@@ -2,7 +2,8 @@
  * @jest-environment jsdom
  */
 
-import { timerDisabled } from "./Timer";
+import { timerDisabled } from "../lib/timer";
+
 
 describe("isBtnDisabled function", () => {
   test("first and only set that has not started should not be disabled", () => {

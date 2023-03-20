@@ -262,3 +262,6 @@ export const toggleDisplayUnit = (
 
   return newWorkoutData;
 };
+
+export const shouldDisplayUnit = (field?: boolean) =>
+  field === undefined ? true : field;
