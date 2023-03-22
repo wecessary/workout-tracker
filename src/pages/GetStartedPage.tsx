@@ -1,22 +1,24 @@
-import Button from "../components/ui/Button";
+import { Link } from "react-router-dom";
+import { AppIcon } from "../components/ui/Icons";
 
 const GetStartedPage = () => {
-  // @ts-ignore
-  const hero = new URL("../assets/renaissant-man.png", import.meta.url);
-
   return (
     <>
-      <div className="h-screen flex flex-col items-center gap-5">
-        <img src={String(hero)} className="h-[40vh] rounded-md mt-10" />
-        <h1 className="text-3xl font-bold">Muscle Department</h1>
-        <h1> The all in one workout tracker</h1>
-        <Button variant="outline" localStyling="w-52">
-          Get Started
-        </Button>
-        <div>
-          <p>
-            Already have an account?<Button> Login</Button>
-          </p>
+      <div className="flex justify-center items-center h-screen w-screen bg-mobile-bg md:bg-desktop-bg bg-cover bg-center">
+        <div className="h-[85vh] flex flex-col justify-between">
+          <div>
+            <AppIcon />
+            <h2 className="mt-4 border-t-4 border-spacing-y-2 font-bold text-white ">
+              no-nonsense workout tracker
+            </h2>
+          </div>
+
+          <Link
+            to={"/login"}
+            className=" text-center border-2 hover:border-4 border-white p-4 rounded-xl w-full text-white"
+          >
+            Use for free
+          </Link>
         </div>
       </div>
     </>

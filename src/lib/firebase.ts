@@ -5,10 +5,12 @@ import {
   signOut,
   createUserWithEmailAndPassword,
   updateProfile,
+  signInWithRedirect,
 } from "firebase/auth";
 import { getDatabase, set, ref, push, child, update } from "firebase/database";
 import { SetStateAction } from "react";
 import { UserDataObject, WorkoutDataObject } from "../model/model";
+import { GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyArNu8sadlIN9buRC1GX0wVO9Kv33fCqBk",
@@ -25,28 +27,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-export async function loginEmailPassword(email: string, password: string) {
+export async function loginEmailPassword(
+  email: string,
+  password: string,
+  callback?: (error: unknown) => void
+) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
-    alert(`There was an error: ${error}`);
+    callback && callback(error);
   }
 }
 
 export async function registerEmailPassword(
   email: string,
   password: string,
-  name: string
+  callback?: (error: unknown) => void
 ) {
   try {
-    const userCred = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    await updateProfile(userCred.user, { displayName: name });
+    await createUserWithEmailAndPassword(auth, email, password);
   } catch (error) {
-    alert(`There was an error: ${error}`);
+    callback && callback(error);
   }
 }
 
@@ -82,3 +83,5 @@ export const writeUserData = (
       });
   }
 };
+
+export const provider = new GoogleAuthProvider();

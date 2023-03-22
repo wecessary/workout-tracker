@@ -1,4 +1,5 @@
 import { ComponentPropsWithoutRef, ForwardedRef, forwardRef } from "react";
+import { Link } from "react-router-dom";
 
 interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   variant?: "primary" | "secondary" | "transparent" | "listGroup" | "outline";
@@ -48,3 +49,26 @@ const Button = forwardRef(
 Button.displayName = "Button";
 
 export default Button;
+
+interface AuthRouterLinkProps {
+  logo: JSX.Element;
+  text: string;
+  to: string;
+}
+
+export const AuthRouterLink = ({ logo, text, to }: AuthRouterLinkProps) => {
+  return (
+    <Link
+      className="w-72 flex items-center gap-4 py-6 px-8 bg-zinc-800 rounded-xl"
+      to={to}
+    >
+      {logo}
+      <span className="text-gray-300">{text}</span>
+    </Link>
+  );
+};
+
+interface AuthButtonProps extends ComponentPropsWithoutRef<"button"> {
+  logo: JSX.Element;
+  onClick: () => void;
+}
