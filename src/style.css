@@ -43,8 +43,3 @@
     transform: translateX(-50%);
   }
 }
-
-@font-face {
-  font-family: "Quinton";
-  src: url("./assets/fonts/quinton.ttf");
-}

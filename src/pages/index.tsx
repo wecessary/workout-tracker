@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { AppIcon } from "../components/ui/Icons";
 
-const GetStartedPage = () => {
+const Index = () => {
   return (
     <>
       <div className="flex justify-center items-center h-screen w-screen bg-mobile-bg md:bg-desktop-bg bg-cover bg-center">
@@ -25,4 +25,4 @@ const GetStartedPage = () => {
   );
 };
 
-export default GetStartedPage;
+export default Index;

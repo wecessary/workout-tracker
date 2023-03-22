@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedContentLayout from "./components/layout/ProtectedContentLayout";
 import AuthContextProvider from "./context/AuthContext";
 import Analytics from "./pages/analyticsPage/AnalyticsPage";
-import GetStartedPage from "./pages/GetStartedPage";
+import Index from "./pages";
 import LoginPage from "./pages/LoginPage";
 import MuscleWrapped from "./pages/MuscleWrapped";
 import RegisterPage from "./pages/RegisterPage";
@@ -24,7 +24,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route element={<UnprotectedRoutes />}>
-              <Route path="/" element={<GetStartedPage />} />
+              <Route path="/" element={<Index />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/login-email" element={<AuthForm />} />
               <Route path="/register" element={<AuthForm forRegisteration />} />

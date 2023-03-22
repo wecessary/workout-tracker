@@ -16,9 +16,6 @@ module.exports = {
           500: "#ffca43",
         },
       },
-      fontFamily: {
-        quinton: "Quinton",
-      },
     },
   },
   variants: {},
