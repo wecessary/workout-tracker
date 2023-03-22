@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedContentLayout from "./components/layout/ProtectedContentLayout";
@@ -7,11 +6,9 @@ import Analytics from "./pages/analyticsPage/AnalyticsPage";
 import Index from "./pages";
 import LoginPage from "./pages/LoginPage";
 import MuscleWrapped from "./pages/MuscleWrapped";
-import RegisterPage from "./pages/RegisterPage";
 import Settings from "./pages/SettingsPage";
 import TrackerPage from "./pages/TrackerPage";
 import UnprotectedRoutes from "./components/routeProtection/UnprotectedRoutes";
-import { EmailLoginPage } from "./pages/EmailLoginPage";
 import { AuthForm } from "./components/ui/AuthForm";
 
 const container = document.getElementById("root");
