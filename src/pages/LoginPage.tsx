@@ -1,72 +1,48 @@
+import { getRedirectResult, signInWithRedirect } from "firebase/auth";
 import React, { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "../components/ui/Button";
-import { Google } from "../components/ui/Icons";
-import { loginEmailPassword } from "../lib/firebase";
+import Button, { AuthRouterLink } from "../components/ui/Button";
+import { AppIcon, Google, Mail, Pencil } from "../components/ui/Icons";
+import { auth, loginEmailPassword, provider } from "../lib/firebase";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    await loginEmailPassword(email, password);
-    navigate("/tracker");
+  async function handleGoogle() {
+    await signInWithRedirect(auth, provider);
   }
 
   return (
     <>
-      <div className="h-screen flex flex-col justify-center items-center">
-        <div className="w-[280px] flex flex-col">
-          <h1 className="text-3xl">Muscle Department</h1>
-          <p className="opacity-50">The all in one workout tracker</p>
-          <Button
-            variant="outline"
-            localStyling="flex items-center px-2"
-            disabled={true}
-          >
-            <Google />
-            <span className="ml-2">Continue with Google</span>
-          </Button>
-          <div className="flex gap-6 items-center">
-            <span className="border-t w-[40%] border-slate-400"></span>
-            <span>OR</span>
-            <span className="border-t w-[40%] border-slate-400"></span>
+      <div className="flex justify-center items-center h-screen w-screen bg-mobile-bg md:bg-desktop-bg bg-cover bg-center">
+        <div className="min-h-[85vh] flex flex-col justify-center items-center gap-8">
+          <Link to="/">
+            <AppIcon className=" w-40 h-40" />
+          </Link>
+          <button onClick={handleGoogle} className="border-2 rounded-xl">
+            <AuthRouterLink
+              logo={<Google />}
+              text="Continue with Google"
+              to=""
+            />
+          </button>
+          <div className="h-1 w-72 bg-gray-300" />
+          <AuthRouterLink
+            logo={<Mail className="stroke-gray-300" />}
+            text="Login with email"
+            to="/login-email"
+          />
+          <AuthRouterLink
+            logo={<Pencil className="stroke-gray-300" />}
+            text="Register"
+            to="/register"
+          />
+          <div className="flex justify-center">
+            <p className="px-2 text-justify w-72 text-gray-300 text-sm">
+              We value your privacy and only use your workout data to help you
+              track your progress. Your data is secure and never shared with any
+              third parties.
+            </p>
           </div>
         </div>
-        <form onSubmit={handleSubmit} className="flex flex-col w-[280px] gap-4">
-          <input
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border-2 rounded-3xl py-2 px-2"
-            required
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
-            className="border-2 rounded-3xl py-2 px-2"
-            required
-          />
-          <Button
-            type="submit"
-            variant="outline"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
-          >
-            Login
-          </Button>
-          <div>
-            {"Don't have an account?"}
-            <Link to="/register" className="ml-2 hover:underline">
-              Register
-            </Link>
-          </div>
-          <span className="opacity-50">closed alpha</span>
-        </form>
       </div>
     </>
   );

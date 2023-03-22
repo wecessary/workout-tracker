@@ -1,65 +1,78 @@
 import React, { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthInput } from "../components/ui/AuthInput";
 import Button from "../components/ui/Button";
+import { AppIcon } from "../components/ui/Icons";
 import { registerEmailPassword } from "../lib/firebase";
+import * as EmailValidator from "email-validator";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
-  const [name, setName] = useState("");
+  const [emailMsg, setEmailMsg] = useState("");
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    await registerEmailPassword(email, password, name);
+    await registerEmailPassword(email, password);
     navigate("/tracker-page");
   }
 
-  const pwNotMatch =
-    password && confirmPw && password !== confirmPw ? true : false;
+  function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setEmail(e.target.value);
+    if (email.length > 4) {
+      !EmailValidator.validate(email)
+        ? setEmailMsg("Email is not valid")
+        : setEmailMsg("");
+    }
+  }
+
+  function handleEmailOnLeave() {
+    if (email.length > 4) {
+      !EmailValidator.validate(email)
+        ? setEmailMsg("Email is not valid")
+        : setEmailMsg("");
+    }
+  }
+  function handlePassword(e: React.ChangeEvent<HTMLInputElement>) {
+    setPassword(e.target.value);
+  }
+  function handleConfirmPwChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setConfirmPw(e.target.value);
+  }
+
+  const pwNotMatch = !!(password && confirmPw && password !== confirmPw);
   return (
     <>
-      <div className="h-screen flex flex-col justify-center items-center">
+      <Link to="/">
+        <AppIcon className="absolute top-2 left-2 w-20 h-20" />
+      </Link>
+      <div className="flex justify-center items-center h-screen w-screen bg-mobile-bg md:bg-desktop-bg bg-cover bg-center">
         <form onSubmit={handleSubmit} className="w-[280px] flex flex-col gap-2">
-          <h1 className="text-xl">Register at Muscle Department</h1>
-          <input
-            type="email"
-            placeholder="Enter email"
+          <AuthInput
+            placeholder="enter email"
+            type="text"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border-2 rounded-3xl px-1 py-2"
-            required
+            onChange={handleEmailChange}
           />
-          <input
+          <AuthInput
+            placeholder="enter password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
-            className="border-2 rounded-3xl px-1 py-2"
-            required
+            onChange={handlePassword}
           />
-          <input
+          <AuthInput
+            placeholder="confirm password"
             type="password"
             value={confirmPw}
-            onChange={(e) => setConfirmPw(e.target.value)}
-            placeholder="Confirm password"
-            className="border-2 w-full rounded-3xl px-1 py-2"
-            required
+            onChange={handleConfirmPwChange}
           />
-          {pwNotMatch && (
-            <span className=" text-red-300 ">Password does not match</span>
-          )}
-
-          <span>What should we call you?</span>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter you name"
-            className="border-2 rounded-3xl px-1 py-2"
-            required
-          />
+          <p className={`font-bold h-16 w-72 text-red-500 text-xs px-2`}>
+            {pwNotMatch ? "Password does not match" : ""}
+          </p>
           <Button variant="outline" disabled={pwNotMatch} type="submit">
             Register
           </Button>

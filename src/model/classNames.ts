@@ -19,3 +19,7 @@ export type Border =
   | `border-t-${number}`
   | `border-l-${number}`
   | `border-r-${number}`;
+
+export interface ClassName {
+  className?: string;
+}
