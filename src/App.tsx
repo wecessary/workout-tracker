@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedContentLayout from "./components/layout/ProtectedContentLayout";
 import AuthContextProvider from "./context/AuthContext";
 import Analytics from "./pages/analyticsPage/AnalyticsPage";
-import Index from "./pages";
+import Index from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import MuscleWrapped from "./pages/MuscleWrapped";
 import Settings from "./pages/SettingsPage";
