@@ -15,7 +15,7 @@ export const AuthInput = ({
     <input
       onChange={onChange}
       onMouseLeave={onMouseLeave}
-      className="bg-zinc-800 focus:bg-zinc-600 rounded-xl px-8 py-6 w-72 text-white placeholder:text-gray-300"
+      className="border-2 bg-opacity-60 bg-zinc-800 focus:bg-zinc-900 rounded-xl px-8 py-6 w-72 text-white placeholder:text-gray-300"
       placeholder={placeholder}
       type={type}
       value={value}

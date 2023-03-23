@@ -2,44 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.slide-out {
-  animation: slide-out;
-  animation-duration: 0.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0s;
-  animation-iteration-count: 1;
-  animation-direction: both;
-}
-
-@keyframes slide-out {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0%);
-  }
-}
-
-.slide-in {
-  animation: slide-in;
-  animation-duration: 0.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0s;
-  animation-iteration-count: 1;
-  animation-direction: forwards;
-}
-
-@keyframes slide-in {
-  0% {
-    opacity: 1;
-    transform: translateX(0%);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateX(-50%);
+@layer components {
+  .auth-btn {
+    @apply w-72 flex items-center gap-4 py-6 px-8 border-2 rounded-xl bg-opacity-60 bg-zinc-800;
   }
 }
