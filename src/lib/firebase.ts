@@ -14,7 +14,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyArNu8sadlIN9buRC1GX0wVO9Kv33fCqBk",
-  authDomain: "workout-tracker-bd0f5.firebaseapp.com",
+  authDomain: "gymjournal.co.uk",
   projectId: "workout-tracker-bd0f5",
   storageBucket: "workout-tracker-bd0f5.appspot.com",
   messagingSenderId: "466659854872",
