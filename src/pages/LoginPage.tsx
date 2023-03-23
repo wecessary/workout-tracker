@@ -1,13 +1,23 @@
 import { getRedirectResult, signInWithRedirect } from "firebase/auth";
 import React, { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Button, { AuthRouterLink } from "../components/ui/Button";
+import Button, { AuthButton, AuthRouterLink } from "../components/ui/Button";
 import { AppIcon, Google, Mail, Pencil } from "../components/ui/Icons";
+import { getErrorMsgCode } from "../lib/error";
 import { auth, loginEmailPassword, provider } from "../lib/firebase";
 
 const LoginPage = () => {
+  const [error, setError] = useState("");
   async function handleGoogle() {
-    await signInWithRedirect(auth, provider);
+    try {
+      await signInWithRedirect(auth, provider);
+    } catch (error) {
+      setError(
+        `Cannot login with Google. Error code: ${
+          getErrorMsgCode(error).code
+        }. Please login with email.`
+      );
+    }
   }
 
   return (
@@ -17,13 +27,11 @@ const LoginPage = () => {
           <Link to="/">
             <AppIcon className=" w-40 h-40" />
           </Link>
-          <button onClick={handleGoogle} className="border-2 rounded-xl">
-            <AuthRouterLink
-              logo={<Google />}
-              text="Continue with Google"
-              to=""
-            />
-          </button>
+          <AuthButton
+            logo={<Google />}
+            text="Continue with Google"
+            callback={handleGoogle}
+          />
           <div className="h-1 w-72 bg-gray-300" />
           <AuthRouterLink
             logo={<Mail className="stroke-gray-300" />}
@@ -36,11 +44,14 @@ const LoginPage = () => {
             to="/register"
           />
           <div className="flex justify-center">
-            <p className="px-2 text-justify w-72 text-gray-300 text-sm">
-              We value your privacy and only use your workout data to help you
-              track your progress. Your data is secure and never shared with any
-              third parties.
-            </p>
+            <div className="px-2 text-justify w-72 ">
+              <p className="text-gray-300 text-sm">
+                We value your privacy and only use your workout data to help you
+                track your progress. Your data is secure and never shared with
+                any third parties.
+              </p>
+              <p className="text-red-500 text-sm">{error}</p>
+            </div>
           </div>
         </div>
       </div>

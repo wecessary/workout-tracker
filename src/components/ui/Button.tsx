@@ -1,3 +1,4 @@
+import { animated, useSpring } from "@react-spring/web";
 import { ComponentPropsWithoutRef, ForwardedRef, forwardRef } from "react";
 import { Link } from "react-router-dom";
 
@@ -58,10 +59,7 @@ interface AuthRouterLinkProps {
 
 export const AuthRouterLink = ({ logo, text, to }: AuthRouterLinkProps) => {
   return (
-    <Link
-      className="w-72 flex items-center gap-4 py-6 px-8 bg-zinc-800 rounded-xl"
-      to={to}
-    >
+    <Link className="auth-btn" to={to}>
       {logo}
       <span className="text-gray-300">{text}</span>
     </Link>
@@ -70,5 +68,34 @@ export const AuthRouterLink = ({ logo, text, to }: AuthRouterLinkProps) => {
 
 interface AuthButtonProps extends ComponentPropsWithoutRef<"button"> {
   logo: JSX.Element;
-  onClick: () => void;
+  text: string;
+  callback: () => Promise<void>;
 }
+
+export const AuthButton = ({ logo, text, callback }: AuthButtonProps) => {
+  const [spring, api] = useSpring(() => ({
+    from: { y: 0 },
+  }));
+
+  async function handleClick() {
+    api.start({ y: 10 });
+    await callback();
+  }
+  function handleClickFinishes() {
+    api.start({ y: 0 });
+  }
+
+  return (
+    <animated.button
+      style={{ ...spring }}
+      className="auth-btn"
+      onMouseDown={handleClick}
+      onMouseUp={handleClickFinishes}
+      onTouchStart={handleClick}
+      onTouchEnd={handleClickFinishes}
+    >
+      {logo}
+      <span className="text-gray-300">{text}</span>
+    </animated.button>
+  );
+};
