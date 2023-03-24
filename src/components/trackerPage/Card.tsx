@@ -1,9 +1,11 @@
 import { SetStateAction, useState } from "react";
-import { addSet, changeName, deleteExercise } from "../../lib/workoutDataUtils";
 import {
-  UserDataObject,
-  WorkoutDataObject,
-} from "../../model/model";
+  addSet,
+  changeName,
+  deleteExercise,
+  getMaxCompletedWeightByExerciseName,
+} from "../../lib/workoutDataUtils";
+import { UserDataObject, WorkoutDataObject } from "../../model/model";
 import PopUpMenu from "./PopUpMenu";
 import { colour } from "../../const/colour";
 import Autofill from "../ui/Autofill";
@@ -75,6 +77,11 @@ const Card = ({
       </Grid>
       {showDetails ? (
         <>
+          <div className="text-gray-400 text-sm">
+            Max weight lifted:{" "}
+            {getMaxCompletedWeightByExerciseName(userData, workoutDataObj.name)}
+            kg
+          </div>
           {workoutDataObj?.sets?.map((set, setIndex) => {
             return (
               <SetRow

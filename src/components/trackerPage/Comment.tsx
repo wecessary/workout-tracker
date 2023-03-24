@@ -18,14 +18,14 @@ const Comment = ({
   return (
     <textarea
       ref={ref as MutableRefObject<HTMLTextAreaElement>}
-      className={`${colour.cardColour} ${colour.groupHover} rounded-xl p-2 border border-zinc-500 mt-4 text-base w-full text-white ${colour.offWhitePlaceholder}`}
+      className={`${colour.cardColour} ${colour.groupHover} rounded-xl p-2 border border-zinc-500 mt-4 text-base w-full text-white placeholder:text-gray-400`}
       value={workoutDataObj.comment}
       onChange={(e) => {
         setWorkoutData(changeComment(e, workoutDataObj.index, workoutData));
         e.target.style.height = "inherit";
         e.target.style.height = `${e.target.scrollHeight}px`;
       }}
-      placeholder="Write down how you found it"
+      placeholder="Write down how you found it..."
     />
   );
 };

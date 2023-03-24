@@ -50,7 +50,7 @@ const Autofill = ({
   return (
     <>
       <input
-        className={`${colour.cardColour} ${colour.groupHover} font-bold px-2 py-1 text-white text-lg w-full`}
+        className={`${colour.cardColour} ${colour.groupHover} font-bold py-1 text-white text-lg w-full`}
         {...getInputProps({ ref: ref as MutableRefObject<HTMLInputElement> })}
         data-testid="combobox-input"
         placeholder="Type an exercise name"

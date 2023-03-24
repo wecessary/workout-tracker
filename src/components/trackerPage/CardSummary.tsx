@@ -10,7 +10,7 @@ const CardSummary = ({
   intensityUnit: string;
 }) => {
   return (
-    <div className={`${colour.offWhite} leading-none pl-2`}>
+    <div className={`${colour.offWhite} leading-none`}>
       <h1>Completed sets: {completedSets.length}</h1>
       <h1>Completed reps: {getRepsTotal(completedSets)}</h1>
       <h1>

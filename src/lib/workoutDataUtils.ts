@@ -1,6 +1,5 @@
-import { ChangeEvent, SetStateAction } from "react";
-import { DropResult } from "react-beautiful-dnd";
-import { Set, ShowOptions, WorkoutDataObject } from "../model/model";
+import { ChangeEvent } from "react";
+import { Set, UserDataObject, WorkoutDataObject } from "../model/model";
 import { nanoid } from "nanoid";
 
 export const changeName = (
@@ -265,3 +264,24 @@ export const toggleDisplayUnit = (
 
 export const shouldDisplayUnit = (field?: boolean) =>
   field === undefined ? true : field;
+
+export const getMaxCompletedWeightByExerciseName = (
+  userData: UserDataObject[],
+  exerciseName: string
+): number => {
+  let maxWeight = 0;
+
+  userData.forEach((userObj) => {
+    userObj?.workoutData?.forEach((workoutDataObj) => {
+      if (workoutDataObj.name === exerciseName) {
+        workoutDataObj?.sets?.forEach((set) => {
+          if (set.timeComplete && set.weight > maxWeight) {
+            maxWeight = set.weight;
+          }
+        });
+      }
+    });
+  });
+
+  return maxWeight;
+};

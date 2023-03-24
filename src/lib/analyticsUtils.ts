@@ -286,7 +286,6 @@ export const getMin = (array: number[]) => {
   return array.length ? Math.min.apply(null, array) : 0;
 };
 
-
 //I don't want to work on this project anymore. ChatGPT wrote this
 export const getLeaderBoardStats = (
   userData: UserDataObject[]
@@ -297,11 +296,11 @@ export const getLeaderBoardStats = (
   userData.forEach((dailyUserData) => {
     dailyUserData.workoutData?.forEach((workoutDataObj) => {
       const exercise = workoutDataObj.name;
-      const completedSets = workoutDataObj.sets.filter(
+      const completedSets = workoutDataObj.sets?.filter(
         (set) => set.timeComplete
       );
 
-      if (completedSets.length > 0) {
+      if (completedSets?.length > 0) {
         const reps = completedSets.reduce((total, set) => total + set.reps, 0);
         const existingData = exerciseMap.get(exercise);
 
@@ -353,7 +352,7 @@ export const hasCompletedSetsAndExerciseNames = (
     return userObj?.workoutData?.some((workoutDataObj) => {
       return (
         workoutDataObj?.name &&
-        workoutDataObj?.sets.some((set) => set.timeComplete)
+        workoutDataObj?.sets?.some((set) => set.timeComplete)
       );
     });
   });
