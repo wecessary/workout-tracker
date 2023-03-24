@@ -33,7 +33,7 @@ const TrackerPage = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center p-4 mb-10">
-        <AppIcon className="w-20 h-20" />
+        <AppIcon className="w-20 h-20 mb-4" />
         <DragDropContext
           onDragEnd={(result) =>
             setWorkoutData(getDnDReordered(workoutData, result))
@@ -43,7 +43,7 @@ const TrackerPage = () => {
             type="date"
             value={selectedDate}
             style={{ colorScheme: "dark" }}
-            className={`${colour.background} text-[#D9D9D9] w-full border rounded border-gray-600`}
+            className={`${colour.background} text-[#D9D9D9] w-[90vw] border rounded border-gray-600 px-2`}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
           <DroppableWrapper droppableId="cards">
