@@ -84,6 +84,7 @@ export const AuthForm = ({
             <AuthInput
               onChange={handleEmailChange}
               onMouseLeave={handleEmailOnLeave}
+              onTouchEnd={handleEmailOnLeave}
               placeholder="Enter your email"
               type="text"
               value={email}
