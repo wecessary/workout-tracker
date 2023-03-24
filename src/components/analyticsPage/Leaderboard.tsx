@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { getLeaderBoardStats } from "../../lib/analyticsUtils";
 import { UserDataObject } from "../../model/model";
 
@@ -20,17 +21,15 @@ export const LeaderBoard = ({
             i
           ) => {
             return (
-              <>
-                <div key={i} className="col-span-6 border-b-2 p-2">
-                  {exerciseName}
-                </div>
-                <div key={i} className="border-x-2 border-b-2 col-span-3 p-2">
+              <Fragment key={i}>
+                <div className="col-span-6 border-b-2 p-2">{exerciseName}</div>
+                <div className="border-x-2 border-b-2 col-span-3 p-2">
                   {numberOfRepsCompleted}
                 </div>
-                <div key={i} className="col-span-3 border-b-2 p-2">
+                <div className="col-span-3 border-b-2 p-2">
                   {daysSinceLastCompleted}
                 </div>
-              </>
+              </Fragment>
             );
           }
         )}
