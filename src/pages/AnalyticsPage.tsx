@@ -1,17 +1,17 @@
 import { useContext } from "react";
-import { UserDataContext } from "../../context/DataContext";
+import { UserDataContext } from "../context/DataContext";
 import {
   attendanceStats,
   getUserDataSinceXDaysAgo,
   getSum,
-} from "../../lib/analyticsUtils";
-import { AppIcon } from "../../components/ui/Icons";
-import Last7Days from "./Last7Days";
-import LineGraph from "./LineChart";
-import { colour } from "../../const/colour";
-import { Header } from "./Header";
-import { LeaderBoard } from "./Leaderboard";
-import { HasWorkoutData } from "./HasWorkoutData";
+} from "../lib/analyticsUtils";
+import { AppIcon } from "../components/ui/Icons";
+import Last7Days from "../components/analyticsPage/Last7Days";
+import LineGraph from "../components/analyticsPage/LineChart";
+import { colour } from "../const/colour";
+import { Header } from "../components/analyticsPage/Header";
+import { LeaderBoard } from "../components/analyticsPage/Leaderboard";
+import { HasWorkoutData } from "../components/analyticsPage/HasWorkoutData";
 
 const cardsWidth = "w-[95vw]";
 
