@@ -1,10 +1,10 @@
-import { getRedirectResult, signInWithRedirect } from "firebase/auth";
-import React, { FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Button, { AuthButton, AuthRouterLink } from "../components/ui/Button";
+import { signInWithRedirect } from "firebase/auth";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { AuthButton, AuthRouterLink } from "../components/ui/Button";
 import { AppIcon, Google, Mail, Pencil } from "../components/ui/Icons";
 import { getErrorMsgCode } from "../lib/error";
-import { auth, loginEmailPassword, provider } from "../lib/firebase";
+import { auth, provider } from "../lib/firebase";
 
 const LoginPage = () => {
   const [error, setError] = useState("");
