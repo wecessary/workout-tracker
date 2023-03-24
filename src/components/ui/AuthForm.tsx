@@ -2,10 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getErrorMsgCode } from "../../lib/error";
 import { loginEmailPassword, registerEmailPassword } from "../../lib/firebase";
-import { noEmptyStrings } from "../../lib/string";
+import {
+  validLoginForm,
+  validRegForm,
+  shouldDisplayPwWarning,
+  shouldDisplayEmailWarning,
+} from "../../lib/auth";
 import { AuthInput } from "./AuthInput";
 import { AppIcon } from "./Icons";
-import * as EmailValidator from "email-validator";
 
 export const AuthForm = ({
   forRegisteration,
@@ -14,29 +18,14 @@ export const AuthForm = ({
 }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailMsg, setEmailMsg] = useState("");
-  const [error, setError] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
-  const pwNotMatch = !!(password && confirmPw && password !== confirmPw);
+  const [error, setError] = useState("");
 
   function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value);
-    if (email.length > 4) {
-      !EmailValidator.validate(email)
-        ? setEmailMsg("Email is not valid")
-        : setEmailMsg("");
-    }
   }
   function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
     setPassword(e.target.value);
-  }
-
-  function handleEmailOnLeave() {
-    if (email.length > 4) {
-      !EmailValidator.validate(email)
-        ? setEmailMsg("Email is not valid")
-        : setEmailMsg("");
-    }
   }
   function handleConfirmPwChange(e: React.ChangeEvent<HTMLInputElement>) {
     setConfirmPw(e.target.value);
@@ -44,9 +33,7 @@ export const AuthForm = ({
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const passwordOrEmailEmpty = !noEmptyStrings(email, password);
-    const emailInValid = !EmailValidator.validate(email);
-    if (passwordOrEmailEmpty || emailInValid) {
+    if (!validLoginForm(email, password)) {
       setError("Please enter valid email and password.");
     } else {
       await loginEmailPassword(email, password, (error) =>
@@ -57,9 +44,7 @@ export const AuthForm = ({
 
   async function handleRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const passwordOrEmailEmpty = !noEmptyStrings(email, password);
-    const emailInValid = !EmailValidator.validate(email);
-    if (passwordOrEmailEmpty || emailInValid || pwNotMatch) {
+    if (!validRegForm(email, password, confirmPw)) {
       setError("Please enter valid details.");
     } else {
       await registerEmailPassword(email, password, (error) =>
@@ -69,7 +54,6 @@ export const AuthForm = ({
       );
     }
   }
-
   return (
     <>
       <div className="flex justify-center items-center h-screen w-screen bg-mobile-bg md:bg-desktop-bg bg-cover bg-center">
@@ -83,8 +67,6 @@ export const AuthForm = ({
           <div>
             <AuthInput
               onChange={handleEmailChange}
-              onMouseLeave={handleEmailOnLeave}
-              onTouchEnd={handleEmailOnLeave}
               placeholder="Enter your email"
               type="text"
               value={email}
@@ -92,7 +74,7 @@ export const AuthForm = ({
             <p
               className={`font-bold w-72 text-red-500 text-xs px-2 mt-2 absolute`}
             >
-              {emailMsg}
+              {shouldDisplayEmailWarning(email) && "Email is not valid"}
             </p>
           </div>
           <AuthInput
@@ -109,13 +91,13 @@ export const AuthForm = ({
                 value={confirmPw}
                 onChange={handleConfirmPwChange}
               />
-              {pwNotMatch && (
+              {shouldDisplayPwWarning(password, confirmPw) ? (
                 <p
                   className={`absolute mt-2 font-bold w-72 text-red-500 text-xs px-2`}
                 >
                   Password does not match
                 </p>
-              )}
+              ) : null}
             </div>
           )}
           <div>
