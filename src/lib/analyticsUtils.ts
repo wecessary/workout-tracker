@@ -6,39 +6,51 @@ import {
   WorkoutDataObjectDetailsAllLevel,
   WorkoutDataObjectWithDate,
   AttendanceStats,
+  UserDataObjectNamesAndDatesAllLevel,
+  LeaderBoardStats,
 } from "../model/model";
 import { currentDateAsString } from "./date";
 
-export const addDetailsToSets = (workoutData: WorkoutDataObjectWithDate[]) => {
-  return workoutData?.map((workoutDataObj) => {
-    const OneExercise = workoutDataObj;
-    const setsWithNameAndDate = OneExercise.sets?.map((set) => ({
+export const addDetailsToSets = (
+  workoutData: WorkoutDataObjectWithDate[]
+): WorkoutDataObjectDetailsAllLevel[] => {
+  return workoutData?.map((workoutDataObj: WorkoutDataObjectWithDate) => {
+    const { date, name, repsUnit, intensityUnit, ...oneExercise } =
+      workoutDataObj;
+    const setsWithNameAndDate = oneExercise.sets?.map((set) => ({
       ...set,
-      date: workoutDataObj.date,
-      name: workoutDataObj.name,
-      repsUnit: workoutDataObj.repsUnit,
-      intensityUnit: workoutDataObj.intensityUnit,
+      date,
+      name,
+      repsUnit,
+      intensityUnit,
     }));
     return {
-      ...workoutDataObj,
+      ...oneExercise,
       sets: setsWithNameAndDate,
-    } as WorkoutDataObjectDetailsAllLevel;
+      date,
+      name,
+      repsUnit,
+      intensityUnit,
+    };
   });
 };
 
-export const addDateToWorkoutData = (userData: UserDataObject[]) => {
-  return userData.map((userObj) => {
-    const oneDayOfUserData = userObj;
-    const workoutDataWithDates = oneDayOfUserData.workoutData?.map(
+export const addDateToWorkoutData = (
+  userWorkoutData: UserDataObject[]
+): UserDataObjectNamesAndDatesAllLevel[] => {
+  return userWorkoutData.map((dailyUserData) => {
+    const workoutDataWithDates = dailyUserData.workoutData?.map(
       (workoutDataObj) => ({
         ...workoutDataObj,
-        date: userObj.date,
+        date: dailyUserData.date,
       })
-    );
-    const allHaveDatesAndNames = addDetailsToSets(workoutDataWithDates);
+    ) as WorkoutDataObjectWithDate[];
+
+    const workoutDataWithDetails = addDetailsToSets(workoutDataWithDates);
+
     return {
-      ...userObj,
-      workoutData: allHaveDatesAndNames,
+      ...dailyUserData,
+      workoutData: workoutDataWithDetails,
     };
   });
 };
@@ -241,6 +253,7 @@ export const getExerciseStatsObj = (
       restTimes: set.restTime,
       durations: set.duration,
       date: set && set.date ? set.date : "",
+      unit: set.intensityUnit,
     }))
     .sort((a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf());
 };
@@ -273,26 +286,75 @@ export const getMin = (array: number[]) => {
   return array.length ? Math.min.apply(null, array) : 0;
 };
 
-interface GroupedSetsWithStats {
-  [date: string]: number[];
-}
 
-export const groupBy = (
-  setsWithStats: SetWithStats[],
-  property: "date" | "name",
-  stat: "reps" | "weight" | "totalTime" | "restTime" | "duration"
-) => {
-  return setsWithStats.reduce((cache, obj) => {
-    const key = obj[property]; // this would be e.g. "2022-10-11" = {...}.date
-    const currentGroup = cache[key] ?? []; //this stores all the objects in the current group
-    return { ...cache, [key]: [...currentGroup, obj[stat]] };
-  }, {} as GroupedSetsWithStats) as GroupedSetsWithStats;
+//I don't want to work on this project anymore. ChatGPT wrote this
+export const getLeaderBoardStats = (
+  userData: UserDataObject[]
+): LeaderBoardStats[] => {
+  const exerciseMap: Map<string, { reps: number; lastDate: string }> =
+    new Map();
+
+  userData.forEach((dailyUserData) => {
+    dailyUserData.workoutData?.forEach((workoutDataObj) => {
+      const exercise = workoutDataObj.name;
+      const completedSets = workoutDataObj.sets.filter(
+        (set) => set.timeComplete
+      );
+
+      if (completedSets.length > 0) {
+        const reps = completedSets.reduce((total, set) => total + set.reps, 0);
+        const existingData = exerciseMap.get(exercise);
+
+        if (existingData) {
+          exerciseMap.set(exercise, {
+            reps: existingData.reps + reps,
+            lastDate:
+              new Date(dailyUserData.date) > new Date(existingData.lastDate)
+                ? dailyUserData.date
+                : existingData.lastDate,
+          });
+        } else {
+          exerciseMap.set(exercise, {
+            reps: reps,
+            lastDate: dailyUserData.date,
+          });
+        }
+      }
+    });
+  });
+
+  const currentDate = new Date();
+
+  const leaderBoardStats = Array.from(exerciseMap.entries()).map(
+    ([exerciseName, { reps, lastDate }]) => {
+      const lastCompletedDate = new Date(lastDate);
+      const daysSinceLastCompleted = Math.floor(
+        (currentDate.getTime() - lastCompletedDate.getTime()) /
+          (1000 * 60 * 60 * 24)
+      );
+
+      return {
+        exerciseName,
+        numberOfRepsCompleted: reps,
+        daysSinceLastCompleted,
+      };
+    }
+  );
+
+  return leaderBoardStats.sort(
+    (a, b) => b.numberOfRepsCompleted - a.numberOfRepsCompleted
+  );
 };
 
-export const sumGroupBy = (groupByArray: GroupedSetsWithStats) => {
-  const arrayOfDailyWorkouts = Object.values(groupByArray);
-
-  return arrayOfDailyWorkouts.map((day) => {
-    return day.length === 1 ? day[0] : day.reduce((a, b) => a + b, 0);
+export const hasCompletedSetsAndExerciseNames = (
+  userData: UserDataObject[]
+): boolean => {
+  return userData.some((userObj) => {
+    return userObj?.workoutData?.some((workoutDataObj) => {
+      return (
+        workoutDataObj?.name &&
+        workoutDataObj?.sets.some((set) => set.timeComplete)
+      );
+    });
   });
 };
