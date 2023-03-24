@@ -59,7 +59,7 @@ export const AuthForm = ({
     e.preventDefault();
     const passwordOrEmailEmpty = !noEmptyStrings(email, password);
     const emailInValid = !EmailValidator.validate(email);
-    if (passwordOrEmailEmpty || emailInValid) {
+    if (passwordOrEmailEmpty || emailInValid || pwNotMatch) {
       setError("Please enter valid details.");
     } else {
       await registerEmailPassword(email, password, (error) =>
