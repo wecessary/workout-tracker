@@ -1,54 +1,3 @@
-import { ChangeEvent, SetStateAction } from "react";
-
-export type HandleChangeName = (
-  e: ChangeEvent<HTMLTextAreaElement>,
-  workoutDataObjectIndex: number,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
-) => void;
-
-export type HandleAddWorkout = (
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
-) => void;
-
-export type HandleChangeReps = (
-  e: ChangeEvent<HTMLInputElement>,
-  setIndex: number,
-  workoutDataObject: WorkoutDataObject,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
-) => void;
-
-export type HandleChangeEasy = (
-  setIndex: number,
-  workoutDataObject: WorkoutDataObject,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
-) => void;
-
-export type HandleChangeDone = (
-  setIndex: number,
-  workoutDataObject: WorkoutDataObject,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
-) => void;
-
-export type HandleChangeWeight = (
-  e: ChangeEvent<HTMLInputElement>,
-  setIndex: number,
-  workoutDataObject: WorkoutDataObject,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
-) => void;
-
-export type HandleChangeComment = (
-  e: ChangeEvent<HTMLTextAreaElement>,
-  workoutDataObjectIndex: number,
-  workoutData: WorkoutDataObject[],
-  setWorkoutData: (value: SetStateAction<WorkoutDataObject[]>) => void
-) => void;
-
 export interface WorkoutDataObject {
   exId: string;
   index: number;
@@ -137,8 +86,6 @@ export interface UserDataObjectNamesAndDatesAllLevel {
   workoutData: WorkoutDataObjectDetailsAllLevel[];
 }
 
-export type SetUserData = (value: SetStateAction<UserDataObject[]>) => void;
-
 export interface ShowOptions {
   exerciseIndex: number;
   showMenu: boolean;
@@ -151,7 +98,7 @@ export interface ExerciseStatObj {
   weights: number;
   restTimes: number;
   durations: number;
-  dates: string;
+  date: string;
 }
 
 export type ExerciseStats = [
@@ -171,4 +118,8 @@ export type AttendanceStats = [
   string[]
 ];
 
-export type SlideAnimation = "" | "slide-in" | "slide-out";
+export interface LeaderBoardStats {
+  exerciseName: string;
+  numberOfRepsCompleted: number;
+  daysSinceLastCompleted: number;
+}
