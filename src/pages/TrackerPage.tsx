@@ -43,7 +43,7 @@ const TrackerPage = () => {
             type="date"
             value={selectedDate}
             style={{ colorScheme: "dark" }}
-            className={`${colour.background} text-[#D9D9D9] w-[90vw] border rounded border-gray-600 px-2`}
+            className={`${colour.background} text-[#D9D9D9] w-[90vw] border rounded border-gray-600 px-2 mb-2`}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
           <DroppableWrapper droppableId="cards">
@@ -67,6 +67,7 @@ const TrackerPage = () => {
           </DroppableWrapper>
 
           <Button
+            localStyling="mt-2"
             onClick={() => setWorkoutData(addWorkout(workoutData))}
             variant="outline"
           >
