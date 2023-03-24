@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { AlignItem, Border, Gap, P } from "../../model/classNames";
 
 export const Grid = ({
   colGap,
@@ -8,16 +7,14 @@ export const Grid = ({
   p,
   border,
 }: {
-  colGap?: Gap;
+  colGap?: string;
   children: ReactNode;
-  alignItem?: AlignItem;
-  p?: P;
-  border?: Border;
+  alignItem?: string;
+  p?: string;
+  border?: string;
 }) => {
   return (
-    <div
-      className={`grid grid-cols-12 ${colGap} ${alignItem} ${border} ${p}`}
-    >
+    <div className={`grid grid-cols-12 ${colGap} ${alignItem} ${border} ${p}`}>
       {children}
     </div>
   );
