@@ -14,6 +14,7 @@ import { colour } from "../const/colour";
 import getStatusMessage from "../lib/statusMessage";
 import { saveStatusMsg } from "../const/saveStatusMsg";
 import { getDnDReordered } from "../lib/dndUtils";
+import { AppIcon } from "../components/ui/Icons";
 
 const TrackerPage = () => {
   const { datafromDB } = useContext(UserDataContext);
@@ -32,9 +33,7 @@ const TrackerPage = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center p-4 mb-10">
-        <h1 className={`text-[5vw] text-white tracking-widest w-full`}>
-          MUSCLE JOURNAL
-        </h1>
+        <AppIcon className="w-20 h-20" />
         <DragDropContext
           onDragEnd={(result) =>
             setWorkoutData(getDnDReordered(workoutData, result))

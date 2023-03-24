@@ -6,7 +6,7 @@ import {
   getUserDataSinceXDaysAgo,
   getSum,
 } from "../../lib/analyticsUtils";
-import { Play } from "../../components/ui/Icons";
+import { AppIcon, Play } from "../../components/ui/Icons";
 import ThisWeekVsAllTime from "./ThisWeekVAllTime";
 import Last7Days from "./Last7Days";
 import Progression from "./Progression";
@@ -45,9 +45,7 @@ const Analytics = () => {
       <div
         className={`min-h-screen ${colour.background} text-[#F5F5F5] flex flex-col items-center gap-4 pb-16 pt-4`}
       >
-        <h1 className={`${cardsWidth} text-[5vw] tracking-widest`}>
-          MUSCLE REPORT
-        </h1>
+        <AppIcon className="w-20 h-20" />
         <Progression userData={userData} cardsWidth={cardsWidth} />
         <Last7Days
           cardsWidth={cardsWidth}
