@@ -24,7 +24,7 @@ const Index = () => {
 
           <Link
             to={"/login"}
-            className="text-center border-2 hover:border-4 border-white p-4 rounded-xl w-full text-white"
+            className="text-center border-2 hover:border-4 border-white p-4 rounded-xl w-full text-white foo"
           >
             Use for free
           </Link>
